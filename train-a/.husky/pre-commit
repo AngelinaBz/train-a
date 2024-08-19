@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+cd train-a
+npm run format
