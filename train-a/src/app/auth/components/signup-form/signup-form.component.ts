@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
-  AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators
+  AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidatorFn, Validators
 } from '@angular/forms';
 
 import { ButtonComponent } from '../../../shared/components/button/button.component';
@@ -19,10 +19,14 @@ export class SignupFormComponent implements OnInit {
   constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
-    this.signupForm = this.fb.group({
-      email: ['', [Validators.required, Validators.pattern(/^[\w\d_]+@[\w\d_]+\.\w{2,7}$/)]],
-      password: ['', [Validators.required, this.passwordValidator]],
-    });
+    this.signupForm = this.fb.group(
+      {
+        email: ['', [Validators.required, Validators.pattern(/^[\w\d_]+@[\w\d_]+\.\w{2,7}$/)]],
+        password: ['', [Validators.required, this.passwordValidator]],
+        repeatPassword: ['', [Validators.required]],
+      },
+      { validators: this.passwordsMatchValidator },
+    );
   }
 
   passwordValidator(control: AbstractControl) {
@@ -35,6 +39,12 @@ export class SignupFormComponent implements OnInit {
     return null;
   }
 
+  passwordsMatchValidator: ValidatorFn = (group: AbstractControl) => {
+    const password = group.get('password')?.value;
+    const repeatPassword = group.get('repeatPassword')?.value;
+    return password === repeatPassword ? null : { mismatch: true };
+  };
+
   get email() {
     return this.signupForm.get('email');
   }
@@ -43,13 +53,17 @@ export class SignupFormComponent implements OnInit {
     return this.signupForm.get('password');
   }
 
+  get repeatPassword() {
+    return this.signupForm.get('repeatPassword');
+  }
+
   get isValid() {
     return this.signupForm.valid;
   }
 
   onSubmit() {
     if (this.signupForm.valid) {
-      console.log('valid');
+      console.log(this.signupForm.value);
     }
   }
 }
