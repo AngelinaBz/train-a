@@ -8,10 +8,6 @@ jobs:
     name: 🧪 CI
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: ./train-a
-
     steps:
       - name: 🚚 Get latest code
         uses: actions/checkout@v4
@@ -20,22 +16,25 @@ jobs:
 
       - name: 💩 Enable Corepack before setting up Node
         run: corepack enable
-        working-directory: ./
 
       - name: 🔨 install node
         uses: actions/setup-node@v4
         with:
-          node-version-file: './package.json'
+          node-version-file: './train-a/package.json'
           cache: 'npm'
 
       - name: 🔨 install package
         run: npm install
+        working-directory: ./train-a
 
       - name: 👍 Typescript checks
         run: npx tsc
+        working-directory: ./train-a
 
       - name: 🔍 ES lint
         run: npm run lint
+        working-directory: ./train-a
 
       - name: 🧪 Tests
         run: npm run test:staged
+        working-directory: ./train-a
