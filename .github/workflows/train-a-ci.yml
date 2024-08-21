@@ -27,7 +27,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           cache: 'npm'
-          node-version-file: '**/train-a/package.json'
+          node-version-file: 'train-a/package.json'
           cache-dependency-path: '**/train-a/package-lock.json'
 
       - name: 🔨 install package
