@@ -10,7 +10,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./train-a
+        working-directory: 'train-a'
 
     steps:
       - name: 🚚 Get latest code
@@ -20,15 +20,6 @@ jobs:
 
       - name: 💩 Enable Corepack before setting up Node
         run: corepack enable
-
-      - name: Install tree
-        run: sudo apt-get install -y tree
-
-      - name: Print current directory
-        run: pwd
-
-      - name: Print file structure
-        run: tree
 
       - name: 🔨 install node
         uses: actions/setup-node@v4
