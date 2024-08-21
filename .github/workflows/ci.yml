@@ -16,6 +16,7 @@ jobs:
 
       - name: 💩 Enable Corepack before setting up Node
         run: corepack enable
+        working-directory: ./train-a
 
       - name: 🔨 install node
         uses: actions/setup-node@v4
@@ -25,16 +26,12 @@ jobs:
 
       - name: 🔨 install package
         run: npm install
-        working-directory: ./train-a
 
       - name: 👍 Typescript checks
         run: npx tsc
-        working-directory: ./train-a
 
       - name: 🔍 ES lint
         run: npm run lint
-        working-directory: ./train-a
 
       - name: 🧪 Tests
         run: npm run test:staged
-        working-directory: ./train-a
