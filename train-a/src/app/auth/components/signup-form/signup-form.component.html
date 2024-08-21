@@ -3,9 +3,7 @@
     <mat-label for="email">Email</mat-label>
     <input type="text" id="email" matInput formControlName="email" placeholder="example@mail.com" />
     <mat-error *ngIf="isSubmitted && email?.errors?.['required']">Please enter an email</mat-error>
-    <mat-error *ngIf="isSubmitted && email?.errors?.['pattern'] && !email?.errors?.['required']"
-      >Incorrect email</mat-error
-    >
+    <mat-error *ngIf="isSubmitted && email?.errors?.['pattern'] && !email?.errors?.['required']">Incorrect email</mat-error>
     <mat-error *ngIf="isSubmitted && email?.errors?.['serverError']">{{ email?.errors?.['serverError'] }}</mat-error>
   </mat-form-field>
   <mat-form-field class="field" appearance="outline">
@@ -20,13 +18,7 @@
 
   <mat-form-field class="field" appearance="outline">
     <mat-label for="repeatPassword">Repeat Password</mat-label>
-    <input
-      type="password"
-      id="repeatPassword"
-      matInput
-      formControlName="repeatPassword"
-      [errorStateMatcher]="matcher"
-    />
+    <input type="password" id="repeatPassword" matInput formControlName="repeatPassword" [errorStateMatcher]="matcher" />
     <mat-error *ngIf="isSubmitted && repeatPassword?.errors?.['required']">Please repeat the password</mat-error>
     <mat-error *ngIf="repeatPassword?.errors?.['mismatch'] && !repeatPassword?.errors?.['required']"
       >Passwords do not match

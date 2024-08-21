@@ -13,8 +13,6 @@ export class SignupService {
   signup(email: string, password: string): Observable<{ error?: string }> {
     const body = JSON.stringify({ email, password });
 
-    return this.http
-      .post<{ error?: string }>(this.apiUrl, body)
-      .pipe(catchError((err) => of({ error: err.error.message })));
+    return this.http.post<{ error?: string }>(this.apiUrl, body).pipe(catchError((err) => of({ error: err.error.message })));
   }
 }
