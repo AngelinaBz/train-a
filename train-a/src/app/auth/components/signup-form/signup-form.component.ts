@@ -1,15 +1,22 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
-  AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidatorFn, Validators
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
 } from '@angular/forms';
-
-import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-signup-form',
   standalone: true,
-  imports: [ReactiveFormsModule, ButtonComponent, CommonModule],
+  imports: [ReactiveFormsModule, MatButtonModule, CommonModule, MatFormFieldModule, MatInputModule],
   templateUrl: './signup-form.component.html',
   styleUrl: './signup-form.component.scss',
 })
@@ -25,25 +32,40 @@ export class SignupFormComponent implements OnInit {
         password: ['', [Validators.required, this.passwordValidator]],
         repeatPassword: ['', [Validators.required]],
       },
-      { validators: this.passwordsMatchValidator },
+      { validators: this.passwordsMatchValidator('password', 'repeatPassword') },
     );
   }
 
-  passwordValidator(control: AbstractControl) {
+  passwordValidator(control: AbstractControl): ValidationErrors | null {
     const password: string = control.value;
-    const validLength = password && password.length >= 8;
-
-    if (!validLength) {
+    if (password.length < 8) {
       return { weakPassword: 'Password must be at least 8 characters long' };
     }
     return null;
   }
 
-  passwordsMatchValidator: ValidatorFn = (group: AbstractControl) => {
-    const password = group.get('password')?.value;
-    const repeatPassword = group.get('repeatPassword')?.value;
-    return password === repeatPassword ? null : { mismatch: true };
-  };
+  passwordsMatchValidator(passwordKey: string, repeatPasswordKey: string): ValidatorFn {
+    return (group: AbstractControl): ValidationErrors | null => {
+      const password = group.get(passwordKey);
+      const repeatPassword = group.get(repeatPasswordKey);
+
+      if (!password || !repeatPassword) {
+        return null;
+      }
+
+      if (repeatPassword.errors && !repeatPassword.errors['mismatch']) {
+        return null;
+      }
+
+      if (password.value !== repeatPassword.value) {
+        repeatPassword.setErrors({ mismatch: true });
+      } else {
+        repeatPassword.setErrors(null);
+      }
+
+      return null;
+    };
+  }
 
   get email() {
     return this.signupForm.get('email');
