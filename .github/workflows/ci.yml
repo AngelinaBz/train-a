@@ -20,6 +20,7 @@ jobs:
 
       - name: 💩 Enable Corepack before setting up Node
         run: corepack enable
+        working-directory: ./
 
       - name: 🔨 install node
         uses: actions/setup-node@v4
