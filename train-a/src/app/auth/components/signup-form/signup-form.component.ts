@@ -30,8 +30,7 @@ export class SignupFormComponent implements OnInit {
   isSubmitted = false;
 
   matcher: ErrorStateMatcher = {
-    isErrorState: (control: FormControl | null): boolean =>
-      !!(control && control.invalid && (control.dirty || control.touched)),
+    isErrorState: (control: FormControl | null): boolean => !!(control && control.invalid && (control.dirty || control.touched)),
   };
 
   constructor(
