@@ -16,7 +16,7 @@
     "prepare": "cd .. && husky train-a/.husky"
   },
   "engines": {
-    "node": ">=18.19.1"
+    "node": "20.16.0"
   },
   "private": true,
   "dependencies": {
