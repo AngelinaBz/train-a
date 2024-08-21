@@ -1,0 +1,5 @@
+name: 🪿 Run CI
+on:
+  pull_request:
+    paths:
+      - "train-a/**"
