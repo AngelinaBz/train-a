@@ -1,9 +1,17 @@
 name: 🧪 CI
 
+on:
+  pull_request:
+
 jobs:
   ci:
     name: 🧪 CI
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./train-a
+
     steps:
       - name: 🚚 Get latest code
         uses: actions/checkout@v4
