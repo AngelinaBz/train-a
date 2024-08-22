@@ -7,13 +7,15 @@ import { provideStoreDevtools } from '@ngrx/store-devtools';
 
 import { routes } from './app.routes';
 
+export const providers = [
+  provideZoneChangeDetection({ eventCoalescing: true }),
+  provideRouter(routes),
+  provideAnimationsAsync(),
+  provideHttpClient(),
+  provideStore(),
+  provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
+];
+
 export const appConfig: ApplicationConfig = {
-  providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes),
-    provideAnimationsAsync(),
-    provideHttpClient(),
-    provideStore(),
-    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
-  ],
+  providers,
 };
