@@ -1,3 +1,6 @@
-#!/usr/bin/env sh
+echo -e "\e[1;34m[INFO]Changing dir:\e[0m"
 cd train-a
-npm run lint
+echo -e "\e[1;34m[INFO]Lint:\e[0m"
+npx lint-staged
+echo -e "\e[1;34m[INFO]Test:\e[0m"
+npm run test:staged

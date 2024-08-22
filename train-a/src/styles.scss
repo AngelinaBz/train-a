@@ -81,13 +81,14 @@ time,
 mark,
 audio,
 video {
-  margin: 0;
   padding: 0;
   border: 0;
-  font-size: 100%;
+  margin: 0;
   font: inherit;
+  font-size: 100%;
   vertical-align: baseline;
 }
+
 /* HTML5 display-role reset for older browsers */
 article,
 aside,
@@ -102,26 +103,32 @@ nav,
 section {
   display: block;
 }
+
 body {
-  line-height: 1;
   min-height: 100vh;
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  line-height: 1;
   overflow-x: hidden;
 }
+
 ol,
 ul {
   list-style: none;
 }
+
 blockquote,
 q {
   quotes: none;
 }
-blockquote:before,
-blockquote:after,
-q:before,
-q:after {
-  content: '';
+
+blockquote::before,
+blockquote::after,
+q::before,
+q::after {
   content: none;
 }
+
 table {
   border-collapse: collapse;
   border-spacing: 0;
@@ -130,8 +137,4 @@ table {
 html,
 body {
   height: 100%;
-}
-body {
-  margin: 0;
-  font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
