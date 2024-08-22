@@ -1,4 +1,4 @@
 <div class="home-container">
-  <app-search-form></app-search-form>
-  <app-search-results></app-search-results>
+  <app-search-form (searchSubmitted)="searchResultsComponent.performSearch($event)"></app-search-form>
+  <app-search-results #searchResultsComponent></app-search-results>
 </div>

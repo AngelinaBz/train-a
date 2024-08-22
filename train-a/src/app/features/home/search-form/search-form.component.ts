@@ -1,36 +1,37 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import {
   FormBuilder, FormGroup, ReactiveFormsModule, Validators
 } from '@angular/forms';
 
-import { SearchCriteria, SearchService } from '../services/search.service';
+import { SearchCriteria } from '../services/search.service';
 
 @Component({
   selector: 'app-search-form',
-  standalone: true,
   templateUrl: './search-form.component.html',
   styleUrls: ['./search-form.component.scss'],
-  imports: [CommonModule, ReactiveFormsModule],
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule]
 })
 export class SearchFormComponent {
+  @Output() searchSubmitted = new EventEmitter<SearchCriteria>();
+
   searchForm: FormGroup;
 
-  constructor(
-    private fb: FormBuilder,
-    private searchService: SearchService,
-  ) {
+  constructor(private fb: FormBuilder) {
     this.searchForm = this.fb.group({
-      from: ['', Validators.required],
-      to: ['', Validators.required],
-      date: ['', Validators.required],
+      fromLatitude: [null, Validators.required],
+      fromLongitude: [null, Validators.required],
+      toLatitude: [null, Validators.required],
+      toLongitude: [null, Validators.required],
+      time: [null]
     });
   }
 
   onSubmit() {
     if (this.searchForm.valid) {
-      const searchCriteria: SearchCriteria = this.searchForm.value;
-      this.searchService.updateSearchCriteria(searchCriteria);
+      const searchCriteria = this.searchForm.value as SearchCriteria;
+      this.searchSubmitted.emit(searchCriteria);
     }
   }
 }

@@ -1,1 +1,18 @@
-<p>search-form works!</p>
+<form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+  <label for="fromLatitude">From Latitude:</label>
+  <input id="fromLatitude" formControlName="fromLatitude" type="number">
+
+  <label for="fromLongitude">From Longitude:</label>
+  <input id="fromLongitude" formControlName="fromLongitude" type="number">
+
+  <label for="toLatitude">To Latitude:</label>
+  <input id="toLatitude" formControlName="toLatitude" type="number">
+
+  <label for="toLongitude">To Longitude:</label>
+  <input id="toLongitude" formControlName="toLongitude" type="number">
+
+  <label for="time">Time (Optional):</label>
+  <input id="time" formControlName="time" type="number">
+
+  <button type="submit" [disabled]="!searchForm.valid">Search</button>
+</form>
