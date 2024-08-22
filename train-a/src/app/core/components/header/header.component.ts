@@ -25,6 +25,5 @@ export class HeaderComponent {
     this.showSignupForm = false;
   }
 
-  logout() {
-  }
+  logout() {}
 }
