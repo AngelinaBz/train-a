@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { SearchService, SearchCriteria } from '../services/search.service';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { Component } from '@angular/core';
+import {
+  FormBuilder, FormGroup, ReactiveFormsModule, Validators
+} from '@angular/forms';
+
+import { SearchCriteria, SearchService } from '../services/search.service';
 
 @Component({
   selector: 'app-search-form',
@@ -14,7 +16,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 export class SearchFormComponent {
   searchForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private searchService: SearchService) {
+  constructor(
+    private fb: FormBuilder,
+    private searchService: SearchService,
+  ) {
     this.searchForm = this.fb.group({
       from: ['', Validators.required],
       to: ['', Validators.required],
