@@ -1,0 +1,17 @@
+<div *ngIf="isLoading$ | async">Loading...</div>
+<div *ngIf="error$ | async as error">{{ error | json }}</div>
+<div *ngIf="user$ | async as user">
+  <h1>{{ user.name }}</h1>
+  <p>{{ user.email }}</p>
+  <p>{{ user.role }}</p>
+</div>
+
+<form (ngSubmit)="updateUserProfile(name.value, email.value)">
+  <label for="name">Name:</label>
+  <input id="name" #name type="text" />
+
+  <label for="email">Email:</label>
+  <input id="email" #email type="email" />
+
+  <button type="submit">Update Profile</button>
+</form>
