@@ -1,6 +1,7 @@
 {
   "name": "train-a",
   "version": "0.0.0",
+  "type": "module",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -11,6 +12,8 @@
     "test:staged": "ng test --code-coverage --watch=false --browsers=ChromeHeadless",
     "lint": "ng lint",
     "lint:fix": "ng lint --fix",
+    "stylelint": "stylelint src/**/*.{css,scss,sass,less,styl,vue}",
+    "stylelint:fix": "stylelint src/**/*.{css,scss,sass,less,styl,vue} --fix",
     "ci:format": "prettier . --check",
     "format": "prettier . --write",
     "prepare": "cd .. && husky train-a/.husky"
@@ -28,6 +31,8 @@
     "@angular/platform-browser": "^18.0.0",
     "@angular/platform-browser-dynamic": "^18.0.0",
     "@angular/router": "^18.0.0",
+    "@ngrx/store": "^18.0.2",
+    "@ngrx/store-devtools": "^18.0.2",
     "@planess/train-a-backend": "^0.0.5",
     "husky": "^9.1.4",
     "prettier-eslint": "^16.3.0",
@@ -44,9 +49,13 @@
     "@angular-eslint/template-parser": "18.3.0",
     "@angular/cli": "^18.0.6",
     "@angular/compiler-cli": "^18.0.0",
+    "@commitlint/config-conventional": "^19.2.2",
+    "@commitlint/format": "^19.3.0",
+    "@ngrx/eslint-plugin": "^18.0.2",
     "@types/jasmine": "~5.1.0",
     "@typescript-eslint/eslint-plugin": "7.11.0",
     "@typescript-eslint/parser": "7.11.0",
+    "commitlint": "^19.4.0",
     "eslint": "8.57.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^18.0.0",
@@ -60,7 +69,16 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "lint-staged": "^15.2.9",
     "prettier": "^3.3.3",
+    "stylelint": "^16.8.2",
+    "stylelint-config-idiomatic-order": "^10.0.0",
+    "stylelint-config-prettier-scss": "^1.0.0",
+    "stylelint-config-recommended": "^14.0.1",
+    "stylelint-config-standard-scss": "^13.1.0",
+    "stylelint-order": "^6.0.4",
+    "stylelint-prettier": "^5.0.2",
+    "stylelint-scss": "^6.5.0",
     "typescript": "~5.4.2"
   }
 }
