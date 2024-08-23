@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -24,7 +24,6 @@ import { SignupService } from '../../services/signup/signup.service';
   imports: [ReactiveFormsModule, MatButtonModule, CommonModule, MatFormFieldModule, MatInputModule, RouterLink],
   templateUrl: './signup-form.component.html',
   styleUrl: './signup-form.component.scss',
-  encapsulation: ViewEncapsulation.None,
 })
 export class SignupFormComponent implements OnInit {
   signupForm!: FormGroup;

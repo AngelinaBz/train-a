@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -14,7 +14,6 @@ import { SigninService } from '../../services/signin/signin.service';
   imports: [ReactiveFormsModule, MatButtonModule, CommonModule, MatFormFieldModule, MatInputModule, RouterLink],
   templateUrl: './signin-form.component.html',
   styleUrl: './signin-form.component.scss',
-  encapsulation: ViewEncapsulation.None,
 })
 export class SigninFormComponent implements OnInit {
   signinForm!: FormGroup;
