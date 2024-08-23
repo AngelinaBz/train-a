@@ -1,7 +1,7 @@
 <div class="stations-container">
   <div class="map-data-container">
     <div class="map-wrapper">
-      <img src="assets/map.png" alt="map" />
+      <app-map></app-map>
     </div>
 
     <div class="station-inputs-container">
@@ -12,13 +12,15 @@
 
       <mat-form-field appearance="fill" class="latitude-input">
         <mat-label>Latitude</mat-label>
-        <input matInput type="number" placeholder="Enter latitude" step="1" />
+        <input matInput type="number" placeholder="Enter latitude" step="1" [(ngModel)]="latitude" />
       </mat-form-field>
 
       <mat-form-field appearance="fill" class="longitude-input">
         <mat-label>Longitude</mat-label>
-        <input matInput type="number" placeholder="Enter longitude" step="1" />
+        <input matInput type="number" placeholder="Enter longitude" step="1" [(ngModel)]="longitude" />
       </mat-form-field>
+
+      <button mat-raised-button (click)="addMarker()">Add Marker</button>
     </div>
   </div>
 </div>
