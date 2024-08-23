@@ -1,18 +1,26 @@
-<form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
-  <label for="fromLatitude">From Latitude:</label>
-  <input id="fromLatitude" formControlName="fromLatitude" type="number">
-
-  <label for="fromLongitude">From Longitude:</label>
-  <input id="fromLongitude" formControlName="fromLongitude" type="number">
-
-  <label for="toLatitude">To Latitude:</label>
-  <input id="toLatitude" formControlName="toLatitude" type="number">
-
-  <label for="toLongitude">To Longitude:</label>
-  <input id="toLongitude" formControlName="toLongitude" type="number">
-
-  <label for="time">Time (Optional):</label>
-  <input id="time" formControlName="time" type="number">
-
-  <button type="submit" [disabled]="!searchForm.valid">Search</button>
-</form>
+<div class="search-form-container">
+  <div class="search-train-container">
+    <div class="search-trains">Search trains</div>
+    <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+      <div class="train-selection">
+        <div class="from-to-group">
+          <label class="label" for="fromCity">From</label>
+          <div class="input-container">
+            <input id="fromCity" formControlName="fromCity" placeholder="Enter city name" type="text" />
+          </div>
+        </div>
+        <div class="from-to-group">
+          <label class="label" for="toCity">To</label>
+          <div class="input-container">
+            <input id="toCity" formControlName="toCity" placeholder="Enter city name" type="text" />
+          </div>
+        </div>
+        <div class="date-group">
+          <label class="label" for="date">Date</label>
+          <input id="date" formControlName="time" type="date" />
+        </div>
+        <button type="submit" class="search-button">Search</button>
+      </div>
+    </form>
+  </div>
+</div>

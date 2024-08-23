@@ -45,7 +45,7 @@ export interface Segment {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SearchService {
   private readonly apiUrl = '/api/search';
@@ -67,7 +67,7 @@ export class SearchService {
       catchError((err) => {
         console.error('Search API error:', err);
         return throwError(err);
-      })
+      }),
     );
   }
 }

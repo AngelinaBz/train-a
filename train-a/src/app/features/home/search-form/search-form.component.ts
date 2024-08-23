@@ -11,7 +11,7 @@ import { SearchCriteria } from '../services/search.service';
   templateUrl: './search-form.component.html',
   styleUrls: ['./search-form.component.scss'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule]
+  imports: [CommonModule, ReactiveFormsModule],
 })
 export class SearchFormComponent {
   @Output() searchSubmitted = new EventEmitter<SearchCriteria>();
@@ -24,7 +24,7 @@ export class SearchFormComponent {
       fromLongitude: [null, Validators.required],
       toLatitude: [null, Validators.required],
       toLongitude: [null, Validators.required],
-      time: [null]
+      time: [null],
     });
   }
 

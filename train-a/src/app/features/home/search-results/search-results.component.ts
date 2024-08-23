@@ -8,7 +8,7 @@ import { SearchCriteria, SearchResult, SearchService } from '../services/search.
   templateUrl: './search-results.component.html',
   styleUrls: ['./search-results.component.scss'],
   standalone: true,
-  imports: [CommonModule]
+  imports: [CommonModule],
 })
 export class SearchResultsComponent {
   searchResults: SearchResult | null = null;
@@ -27,7 +27,7 @@ export class SearchResultsComponent {
         console.error('Search error:', err);
         this.searchError = 'An error occurred while searching. Please try again.';
         this.searchResults = null;
-      }
+      },
     });
   }
 }
