@@ -14,7 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 import { SignupService } from '../../services/signup/signup.service';
 
@@ -37,6 +37,7 @@ export class SignupFormComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private signupService: SignupService,
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -103,9 +104,9 @@ export class SignupFormComponent implements OnInit {
       const { email, password } = this.signupForm.value;
       this.signupService.signup(email, password).subscribe((response) => {
         if (response.error) {
-          this.signupForm.get('email')?.setErrors({ serverError: response.error });
+          this.signupForm.get('email')?.setErrors({ serverError: 'Account with this email already exists' });
         } else {
-          console.log('signup');
+          this.router.navigate(['/signin']);
         }
       });
     }

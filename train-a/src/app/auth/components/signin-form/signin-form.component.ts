@@ -4,7 +4,9 @@ import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validatio
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+
+import { SigninService } from '../../services/signin/signin.service';
 
 @Component({
   selector: 'app-signin-form',
@@ -18,19 +20,36 @@ export class SigninFormComponent implements OnInit {
   signinForm!: FormGroup;
   isSubmitted = false;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private signinService: SigninService,
+    private router: Router,
+  ) {}
 
   ngOnInit() {
     this.signinForm = this.fb.group({
       email: ['', [Validators.required, Validators.pattern(/^[\w\d_]+@[\w\d_]+\.\w{2,7}$/)]],
       password: ['', [Validators.required, this.passwordValidator]],
     });
+    this.signinForm.valueChanges.subscribe(() => {
+      this.clearServerErrors();
+    });
+  }
+
+  clearServerErrors() {
+    Object.keys(this.signinForm.controls).forEach((field) => {
+      const control = this.signinForm.get(field);
+      if (control?.hasError('serverError')) {
+        control.setErrors({ serverError: null });
+        control.updateValueAndValidity({ onlySelf: true });
+      }
+    });
   }
 
   passwordValidator(control: AbstractControl): ValidationErrors | null {
     const password: string = control.value.trim();
-    if (password.length < 8) {
-      return { weakPassword: 'Password must be at least 8 characters long' };
+    if (password.length === 0) {
+      return { nonempty: 'Please enter a password' };
     }
     return null;
   }
@@ -49,6 +68,16 @@ export class SigninFormComponent implements OnInit {
 
   onSubmit() {
     this.isSubmitted = true;
-    console.log(this.signinForm.value);
+    if (this.signinForm.valid) {
+      const { email, password } = this.signinForm.value;
+      this.signinService.signin(email, password).subscribe((response) => {
+        if (response.error) {
+          this.signinForm.get('email')?.setErrors({ serverError: 'Incorrect email or password' });
+          this.signinForm.get('password')?.setErrors({ serverError: 'Incorrect email or password' });
+        } else {
+          this.router.navigate(['/']);
+        }
+      });
+    }
   }
 }
