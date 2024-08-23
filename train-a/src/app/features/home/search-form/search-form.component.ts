@@ -2,10 +2,19 @@ import { CommonModule } from '@angular/common';
 import {
   Component, ElementRef, EventEmitter, NgZone, OnInit, Output, ViewChild
 } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormControl, FormGroup, ReactiveFormsModule, Validators
+} from '@angular/forms';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+
 import { SearchCriteria } from '../services/search.service';
 
+interface MapboxGeocoderResult {
+  place_name: string;
+  geometry: {
+    coordinates: [number, number];
+  };
+}
 @Component({
   selector: 'app-search-form',
   standalone: true,
@@ -15,8 +24,8 @@ import { SearchCriteria } from '../services/search.service';
 })
 export class SearchFormComponent implements OnInit {
   searchForm: FormGroup;
-  private readonly mapboxToken =
-  'pk.eyJ1Ijoia3Zha2VyLTIwMjQiLCJhIjoiY20wNm45emx3MHBzZDJsc2RzZ2NoMjF3MSJ9.Fq0_XPvhWi9KlfBWszLIxw';
+  /* eslint-disable no-console */
+  private readonly mapboxToken = '';
   @Output() search: EventEmitter<SearchCriteria> = new EventEmitter<SearchCriteria>();
 
   @ViewChild('fromCity', { static: true }) fromCity!: ElementRef;
@@ -30,7 +39,7 @@ export class SearchFormComponent implements OnInit {
       time: new FormControl({ value: '', disabled: true }),
     });
 
-    this.searchForm.get('date')?.valueChanges.subscribe(date => {
+    this.searchForm.get('date')?.valueChanges.subscribe((date) => {
       if (date) {
         this.searchForm.get('time')?.enable();
       } else {
@@ -53,7 +62,7 @@ export class SearchFormComponent implements OnInit {
 
     fromGeocoder.addTo(this.fromCity.nativeElement);
 
-    fromGeocoder.on('result', (e: any) => {
+    fromGeocoder.on('result', (e: { result: MapboxGeocoderResult }) => {
       this.ngZone.run(() => {
         const place = e.result;
         this.searchForm.patchValue({
@@ -70,7 +79,7 @@ export class SearchFormComponent implements OnInit {
 
     toGeocoder.addTo(this.toCity.nativeElement);
 
-    toGeocoder.on('result', (e: any) => {
+    toGeocoder.on('result', (e: { result: MapboxGeocoderResult }) => {
       this.ngZone.run(() => {
         const place = e.result;
         this.searchForm.patchValue({
@@ -90,16 +99,15 @@ export class SearchFormComponent implements OnInit {
     });
 
     if (this.fromCity.nativeElement) {
-      this.fromCity.nativeElement.querySelector('.mapboxgl-ctrl-geocoder--input').value = toCity;
+      this.fromCity.nativeElement.querySelector('.mapboxgl-ctrl-geocoder--input')!.value = toCity;
     }
     if (this.toCity.nativeElement) {
-      this.toCity.nativeElement.querySelector('.mapboxgl-ctrl-geocoder--input').value = fromCity;
+      this.toCity.nativeElement.querySelector('.mapboxgl-ctrl-geocoder--input')!.value = fromCity;
     }
   }
 
   onSubmit() {
     if (this.searchForm.valid) {
-      const formValue = this.searchForm.value;
       const searchCriteria: SearchCriteria = {
         fromLatitude: 0,
         fromLongitude: 0,
