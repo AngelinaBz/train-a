@@ -1,8 +1,24 @@
-<div class="stations-wrapper">
-  <div class="map-wrapper">
-    <div class="map">
-      <img src="../../../../assets/map.png" alt="map" />
+<div class="stations-container">
+  <div class="map-data-container">
+    <div class="map-wrapper">
+      <img src="assets/map.png" alt="map" />
     </div>
-    <div class="station-inputs"></div>
+
+    <div class="station-inputs-container">
+      <mat-form-field appearance="fill" class="city-input">
+        <mat-label>City name</mat-label>
+        <input matInput placeholder="Enter city name" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="latitude-input">
+        <mat-label>Latitude</mat-label>
+        <input matInput type="number" placeholder="Enter latitude" step="1" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="longitude-input">
+        <mat-label>Longitude</mat-label>
+        <input matInput type="number" placeholder="Enter longitude" step="1" />
+      </mat-form-field>
+    </div>
   </div>
 </div>
