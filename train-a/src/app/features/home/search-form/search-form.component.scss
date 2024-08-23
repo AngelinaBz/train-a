@@ -35,7 +35,7 @@ $box-shadow-color: rgba(0, 0, 0, 0.1);
 }
 
 .train-selection {
-  background: #ffffff;
+  background: #FFFFFF;
   box-shadow: 0px 5px 15px $box-shadow-color;
   border-radius: 16px;
   padding: 16px;
@@ -68,11 +68,11 @@ $box-shadow-color: rgba(0, 0, 0, 0.1);
 .input-container {
   display: flex;
   gap: 8px;
-  border: 1px solid #e6e8e7;
+  border: 1px solid #E6E8E7;
   border-radius: 8px;
   padding: 8px;
   background-color: $middle-gray;
-  width: 100%;
+  width: 65%;
 }
 
 input {
@@ -83,10 +83,16 @@ input {
   font-family: $font-family;
   font-size: 14px;
   color: #333333;
-  background-color: transparent;
+  background-color: transparent !important;
+  box-shadow: none !important;
 
   &::placeholder {
     color: #999999;
+  }
+
+  &:focus {
+    background-color: white !important;
+    border: 1px solid $primary-color !important;
   }
 }
 
@@ -132,6 +138,69 @@ input {
 
   &:active {
     background-color: lighten($primary-color, 10%);
+  }
+
+  &:disabled {
+    background-color: $middle-gray;
+    color: #888888;
+    cursor: not-allowed;
+  }
+}
+
+.search-form-container .mapboxgl-ctrl-geocoder .mapboxgl-ctrl-geocoder--input {
+  padding: 8px !important;
+  font-family: $font-family !important;
+  font-size: 14px !important;
+  color: #333333 !important;
+  border: 1px solid #E6E8E7 !important;
+  border-radius: 8px !important;
+  background-color: $middle-gray !important;
+
+  &::placeholder {
+    color: #999999 !important;
+  }
+
+  &:focus {
+    border: 1px solid $primary-color !important;
+  }
+}
+
+.search-form-container .mapboxgl-ctrl-geocoder .mapboxgl-ctrl-geocoder--button {
+  background: $primary-color !important;
+  border: none !important;
+  color: white !important;
+  cursor: pointer !important;
+  padding: 0 8px !important;
+
+  &:hover {
+    background-color: darken($primary-color, 10%) !important;
+  }
+
+  &:active {
+    background-color: lighten($primary-color, 10%) !important;
+  }
+}
+
+.search-form-container .mapboxgl-ctrl-geocoder .mapboxgl-ctrl-geocoder--icon {
+  width: 18px !important;
+  height: 18px !important;
+}
+
+::ng-deep .mapboxgl-ctrl-geocoder--input {
+  padding: 8px !important;
+  font-family: $font-family !important;
+  font-size: 14px !important;
+  color: #333333 !important;
+  border: 1px solid #E6E8E7 !important;
+  border-radius: 8px !important;
+  background-color: $middle-gray !important;
+
+  &::placeholder {
+    color: #999999 !important;
+  }
+
+  &:focus {
+    border: 1px solid $primary-color !important;
   }
 }
 

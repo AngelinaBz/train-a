@@ -5,14 +5,20 @@
       <div class="train-selection">
         <div class="input-container">
           <div class="from-to-group" #fromCity></div>
-          <button type="button" class="swap-button" (click)="swapLocations()">Swap</button>
+          <button type="button" class="swap-button" (click)="swapLocations()">
+            ↔
+          </button>
           <div class="from-to-group" #toCity></div>
         </div>
         <div class="date-group">
           <label class="label" for="date">Date</label>
-          <input id="date" formControlName="time" type="date" />
+          <input id="date" formControlName="date" type="date" />
         </div>
-        <button type="submit" class="search-button">Search</button>
+        <div class="time-group" *ngIf="searchForm.get('date')?.value">
+          <label class="label" for="time">Time (optional)</label>
+          <input id="time" formControlName="time" type="time" />
+        </div>
+        <button type="submit" class="search-button" [disabled]="!isFormValid()">Search</button>
       </div>
     </form>
   </div>

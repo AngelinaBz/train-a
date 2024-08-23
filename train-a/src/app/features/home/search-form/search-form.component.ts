@@ -1,10 +1,9 @@
 import { CommonModule } from '@angular/common';
 import {
-  Component, ElementRef, NgZone, OnInit, ViewChild, Output, EventEmitter
+  Component, ElementRef, EventEmitter, NgZone, OnInit, Output, ViewChild
 } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
-
 import { SearchCriteria } from '../services/search.service';
 
 @Component({
@@ -16,7 +15,8 @@ import { SearchCriteria } from '../services/search.service';
 })
 export class SearchFormComponent implements OnInit {
   searchForm: FormGroup;
-  private readonly mapboxToken = 'pk.eyJ1Ijoia3Zha2VyLTIwMjQiLCJhIjoiY20wNm45emx3MHBzZDJsc2RzZ2NoMjF3MSJ9.Fq0_XPvhWi9KlfBWszLIxw';
+  private readonly mapboxToken =
+  'pk.eyJ1Ijoia3Zha2VyLTIwMjQiLCJhIjoiY20wNm45emx3MHBzZDJsc2RzZ2NoMjF3MSJ9.Fq0_XPvhWi9KlfBWszLIxw';
   @Output() search: EventEmitter<SearchCriteria> = new EventEmitter<SearchCriteria>();
 
   @ViewChild('fromCity', { static: true }) fromCity!: ElementRef;
@@ -24,9 +24,19 @@ export class SearchFormComponent implements OnInit {
 
   constructor(private ngZone: NgZone) {
     this.searchForm = new FormGroup({
-      fromCity: new FormControl(''),
-      toCity: new FormControl(''),
-      time: new FormControl(''),
+      fromCity: new FormControl('', Validators.required),
+      toCity: new FormControl('', Validators.required),
+      date: new FormControl('', Validators.required),
+      time: new FormControl({ value: '', disabled: true }),
+    });
+
+    this.searchForm.get('date')?.valueChanges.subscribe(date => {
+      if (date) {
+        this.searchForm.get('time')?.enable();
+      } else {
+        this.searchForm.get('time')?.disable();
+        this.searchForm.get('time')?.reset();
+      }
     });
   }
 
@@ -73,20 +83,35 @@ export class SearchFormComponent implements OnInit {
   swapLocations() {
     const fromCity = this.searchForm.get('fromCity')?.value;
     const toCity = this.searchForm.get('toCity')?.value;
+
     this.searchForm.patchValue({
       fromCity: toCity,
       toCity: fromCity,
     });
+
+    if (this.fromCity.nativeElement) {
+      this.fromCity.nativeElement.querySelector('.mapboxgl-ctrl-geocoder--input').value = toCity;
+    }
+    if (this.toCity.nativeElement) {
+      this.toCity.nativeElement.querySelector('.mapboxgl-ctrl-geocoder--input').value = fromCity;
+    }
   }
 
   onSubmit() {
-    const formValue = this.searchForm.value;
-    const searchCriteria: SearchCriteria = {
-      fromLatitude: 0,
-      fromLongitude: 0,
-      toLatitude: 0,
-      toLongitude: 0
-    };
-    this.search.emit(searchCriteria);
+    if (this.searchForm.valid) {
+      const formValue = this.searchForm.value;
+      const searchCriteria: SearchCriteria = {
+        fromLatitude: 0,
+        fromLongitude: 0,
+        toLatitude: 0,
+        toLongitude: 0,
+      };
+      this.search.emit(searchCriteria);
+    }
+  }
+
+  isFormValid(): boolean {
+    const { fromCity, toCity, date } = this.searchForm.controls;
+    return fromCity.valid && toCity.valid && date.valid;
   }
 }
