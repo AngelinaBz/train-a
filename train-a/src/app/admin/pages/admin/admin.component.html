@@ -1,0 +1,14 @@
+<main class="admin-page">
+  <div class="tabs-wrapper">
+    <div class="tab" id="stations" routerLinkActive="active-tab">
+      <p routerLink="stations">Stations</p>
+    </div>
+    <div class="tab" id="carriages" routerLinkActive="active-tab">
+      <p routerLink="carriages">Carriages</p>
+    </div>
+    <div class="tab" id="routes">
+      <p routerLink="admin/:routes">Routes</p>
+    </div>
+  </div>
+  <router-outlet></router-outlet>
+</main>

@@ -1,0 +1,37 @@
+@import '../../../../styles';
+
+.admin-page {
+  display: flex;
+
+  .tabs-wrapper {
+    display: flex;
+    width: 20%;
+    height: 100vh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 70px;
+    border-bottom: 1px solid black;
+    background-color: rgb(205 205 205);
+    gap: 40px;
+
+    .tab {
+      width: 100%;
+      padding: 20px 0;
+      cursor: pointer;
+      font-size: 2rem;
+      text-align: center;
+      transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
+
+      &:hover {
+        background-color: rgb(230 230 230);
+      }
+
+      &.active-tab {
+        background-color: rgb(255 255 255);
+      }
+    }
+  }
+}
