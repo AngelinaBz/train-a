@@ -1,19 +1,12 @@
 <div class="search-form-container">
   <div class="search-train-container">
-    <div class="search-trains">Search trains</div>
+    <div class="search-trains">Search Trains</div>
     <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
       <div class="train-selection">
-        <div class="from-to-group">
-          <label class="label" for="fromCity">From</label>
-          <div class="input-container">
-            <input id="fromCity" formControlName="fromCity" placeholder="Enter city name" type="text" />
-          </div>
-        </div>
-        <div class="from-to-group">
-          <label class="label" for="toCity">To</label>
-          <div class="input-container">
-            <input id="toCity" formControlName="toCity" placeholder="Enter city name" type="text" />
-          </div>
+        <div class="input-container">
+          <div class="from-to-group" #fromCity></div>
+          <button type="button" class="swap-button" (click)="swapLocations()">Swap</button>
+          <div class="from-to-group" #toCity></div>
         </div>
         <div class="date-group">
           <label class="label" for="date">Date</label>
