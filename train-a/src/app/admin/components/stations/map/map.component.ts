@@ -4,6 +4,11 @@ import { GoogleMapsModule } from '@angular/google-maps';
 
 import { MapService } from '../../../services/map.service';
 
+interface Marker {
+  lat: number;
+  lng: number;
+  city: string;
+}
 @Component({
   selector: 'app-map',
   standalone: true,
@@ -14,7 +19,7 @@ import { MapService } from '../../../services/map.service';
 export class MapComponent implements OnInit {
   center: google.maps.LatLngLiteral = { lat: 51.505, lng: -0.09 };
   zoom = 13;
-  markers: google.maps.LatLngLiteral[] = [];
+  markers: Marker[] = [];
 
   constructor(private mapService: MapService) {}
 
@@ -27,7 +32,13 @@ export class MapComponent implements OnInit {
   mapClick(event: google.maps.MapMouseEvent): void {
     const latLng = event.latLng?.toJSON();
     if (latLng) {
-      this.mapService.addMarker(latLng.lat, latLng.lng);
+      const newMarker = { lat: latLng.lat, lng: latLng.lng, city: 'marked сity' };
+      this.mapService.addMarker(newMarker.lat, newMarker.lng, newMarker.city);
+      this.mapService.selectMarker(newMarker);
     }
+  }
+
+  onMarkerClick(marker: Marker): void {
+    this.mapService.selectMarker(marker);
   }
 }
