@@ -21,4 +21,8 @@ export class UserFacade {
   updateUserProfile(props: Partial<{ name: string; email: string }>) {
     this.store.dispatch(userActions.updateUserProfile(props));
   }
+
+  updateUserPassword(password: string) {
+    this.store.dispatch(userActions.updateUserPassword({ password }));
+  }
 }

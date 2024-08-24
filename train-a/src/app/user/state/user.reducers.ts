@@ -66,4 +66,27 @@ export const userReducer = createReducer(
       error,
     }),
   ),
+  on(
+    userActions.updateUserPassword,
+    (state): UserState => ({
+      ...state,
+      isLoading: true,
+      error: null,
+    }),
+  ),
+  on(
+    userActions.updateUserPasswordSuccess,
+    (state): UserState => ({
+      ...state,
+      isLoading: false,
+    }),
+  ),
+  on(
+    userActions.updateUserPasswordFailure,
+    (state, { error }): UserState => ({
+      ...state,
+      isLoading: false,
+      error,
+    }),
+  ),
 );

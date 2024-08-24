@@ -39,3 +39,22 @@ export const updateUserProfile = createEffect(
   },
   { functional: true },
 );
+
+export const updateUserPassword = createEffect(
+  (actions$ = inject(Actions), http = inject(HttpClient)) => {
+    return actions$.pipe(
+      ofType(userActions.updateUserPassword),
+      mergeMap((action) =>
+        http
+          .put<User>('/api/profile/password', {
+            ...action,
+          })
+          .pipe(
+            map(() => userActions.updateUserPasswordSuccess()),
+            catchError((error: HttpErrorResponse) => of(userActions.updateUserPasswordFailure({ error: error.error }))),
+          ),
+      ),
+    );
+  },
+  { functional: true },
+);
