@@ -1,20 +1,22 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { first, map } from 'rxjs';
+import { map } from 'rxjs';
 
 import { SigninService } from '../../services/signin/signin.service';
 
-export const authGuard: CanActivateFn = () => {
-  const signinService = inject(SigninService);
-  const router = inject(Router);
+export const authGuard = ({ needAuth, redirectTo }: { needAuth: boolean; redirectTo: string }) => {
+  const fn: CanActivateFn = () => {
+    const signinService = inject(SigninService);
+    const router = inject(Router);
 
-  return signinService.isLoggedIn$.pipe(
-    first(),
-    map((isLoggedIn) => {
-      if (!isLoggedIn) {
-        return true;
-      }
-      return router.createUrlTree(['/']);
-    }),
-  );
+    return signinService.isLoggedIn$.pipe(
+      map((isLoggedIn) => {
+        if (isLoggedIn === needAuth) {
+          return true;
+        }
+        return router.createUrlTree([redirectTo]);
+      }),
+    );
+  };
+  return fn;
 };
