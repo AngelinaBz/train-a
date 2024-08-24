@@ -1,3 +1,4 @@
+import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SearchResultsComponent } from './search-results.component';
@@ -8,7 +9,7 @@ describe('SearchResultsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SearchResultsComponent],
+      imports: [SearchResultsComponent, HttpClientModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SearchResultsComponent);
