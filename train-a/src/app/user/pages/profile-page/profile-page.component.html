@@ -1,5 +1,5 @@
 <div *ngIf="isLoading$ | async">Loading...</div>
-<div *ngIf="error$ | async as error">{{ error | json }}</div>
+<div *ngIf="errors$ | async as error">{{ error | json }}</div>
 <div *ngIf="user$ | async as user">
   <h1>{{ user.name }}</h1>
   <p>{{ user.email }}</p>

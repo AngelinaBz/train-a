@@ -13,7 +13,7 @@ import { UserFacade } from '../../state/user.facade';
 })
 export class ProfilePageComponent implements OnInit {
   isLoading$ = this.userFacade.isLoading$;
-  error$ = this.userFacade.error$;
+  errors$ = this.userFacade.errors$;
   user$ = this.userFacade.user$;
 
   constructor(private userFacade: UserFacade) {}

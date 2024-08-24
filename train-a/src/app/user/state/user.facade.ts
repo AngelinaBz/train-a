@@ -9,7 +9,7 @@ import * as userSelectors from './user.selectors';
 })
 export class UserFacade {
   isLoading$ = this.store.select(userSelectors.selectIsLoading);
-  error$ = this.store.select(userSelectors.selectError);
+  errors$ = this.store.select(userSelectors.selectErrors);
   user$ = this.store.select(userSelectors.selectUser);
 
   constructor(private store: Store) {}

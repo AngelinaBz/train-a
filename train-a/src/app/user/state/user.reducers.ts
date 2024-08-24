@@ -6,13 +6,21 @@ import * as userActions from './user.actions';
 
 export interface UserState {
   isLoading: boolean;
-  error: ApiError | null;
+  errors: {
+    getUserProfile: ApiError | null;
+    updateUserProfile: ApiError | null;
+    updateUserPassword: ApiError | null;
+  };
   user: User | null;
 }
 
 export const initialState: UserState = {
   isLoading: false,
-  error: null,
+  errors: {
+    getUserProfile: null,
+    updateUserProfile: null,
+    updateUserPassword: null,
+  },
   user: null,
 };
 
@@ -23,7 +31,10 @@ export const userReducer = createReducer(
     (state): UserState => ({
       ...state,
       isLoading: true,
-      error: null,
+      errors: {
+        ...state.errors,
+        getUserProfile: null,
+      },
     }),
   ),
   on(
@@ -39,7 +50,10 @@ export const userReducer = createReducer(
     (state, { error }): UserState => ({
       ...state,
       isLoading: false,
-      error,
+      errors: {
+        ...state.errors,
+        getUserProfile: error,
+      },
     }),
   ),
   on(
@@ -47,7 +61,10 @@ export const userReducer = createReducer(
     (state): UserState => ({
       ...state,
       isLoading: true,
-      error: null,
+      errors: {
+        ...state.errors,
+        updateUserProfile: null,
+      },
     }),
   ),
   on(
@@ -63,7 +80,10 @@ export const userReducer = createReducer(
     (state, { error }): UserState => ({
       ...state,
       isLoading: false,
-      error,
+      errors: {
+        ...state.errors,
+        updateUserProfile: error,
+      },
     }),
   ),
   on(
@@ -71,7 +91,10 @@ export const userReducer = createReducer(
     (state): UserState => ({
       ...state,
       isLoading: true,
-      error: null,
+      errors: {
+        ...state.errors,
+        updateUserPassword: null,
+      },
     }),
   ),
   on(
@@ -86,7 +109,10 @@ export const userReducer = createReducer(
     (state, { error }): UserState => ({
       ...state,
       isLoading: false,
-      error,
+      errors: {
+        ...state.errors,
+        updateUserPassword: error,
+      },
     }),
   ),
 );
