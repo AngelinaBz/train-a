@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -14,16 +14,16 @@ import { MatButtonModule } from '@angular/material/button';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { Router, RouterLink } from '@angular/router';
 
 import { SignupService } from '../../services/signup/signup.service';
 
 @Component({
   selector: 'app-signup-form',
   standalone: true,
-  imports: [ReactiveFormsModule, MatButtonModule, CommonModule, MatFormFieldModule, MatInputModule],
+  imports: [ReactiveFormsModule, MatButtonModule, CommonModule, MatFormFieldModule, MatInputModule, RouterLink],
   templateUrl: './signup-form.component.html',
   styleUrl: './signup-form.component.scss',
-  encapsulation: ViewEncapsulation.None,
 })
 export class SignupFormComponent implements OnInit {
   signupForm!: FormGroup;
@@ -36,6 +36,7 @@ export class SignupFormComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private signupService: SignupService,
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -102,9 +103,9 @@ export class SignupFormComponent implements OnInit {
       const { email, password } = this.signupForm.value;
       this.signupService.signup(email, password).subscribe((response) => {
         if (response.error) {
-          this.signupForm.get('email')?.setErrors({ serverError: response.error });
+          this.signupForm.get('email')?.setErrors({ serverError: 'Account with this email already exists' });
         } else {
-          console.log('signup');
+          this.router.navigate(['/signin']);
         }
       });
     }
