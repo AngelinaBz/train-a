@@ -6,8 +6,7 @@
       {{ searchResults.from.geolocation.longitude }})
     </h3>
     <h3>
-      To: {{ searchResults.to.city }} ({{ searchResults.to.geolocation.latitude }},
-      {{ searchResults.to.geolocation.longitude }})
+      To: {{ searchResults.to.city }} ({{ searchResults.to.geolocation.latitude }}, {{ searchResults.to.geolocation.longitude }})
     </h3>
   </div>
   <div *ngFor="let route of searchResults.routes">

@@ -1,12 +1,9 @@
 import { CommonModule } from '@angular/common';
-import {
-  Component, ElementRef, EventEmitter, NgZone, OnInit, Output, ViewChild
-} from '@angular/core';
-import {
-  FormControl, FormGroup, ReactiveFormsModule, Validators
-} from '@angular/forms';
+import { Component, ElementRef, EventEmitter, NgZone, OnInit, Output, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 
+import { environment } from '../../../../environments/environment';
 import { SearchCriteria } from '../services/search.service';
 
 interface MapboxGeocoderResult {
@@ -15,6 +12,7 @@ interface MapboxGeocoderResult {
     coordinates: [number, number];
   };
 }
+
 @Component({
   selector: 'app-search-form',
   standalone: true,
@@ -25,7 +23,7 @@ interface MapboxGeocoderResult {
 export class SearchFormComponent implements OnInit {
   searchForm: FormGroup;
   /* eslint-disable no-console */
-  private readonly mapboxToken = '';
+  private readonly mapboxToken = environment.mapboxToken;
   @Output() search: EventEmitter<SearchCriteria> = new EventEmitter<SearchCriteria>();
 
   @ViewChild('fromCity', { static: true }) fromCity!: ElementRef;
