@@ -8,8 +8,6 @@ export const authGuard: CanActivateFn = () => {
   const authFacade = inject(AuthFacade);
   const router = inject(Router);
 
-  authFacade.loadTokenInStore();
-
   return authFacade.isLoggedIn$.pipe(
     first(),
     map((isLoggedIn) => {

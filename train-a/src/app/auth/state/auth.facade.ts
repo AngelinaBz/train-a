@@ -22,11 +22,4 @@ export class AuthFacade {
   signup(email: string, password: string): void {
     this.store.dispatch(AuthActions.signup({ email, password }));
   }
-
-  loadTokenInStore(): void {
-    const token = localStorage.getItem('auth_token');
-    if (token) {
-      this.store.dispatch(AuthActions.loadToken());
-    }
-  }
 }

@@ -14,8 +14,8 @@ export interface AuthState {
 export const initialState: AuthState = {
   isLoading: false,
   isRegistered: false,
-  isLoggedIn: false,
-  token: null,
+  isLoggedIn: !!localStorage.getItem('auth_token'),
+  token: localStorage.getItem('auth_token'),
   error: null,
 };
 
@@ -70,14 +70,6 @@ export const authReducer = createReducer(
       ...state,
       isLoading: false,
       error,
-    }),
-  ),
-  on(
-    AuthActions.loadTokenSuccess,
-    (state, { token }): AuthState => ({
-      ...state,
-      isLoggedIn: !!token,
-      token,
     }),
   ),
 );

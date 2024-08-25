@@ -48,14 +48,4 @@ export class AuthEffects {
       ),
     );
   });
-
-  loadToken$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(authActions.loadToken),
-      map(() => {
-        const token = localStorage.getItem('auth_token');
-        return authActions.loadTokenSuccess({ token });
-      }),
-    );
-  });
 }

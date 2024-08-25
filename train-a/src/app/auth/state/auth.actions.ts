@@ -13,7 +13,3 @@ export const signup = createAction('[Auth] Sign Up', props<{ email: string; pass
 export const signupSuccess = createAction('[Auth] Sign Up Success');
 
 export const signupFailure = createAction('[Auth] Sign Up Failure', props<{ error: ApiError }>());
-
-export const loadToken = createAction('[Auth] Load Token');
-
-export const loadTokenSuccess = createAction('[Auth] Load Token Success', props<{ token: string | null }>());
