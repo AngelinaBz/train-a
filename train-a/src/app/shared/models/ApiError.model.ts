@@ -1,4 +1,4 @@
-export default interface ApiError {
+export interface ApiError {
   message: string;
   reason: string;
 }

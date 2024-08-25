@@ -8,6 +8,8 @@ import { provideStoreDevtools } from '@ngrx/store-devtools';
 
 import { routes } from './app.routes';
 import authInterceptor from './auth/interceptors/auth.interceptor';
+import { AuthEffects } from './auth/state/auth.effects';
+import { authReducer } from './auth/state/auth.reducers';
 import * as userEffects from './user/state/user.effects';
 import { userReducer } from './user/state/user.reducers';
 
@@ -18,8 +20,9 @@ export const providers = [
   provideHttpClient(withInterceptors([authInterceptor])),
   provideStore({
     user: userReducer,
+    auth: authReducer,
   }),
-  provideEffects(userEffects),
+  provideEffects(userEffects, AuthEffects),
   provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
 ];
 
