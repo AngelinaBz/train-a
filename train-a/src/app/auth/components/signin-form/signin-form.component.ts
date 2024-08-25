@@ -6,7 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Router, RouterLink } from '@angular/router';
 
-import { SigninService } from '../../services/signin/signin.service';
+import { AuthFacade } from '../../state/auth.facade';
 
 @Component({
   selector: 'app-signin-form',
@@ -18,10 +18,12 @@ import { SigninService } from '../../services/signin/signin.service';
 export class SigninFormComponent implements OnInit {
   signinForm!: FormGroup;
   isSubmitted = false;
+  authError$ = this.authFacade.authError$;
+  authToken$ = this.authFacade.authToken$;
 
   constructor(
     private fb: FormBuilder,
-    private signinService: SigninService,
+    private authFacade: AuthFacade,
     private router: Router,
   ) {}
 
@@ -32,6 +34,17 @@ export class SigninFormComponent implements OnInit {
     });
     this.signinForm.valueChanges.subscribe(() => {
       this.clearServerErrors();
+    });
+    this.authError$.subscribe((error) => {
+      if (error) {
+        this.signinForm.get('email')?.setErrors({ serverError: 'Incorrect email or password' });
+        this.signinForm.get('password')?.setErrors({ serverError: 'Incorrect email or password' });
+      }
+    });
+    this.authToken$.subscribe((token) => {
+      if (token) {
+        this.router.navigate(['/']);
+      }
     });
   }
 
@@ -69,14 +82,7 @@ export class SigninFormComponent implements OnInit {
     this.isSubmitted = true;
     if (this.signinForm.valid) {
       const { email, password } = this.signinForm.value;
-      this.signinService.signin(email, password).subscribe((response) => {
-        if (response.error) {
-          this.signinForm.get('email')?.setErrors({ serverError: 'Incorrect email or password' });
-          this.signinForm.get('password')?.setErrors({ serverError: 'Incorrect email or password' });
-        } else {
-          this.router.navigate(['/']);
-        }
-      });
+      this.authFacade.signin(email, password);
     }
   }
 }

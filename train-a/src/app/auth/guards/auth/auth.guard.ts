@@ -2,13 +2,13 @@ import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { first, map } from 'rxjs';
 
-import { SigninService } from '../../services/signin/signin.service';
+import { AuthFacade } from '../../state/auth.facade';
 
 export const authGuard: CanActivateFn = () => {
-  const signinService = inject(SigninService);
+  const authFacade = inject(AuthFacade);
   const router = inject(Router);
 
-  return signinService.isLoggedIn$.pipe(
+  return authFacade.isLoggedIn$.pipe(
     first(),
     map((isLoggedIn) => {
       if (!isLoggedIn) {
