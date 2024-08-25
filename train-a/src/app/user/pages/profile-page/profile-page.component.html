@@ -1,17 +1,52 @@
-<div *ngIf="isLoading$ | async">Loading...</div>
-<div *ngIf="errors$ | async as error">{{ error | json }}</div>
-<div *ngIf="user$ | async as user">
-  <h1>{{ user.name }}</h1>
-  <p>{{ user.email }}</p>
-  <p>{{ user.role }}</p>
+<div class="profile-wrapper">
+  <div class="profile">
+    <mat-toolbar color="primary">
+      <div class="title">
+        <span>Profile</span>
+        <mat-progress-spinner matSuffix *ngIf="isLoading()" diameter="20" mode="indeterminate"></mat-progress-spinner>
+      </div>
+      <span class="spacer"></span>
+      <span *ngIf="user()?.role === roles[0]">{{ user()?.role }}</span>
+    </mat-toolbar>
+
+    <div class="profile-container">
+      <mat-form-field appearance="fill">
+        <mat-label>Name</mat-label>
+        <input
+          placeholder="Tonny Cash"
+          [formControl]="nameControl"
+          matInput
+          [defaultValue]="user()?.name ?? ''"
+          [readonly]="!isEditingName"
+        />
+        <button mat-icon-button matSuffix *ngIf="!isEditingName" (click)="editName()">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button matSuffix *ngIf="isEditingName" (click)="saveName()">
+          <mat-icon>save</mat-icon>
+        </button>
+        <mat-error *ngIf="nameControl.hasError('required') && isEditingName">Name is required</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Email</mat-label>
+        <input
+          placeholder="user@email.com"
+          [formControl]="emailControl"
+          matInput
+          [defaultValue]="user()?.email ?? ''"
+          [readonly]="!isEditingEmail"
+        />
+        <button mat-icon-button matSuffix *ngIf="!isEditingEmail" (click)="editEmail()">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button matSuffix *ngIf="isEditingEmail" (click)="saveEmail()">
+          <mat-icon>save</mat-icon>
+        </button>
+        <mat-error *ngIf="emailControl.hasError('required')">Email is required</mat-error>
+        <mat-error *ngIf="emailControl.hasError('email')">Invalid email format</mat-error>
+      </mat-form-field>
+      <button mat-raised-button color="accent" (click)="openPasswordChangeDialog()">Change Password</button>
+      <button mat-raised-button color="warn" (click)="logout()">Logout</button>
+    </div>
+  </div>
 </div>
-
-<form (ngSubmit)="updateUserProfile(name.value, email.value)">
-  <label for="name">Name:</label>
-  <input id="name" #name type="text" />
-
-  <label for="email">Email:</label>
-  <input id="email" #email type="email" />
-
-  <button type="submit">Update Profile</button>
-</form>
