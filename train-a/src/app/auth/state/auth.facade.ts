@@ -22,4 +22,8 @@ export class AuthFacade {
   signup(email: string, password: string): void {
     this.store.dispatch(AuthActions.signup({ email, password }));
   }
+
+  logout(): void {
+    this.store.dispatch(AuthActions.logout());
+  }
 }
