@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 
-import { MapService } from '../../services/map.service';
+import { MapService } from '../../services/map/map.service';
 import { MapComponent } from './map/map.component';
 
 @Component({

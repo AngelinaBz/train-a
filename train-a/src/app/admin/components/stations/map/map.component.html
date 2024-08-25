@@ -3,6 +3,6 @@
     *ngFor="let marker of markers"
     [position]="{ lat: marker.lat, lng: marker.lng }"
     [label]="marker.city"
-    (markerClick)="onMarkerClick(marker)"
+    class="marker-label"
   ></map-marker>
 </google-map>

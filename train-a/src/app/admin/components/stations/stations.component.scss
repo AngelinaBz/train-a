@@ -11,11 +11,10 @@
 
   .map-data-container {
     display: flex;
-    width: 100%;
     gap: 30px;
 
     .map-wrapper {
-      height: 700px;
+      width: 500px;
     }
 
     .station-inputs-container {

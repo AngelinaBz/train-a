@@ -22,7 +22,7 @@ export class MapService {
     this.markersSubject.next(newMarkers);
   }
 
-  selectMarker(marker: Marker): void {
+  setMarkerLocation(marker: Marker): void {
     this.markerClickSubject.next(marker);
   }
 }
