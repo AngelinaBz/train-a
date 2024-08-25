@@ -6,21 +6,25 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 20px;
   gap: 30px;
 
   .map-data-container {
     display: flex;
     gap: 30px;
 
-    .map-wrapper {
-      width: 500px;
+    @media screen and (width <= 700px) {
+      display: flex;
+      flex-direction: column;
     }
 
     .station-inputs-container {
       display: flex;
       flex-direction: column;
       gap: 20px;
+
+      .input {
+        min-width: 100px;
+      }
     }
   }
 }
