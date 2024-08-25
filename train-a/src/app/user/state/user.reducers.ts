@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 
-import ApiError from '../../shared/models/ApiError.model';
+import { ApiError } from '../../shared/models/ApiError.model';
 import User from '../models/User.model';
 import * as userActions from './user.actions';
 

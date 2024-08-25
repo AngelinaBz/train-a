@@ -1,15 +1,22 @@
 import { HttpInterceptorFn } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { switchMap } from 'rxjs';
+
+import { AuthFacade } from '../state/auth.facade';
 
 const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const authToken = localStorage.getItem('auth_token');
+  const authFacade = inject(AuthFacade);
 
-  const authReq = req.clone({
-    setHeaders: {
-      Authorization: `Bearer ${authToken}`,
-    },
-  });
-
-  return next(authReq);
+  return authFacade.authToken$.pipe(
+    switchMap((token) => {
+      const authReq = req.clone({
+        setHeaders: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return next(authReq);
+    }),
+  );
 };
 
 export default authInterceptor;

@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 
-import ApiError from '../../shared/models/ApiError.model';
+import { ApiError } from '../../shared/models/ApiError.model';
 import User from '../models/User.model';
 
 export const getUserProfile = createAction('[User] Get User Profile');
