@@ -12,7 +12,7 @@
     "test:staged": "ng test --code-coverage --watch=false --browsers=ChromeHeadless",
     "lint": "ng lint",
     "lint:fix": "ng lint --fix",
-    " ": "stylelint src/**/*.{css,scss,sass,less,styl,vue}",
+    "stylelint": "stylelint src/**/*.{css,scss,sass,less,styl,vue}",
     "stylelint:fix": "stylelint src/**/*.{css,scss,sass,less,styl,vue} --fix",
     "ci:format": "prettier . --check",
     "format": "prettier . --write",
