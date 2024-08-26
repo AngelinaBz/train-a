@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -14,20 +14,22 @@ import { MatButtonModule } from '@angular/material/button';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { Router, RouterLink } from '@angular/router';
 
-import { SignupService } from '../../services/signup/signup.service';
+import { AuthFacade } from '../../state/auth.facade';
 
 @Component({
   selector: 'app-signup-form',
   standalone: true,
-  imports: [ReactiveFormsModule, MatButtonModule, CommonModule, MatFormFieldModule, MatInputModule],
+  imports: [ReactiveFormsModule, MatButtonModule, CommonModule, MatFormFieldModule, MatInputModule, RouterLink],
   templateUrl: './signup-form.component.html',
   styleUrl: './signup-form.component.scss',
-  encapsulation: ViewEncapsulation.None,
 })
 export class SignupFormComponent implements OnInit {
   signupForm!: FormGroup;
   isSubmitted = false;
+  authError$ = this.authFacade.authError$;
+  isRegistered$ = this.authFacade.isRegistered$;
 
   matcher: ErrorStateMatcher = {
     isErrorState: (control: FormControl | null): boolean => !!(control && control.invalid && (control.dirty || control.touched)),
@@ -35,7 +37,8 @@ export class SignupFormComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private signupService: SignupService,
+    private authFacade: AuthFacade,
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -47,6 +50,16 @@ export class SignupFormComponent implements OnInit {
       },
       { validators: this.passwordsMatchValidator('password', 'repeatPassword') },
     );
+    this.authError$.subscribe((error) => {
+      if (error) {
+        this.signupForm.get('email')?.setErrors({ serverError: 'Account with this email already exists' });
+      }
+    });
+    this.isRegistered$.subscribe((isRegistered) => {
+      if (isRegistered) {
+        this.router.navigate(['/signin']);
+      }
+    });
   }
 
   passwordValidator(control: AbstractControl): ValidationErrors | null {
@@ -100,13 +113,7 @@ export class SignupFormComponent implements OnInit {
     this.isSubmitted = true;
     if (this.signupForm.valid) {
       const { email, password } = this.signupForm.value;
-      this.signupService.signup(email, password).subscribe((response) => {
-        if (response.error) {
-          this.signupForm.get('email')?.setErrors({ serverError: response.error });
-        } else {
-          console.log('signup');
-        }
-      });
+      this.authFacade.signup(email, password);
     }
   }
 }
