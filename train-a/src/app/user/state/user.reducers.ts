@@ -5,7 +5,11 @@ import User from '../models/User.model';
 import * as userActions from './user.actions';
 
 export interface UserState {
-  isLoading: boolean;
+  isLoading: {
+    getUserProfile: boolean;
+    updateUserProfile: boolean;
+    updateUserPassword: boolean;
+  };
   errors: {
     getUserProfile: ApiError | null;
     updateUserProfile: ApiError | null;
@@ -15,7 +19,11 @@ export interface UserState {
 }
 
 export const initialState: UserState = {
-  isLoading: false,
+  isLoading: {
+    getUserProfile: false,
+    updateUserProfile: false,
+    updateUserPassword: false,
+  },
   errors: {
     getUserProfile: null,
     updateUserProfile: null,
@@ -30,7 +38,10 @@ export const userReducer = createReducer(
     userActions.getUserProfile,
     (state): UserState => ({
       ...state,
-      isLoading: true,
+      isLoading: {
+        ...state.isLoading,
+        getUserProfile: true,
+      },
       errors: {
         ...state.errors,
         getUserProfile: null,
@@ -41,7 +52,10 @@ export const userReducer = createReducer(
     userActions.getUserProfileSuccess,
     (state, { user }): UserState => ({
       ...state,
-      isLoading: false,
+      isLoading: {
+        ...state.isLoading,
+        getUserProfile: false,
+      },
       user,
     }),
   ),
@@ -49,7 +63,10 @@ export const userReducer = createReducer(
     userActions.getUserProfileFailure,
     (state, { error }): UserState => ({
       ...state,
-      isLoading: false,
+      isLoading: {
+        ...state.isLoading,
+        getUserProfile: false,
+      },
       errors: {
         ...state.errors,
         getUserProfile: error,
@@ -60,7 +77,10 @@ export const userReducer = createReducer(
     userActions.updateUserProfile,
     (state): UserState => ({
       ...state,
-      isLoading: true,
+      isLoading: {
+        ...state.isLoading,
+        updateUserProfile: true,
+      },
       errors: {
         ...state.errors,
         updateUserProfile: null,
@@ -71,7 +91,10 @@ export const userReducer = createReducer(
     userActions.updateUserProfileSuccess,
     (state, { user }): UserState => ({
       ...state,
-      isLoading: false,
+      isLoading: {
+        ...state.isLoading,
+        updateUserProfile: false,
+      },
       user,
     }),
   ),
@@ -79,7 +102,10 @@ export const userReducer = createReducer(
     userActions.updateUserProfileFailure,
     (state, { error }): UserState => ({
       ...state,
-      isLoading: false,
+      isLoading: {
+        ...state.isLoading,
+        updateUserProfile: false,
+      },
       errors: {
         ...state.errors,
         updateUserProfile: error,
@@ -90,7 +116,10 @@ export const userReducer = createReducer(
     userActions.updateUserPassword,
     (state): UserState => ({
       ...state,
-      isLoading: true,
+      isLoading: {
+        ...state.isLoading,
+        updateUserPassword: true,
+      },
       errors: {
         ...state.errors,
         updateUserPassword: null,
@@ -101,14 +130,20 @@ export const userReducer = createReducer(
     userActions.updateUserPasswordSuccess,
     (state): UserState => ({
       ...state,
-      isLoading: false,
+      isLoading: {
+        ...state.isLoading,
+        updateUserPassword: false,
+      },
     }),
   ),
   on(
     userActions.updateUserPasswordFailure,
     (state, { error }): UserState => ({
       ...state,
-      isLoading: false,
+      isLoading: {
+        ...state.isLoading,
+        updateUserPassword: false,
+      },
       errors: {
         ...state.errors,
         updateUserPassword: error,

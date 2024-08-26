@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
 import { AuthFacade } from '../../../auth/state/auth.facade';
 import { paths } from '../../../shared/configs/paths';
 import { ChangePasswordDialogComponent } from '../../components/change-password-dialog/change-password-dialog.component';
-import { roles } from '../../models/Roles.model';
+import { Roles } from '../../models/Roles.model';
 import { UserFacade } from '../../state/user.facade';
 
 @Component({
@@ -41,8 +41,7 @@ import { UserFacade } from '../../state/user.facade';
   styleUrl: './profile-page.component.scss',
 })
 export class ProfilePageComponent implements OnInit {
-  isLoading = toSignal(this.userFacade.isLoading$);
-  errors = toSignal(this.userFacade.errors$);
+  protected readonly Roles = Roles;
   user = toSignal(this.userFacade.user$);
 
   isEditingName = false;
@@ -56,17 +55,16 @@ export class ProfilePageComponent implements OnInit {
     private authFacade: AuthFacade,
     private router: Router,
     private dialog: MatDialog,
-  ) {
-    this.userFacade.user$.subscribe((user) => {
-      if (user) {
-        this.nameControl.setValue(user.name);
-        this.emailControl.setValue(user.email);
+  ) {}
+
+  ngOnInit() {
+    this.userFacade.getUserProfile();
+    this.userFacade.state$.subscribe((user) => {
+      if (user.user) {
+        this.nameControl.setValue(user.user.name);
+        this.emailControl.setValue(user.user.email);
       }
     });
-  }
-
-  ngOnInit(): void {
-    this.userFacade.getUserProfile();
   }
 
   editName() {
@@ -75,13 +73,24 @@ export class ProfilePageComponent implements OnInit {
 
   saveName() {
     const newName = this.nameControl.value as string;
+    if (newName === this.user()?.name) {
+      this.isEditingName = false;
+      this.nameControl.setErrors(null);
+      return;
+    }
 
     if (this.nameControl.valid) {
-      if (!(newName === this.user()?.name)) {
-        this.userFacade.updateUserProfile({ name: newName });
-      }
-
-      this.isEditingName = false;
+      this.userFacade.updateUserProfile({
+        args: { name: newName },
+        onSuccess: () => {
+          this.isEditingName = false;
+        },
+        onFailure: (state) => {
+          if (state.errors?.updateUserProfile?.message) {
+            this.nameControl.setErrors({ requestError: { message: state.errors.updateUserProfile.message } });
+          }
+        },
+      });
     }
   }
 
@@ -91,12 +100,24 @@ export class ProfilePageComponent implements OnInit {
 
   saveEmail() {
     const newEmail = this.emailControl.value as string;
+    if (newEmail === this.user()?.email) {
+      this.isEditingEmail = false;
+      this.emailControl.setErrors(null);
+      return;
+    }
 
     if (this.emailControl.valid) {
-      if (!(newEmail === this.user()?.email)) {
-        this.userFacade.updateUserProfile({ email: newEmail });
-      }
-      this.isEditingEmail = false;
+      this.userFacade.updateUserProfile({
+        args: { email: newEmail },
+        onSuccess: () => {
+          this.isEditingEmail = false;
+        },
+        onFailure: (state) => {
+          if (state.errors?.updateUserProfile?.message) {
+            this.emailControl.setErrors({ requestError: { message: state.errors.updateUserProfile.message } });
+          }
+        },
+      });
     }
   }
 
@@ -108,6 +129,4 @@ export class ProfilePageComponent implements OnInit {
   openPasswordChangeDialog(): void {
     this.dialog.open(ChangePasswordDialogComponent);
   }
-
-  protected readonly roles = roles;
 }
