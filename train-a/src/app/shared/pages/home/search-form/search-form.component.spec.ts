@@ -1,3 +1,4 @@
+import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SearchFormComponent } from './search-form.component';
@@ -8,7 +9,7 @@ describe('SearchFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SearchFormComponent],
+      imports: [SearchFormComponent, HttpClientModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SearchFormComponent);
