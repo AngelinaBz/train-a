@@ -1,0 +1,6 @@
+<div class="date-tabs">
+  <div *ngFor="let date of dates" (click)="selectDate(date.value)" [class.selected]="selectedDate === date.value">
+    <span>{{ date.day }}</span>
+    <span>{{ date.label }}</span>
+  </div>
+</div>

@@ -4,6 +4,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 
 import { environment } from '../../../../environments/environment';
+import { DateTabsComponent } from '../date-tabs/date-tabs.component';
 import { SearchCriteria } from '../services/search.service';
 
 interface MapboxGeocoderResult {
@@ -16,7 +17,7 @@ interface MapboxGeocoderResult {
 @Component({
   selector: 'app-search-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, DateTabsComponent],
   templateUrl: './search-form.component.html',
   styleUrls: ['./search-form.component.scss'],
 })
@@ -119,5 +120,9 @@ export class SearchFormComponent implements OnInit {
   isFormValid(): boolean {
     const { fromCity, toCity, date } = this.searchForm.controls;
     return fromCity.valid && toCity.valid && date.valid;
+  }
+
+  onDateSelected(date: Date) {
+    this.searchForm.patchValue({ date });
   }
 }

@@ -1,0 +1,29 @@
+.date-tabs {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+
+  div {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+
+    &.selected {
+      background-color: #007bff;
+      color: white;
+    }
+  }
+}
+
+@media (width <= 768px) {
+  .date-tabs {
+    flex-direction: column;
+  }
+
+  div {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}

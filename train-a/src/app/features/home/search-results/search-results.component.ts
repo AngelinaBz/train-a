@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { SearchCriteria, SearchResult, SearchService } from '../services/search.service';
 
@@ -11,8 +11,8 @@ import { SearchCriteria, SearchResult, SearchService } from '../services/search.
   imports: [CommonModule],
 })
 export class SearchResultsComponent {
-  searchResults: SearchResult | null = null;
-  searchError: string | null = null;
+  @Input() searchResults: SearchResult | null = null;
+  @Input() searchError: string | null = null;
 
   constructor(private searchService: SearchService) {}
 
