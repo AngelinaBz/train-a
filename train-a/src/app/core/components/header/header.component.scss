@@ -1,48 +1,46 @@
-$primary-color: #2f80ed;
+$primary-color: #213786;
 $secondary-color: #4f4f4f;
-$light-gray: #e5e5e5;
-$middle-gray: #efefef;
+$light-gray: #f7f6f8;
+$middle-gray: #d4d5d6;
 $font-family: 'Roboto', sans-serif;
 
 header {
-  background: $light-gray;
   position: relative;
+  z-index: 100;
+  inset: 0%;
+  display: flex;
   width: 100%;
   height: 80px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
   padding: 40px 0 10px;
   margin-bottom: 30px;
-  left: 0%;
-  right: 0%;
-  top: 0%;
-  bottom: 0%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  z-index: 100;
+  background: $light-gray;
 
   .header-nav {
     display: flex;
     width: 1440px;
-    margin: auto;
-    justify-content: space-around;
     align-items: center;
+    justify-content: space-around;
+    margin: auto;
   }
 
   .header-item {
     display: flex;
     width: 1200px;
-    margin: auto;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+    margin: auto;
   }
 
   .container-nav {
     display: flex;
     width: 1200px;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
   }
+
   .logo {
     position: relative;
     display: flex;
@@ -52,16 +50,16 @@ header {
 
   .login-button {
     padding: 10px 15px;
-    background-color: $primary-color;
-    color: white;
     border: none;
     border-radius: 5px;
+    background-color: $primary-color;
+    color: white;
     cursor: pointer;
+    filter: drop-shadow(2px 2px 4px rgb(47 128 237 / 25%));
     transition: background-color 0.3s ease;
-    filter: drop-shadow(2px 2px 4px rgba(47, 128, 237, 0.25));
   }
 
   .login-button:hover {
-    background-color: darken($primary-color, 10%);
+    background-color: $primary-color, 90%;
   }
 }

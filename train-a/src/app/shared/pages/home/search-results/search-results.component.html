@@ -1,24 +1,22 @@
 <div *ngIf="searchResults">
   <h2>Search Results:</h2>
   <div>
-    <h3>
-      From: {{ searchResults.from.city }} ({{ searchResults.from.geolocation.latitude }},
-      {{ searchResults.from.geolocation.longitude }})
-    </h3>
-    <h3>
-      To: {{ searchResults.to.city }} ({{ searchResults.to.geolocation.latitude }}, {{ searchResults.to.geolocation.longitude }})
-    </h3>
+    <h3>From: {{ searchResults.search.from.title }} ({{ searchResults.search.from.code }})</h3>
+    <h3>To: {{ searchResults.search.to.title }} ({{ searchResults.search.to.code }})</h3>
+    <p>Date: {{ searchResults.search.date }}</p>
   </div>
-  <div *ngFor="let route of searchResults.routes">
-    <h4>Route ID: {{ route.id }}</h4>
-    <p>Carriages: {{ route.carriages.join(', ') }}</p>
-    <div *ngFor="let schedule of route.schedule">
-      <h5>Schedule ID: {{ schedule.rideId }}</h5>
-      <div *ngFor="let segment of schedule.segments">
-        <p>Segment Time: {{ segment.time.join(' - ') }}</p>
-        <p>Prices: {{ segment.price | json }}</p>
-        <p>Occupied Seats: {{ segment.occupiedSeats.join(', ') }}</p>
-      </div>
+  <div *ngFor="let segment of searchResults.segments">
+    <h4>Segment:</h4>
+    <p>From: {{ segment.from.title }} ({{ segment.from.code }})</p>
+    <p>To: {{ segment.to.title }} ({{ segment.to.code }})</p>
+    <p>Arrival: {{ segment.arrival }}</p>
+    <p>Departure: {{ segment.departure }}</p>
+    <p>Has Transfers: {{ segment.has_transfers ? 'Yes' : 'No' }}</p>
+    <div *ngIf="segment.stops">
+      <h5>Stops:</h5>
+      <p *ngFor="let stop of segment.stops">
+        {{ stop }}
+      </p>
     </div>
   </div>
 </div>

@@ -1,16 +1,14 @@
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, EventEmitter, NgZone, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 
 import { environment } from '../../../../../environments/environment';
 import { SearchCriteria } from '../../../models/search.models';
 
-interface MapboxGeocoderResult {
-  place_name: string;
-  geometry: {
-    coordinates: [number, number];
-  };
+interface StationSuggestion {
+  title: string;
+  code: string;
 }
 
 @Component({
@@ -22,14 +20,19 @@ interface MapboxGeocoderResult {
 })
 export class SearchFormComponent implements OnInit {
   searchForm: FormGroup;
-  /* eslint-disable no-console */
-  private readonly mapboxToken = environment.mapboxToken;
+  private readonly yaToken = environment.yaToken;
   @Output() search: EventEmitter<SearchCriteria> = new EventEmitter<SearchCriteria>();
 
   @ViewChild('fromCity', { static: true }) fromCity!: ElementRef;
   @ViewChild('toCity', { static: true }) toCity!: ElementRef;
 
-  constructor(private ngZone: NgZone) {
+  private fromCode: string = '';
+  private toCode: string = '';
+
+  constructor(
+    private ngZone: NgZone,
+    private http: HttpClient,
+  ) {
     this.searchForm = new FormGroup({
       fromCity: new FormControl('', Validators.required),
       toCity: new FormControl('', Validators.required),
@@ -48,42 +51,48 @@ export class SearchFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.initializeMapboxAutocomplete();
+    this.initializeYaAutocomplete();
   }
 
-  initializeMapboxAutocomplete() {
-    const fromGeocoder = new MapboxGeocoder({
-      accessToken: this.mapboxToken,
-      types: 'place',
-      placeholder: 'Select starting city',
+  initializeYaAutocomplete() {
+    this.initializeStationAutocomplete(this.fromCity.nativeElement, 'fromCity', (code) => {
+      this.fromCode = code;
     });
-
-    fromGeocoder.addTo(this.fromCity.nativeElement);
-
-    fromGeocoder.on('result', (e: { result: MapboxGeocoderResult }) => {
-      this.ngZone.run(() => {
-        const place = e.result;
-        this.searchForm.patchValue({
-          fromCity: place.place_name,
-        });
-      });
+    this.initializeStationAutocomplete(this.toCity.nativeElement, 'toCity', (code) => {
+      this.toCode = code;
     });
+  }
 
-    const toGeocoder = new MapboxGeocoder({
-      accessToken: this.mapboxToken,
-      types: 'place',
-      placeholder: 'Select destination city',
-    });
-
-    toGeocoder.addTo(this.toCity.nativeElement);
-
-    toGeocoder.on('result', (e: { result: MapboxGeocoderResult }) => {
-      this.ngZone.run(() => {
-        const place = e.result;
-        this.searchForm.patchValue({
-          toCity: place.place_name,
-        });
-      });
+  initializeStationAutocomplete(element: HTMLElement, controlName: string, setCodeCallback: (code: string) => void) {
+    element.addEventListener('input', (event: Event) => {
+      const query = (event.target as HTMLInputElement).value;
+      console.log('Query:', query);
+      if (query.length > 2) {
+        this.http
+          .get<{
+            suggestions: StationSuggestion[];
+          }>(
+            `https://api.rasp.yandex.net/v3.0/suggest/?apikey=${this.yaToken}&lang=ru_RU&format=json&query=${encodeURIComponent(query)}`,
+          )
+          .subscribe({
+            next: (response) => {
+              console.log('Response:', response);
+              if (response.suggestions && response.suggestions.length > 0) {
+                const suggestion = response.suggestions[0];
+                const codeWithPrefix =
+                  suggestion.code.startsWith('s') || suggestion.code.startsWith('c') ? suggestion.code : `c${suggestion.code}`;
+                setCodeCallback(codeWithPrefix);
+                this.searchForm.patchValue({ [controlName]: suggestion.title });
+              } else {
+                setCodeCallback('');
+                this.searchForm.patchValue({ [controlName]: '' });
+              }
+            },
+            error: (error) => {
+              console.error('Error fetching suggestions:', error);
+            },
+          });
+      }
     });
   }
 
@@ -96,22 +105,32 @@ export class SearchFormComponent implements OnInit {
       toCity: fromCity,
     });
 
+    [this.fromCode, this.toCode] = [this.toCode, this.fromCode];
+
     if (this.fromCity.nativeElement) {
-      this.fromCity.nativeElement.querySelector('.mapboxgl-ctrl-geocoder--input')!.value = toCity;
+      this.fromCity.nativeElement.querySelector('input')!.value = toCity;
     }
     if (this.toCity.nativeElement) {
-      this.toCity.nativeElement.querySelector('.mapboxgl-ctrl-geocoder--input')!.value = fromCity;
+      this.toCity.nativeElement.querySelector('input')!.value = fromCity;
     }
   }
 
   onSubmit() {
+    console.log('From Code:', this.fromCode);
+    console.log('To Code:', this.toCode);
+    console.log('Date:', this.searchForm.get('date')?.value);
+    console.log('Time:', this.searchForm.get('time')?.value);
+
     if (this.searchForm.valid) {
       const searchCriteria: SearchCriteria = {
-        fromLatitude: 0,
-        fromLongitude: 0,
-        toLatitude: 0,
-        toLongitude: 0,
+        fromCode: this.fromCode,
+        toCode: this.toCode,
+        date: this.searchForm.get('date')?.value,
+        time: this.searchForm.get('time')?.value,
       };
+
+      console.log('Submitting search criteria:', searchCriteria);
+
       this.search.emit(searchCriteria);
     }
   }

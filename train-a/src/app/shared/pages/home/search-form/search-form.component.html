@@ -4,16 +4,18 @@
     <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
       <div class="train-selection">
         <div class="input-container">
-          <div class="from-to-group" #fromCity></div>
+          <div class="from-to-group">
+            <input class="input" #fromCity formControlName="fromCity" placeholder="From City" />
+          </div>
           <button type="button" class="swap-button" (click)="swapLocations()">↔</button>
-          <div class="from-to-group" #toCity></div>
+          <div class="from-to-group">
+            <input class="input" #toCity formControlName="toCity" placeholder="To City" />
+          </div>
         </div>
         <div class="date-group">
-          <label class="label" for="date">Date</label>
           <input id="date" formControlName="date" type="date" />
         </div>
         <div class="time-group" *ngIf="searchForm.get('date')?.value">
-          <label class="label" for="time">Time (optional)</label>
           <input id="time" formControlName="time" type="time" />
         </div>
         <button type="submit" class="search-button" [disabled]="!isFormValid()">Search</button>

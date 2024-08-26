@@ -1,7 +1,7 @@
-$primary-color: #2f80ed;
+$primary-color: #213786;
 $secondary-color: #4f4f4f;
-$light-gray: #e5e5e5;
-$middle-gray: #efefef;
+$light-gray: #f7f6f8;
+$middle-gray: #d4d5d6;
 $font-family: 'Roboto', sans-serif;
 $box-shadow-color: rgb(0 0 0 / 10%);
 
@@ -11,15 +11,17 @@ $box-shadow-color: rgb(0 0 0 / 10%);
   align-items: center;
   justify-content: center;
   padding: 16px;
+  border-radius: 5px;
+  background-color: $light-gray;
+  box-shadow: 0 2px 4px $box-shadow-color;
 }
 
 .search-train-container {
-  position: relative;
   width: 100%;
   max-width: 1440px;
   padding: 20px;
-  border-radius: 30px;
-  background: $light-gray;
+  border-radius: 10px;
+  background: #fff;
   box-shadow: 0 4px 10px $box-shadow-color;
 }
 
@@ -27,110 +29,125 @@ $box-shadow-color: rgb(0 0 0 / 10%);
   margin-bottom: 16px;
   color: $secondary-color;
   font-family: $font-family;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 700;
-  line-height: 22px;
+  line-height: 24px;
   text-align: center;
   text-transform: uppercase;
 }
 
 .train-selection {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: row;
   align-items: center;
   padding: 16px;
-  border-radius: 16px;
-  background: #fff;
-  box-shadow: 0 5px 15px $box-shadow-color;
+  border-radius: 10px;
+  background: $light-gray;
   gap: 16px;
 }
 
 .from-to-group {
   display: flex;
-  flex: 1;
+  width: 100%;
   flex-direction: column;
   gap: 8px;
 }
 
-.date-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.label {
-  color: #555;
-  font-family: $font-family;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.input-container {
-  display: flex;
-  width: 65%;
-  padding: 8px;
-  border: 1px solid #e6e8e7;
-  border-radius: 8px;
-  background-color: $middle-gray;
-  gap: 8px;
-}
-
-input {
-  flex: 1;
-  padding: 8px;
-  border: none;
-  background-color: transparent !important;
-  box-shadow: none !important;
+.date-group input[type='date'],
+.time-group input[type='time'] {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  padding: 12px 24px;
+  border: 1px solid $middle-gray;
+  border-radius: 5px;
+  background-color: #fff;
   color: #333;
   font-family: $font-family;
-  font-size: 14px;
-  outline: none;
+  font-size: 18px;
 
   &::placeholder {
     color: #999;
   }
 
   &:focus {
-    border: 1px solid $primary-color !important;
-    background-color: white !important;
+    border-color: $primary-color;
+    outline: none;
+  }
+}
+
+.label {
+  color: #555;
+  font-family: $font-family;
+  font-size: 16px;
+  font-weight: 500;
+  text-align: left;
+}
+
+.input-container {
+  display: flex;
+  width: 100%;
+}
+
+input {
+  flex: 1;
+  padding: 10px;
+  padding: 12px 24px;
+  border: 1px solid $middle-gray;
+  border-radius: 5px;
+  color: #333;
+  font-family: $font-family;
+  font-size: 18px;
+  font-weight: 500;
+  outline: none;
+  transition: border-color 0.3s;
+
+  &::placeholder {
+    color: #999;
+  }
+
+  &:focus {
+    border-color: $primary-color;
   }
 }
 
 .swap-button {
   display: flex;
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   align-items: center;
   justify-content: center;
-  border: none;
+  border: 1px solid $primary-color;
   border-radius: 50%;
-  margin-top: 24px;
-  background-color: $primary-color;
-  color: white;
+  background-color: #fff;
+  color: $primary-color;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s;
 
   &:hover {
     background-color: $primary-color, 90%;
+    color: #fff;
   }
 
   &:active {
     background-color: $primary-color, 50%;
+    color: #fff;
   }
 }
 
 .search-button {
-  flex: 0 0 auto;
+  width: 50%;
   padding: 12px 24px;
   border: none;
-  border-radius: 30px;
+  border-radius: 5px;
   background: $primary-color;
   color: white;
   cursor: pointer;
   font-family: $font-family;
   font-size: 18px;
   font-weight: 700;
-  transition: background-color 0.3s ease;
+  text-align: center;
+  transition: background-color 0.3s;
 
   &:hover {
     background-color: $primary-color, 90%;
@@ -141,9 +158,40 @@ input {
   }
 
   &:disabled {
-    background-color: $middle-gray;
+    border: 1px solid $middle-gray;
+    background-color: $light-gray;
     color: #888;
     cursor: not-allowed;
+  }
+}
+
+@media (width <= 940px) {
+  .train-selection {
+    flex-direction: column;
+  }
+
+  .input-container {
+    flex-direction: column;
+  }
+
+  .search-button {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (width <= 768px) {
+  .train-selection {
+    flex-direction: column;
+  }
+
+  .input-container {
+    flex-direction: column;
+  }
+
+  .search-button {
+    width: 100%;
+    text-align: center;
   }
 }
 
@@ -153,11 +201,11 @@ input {
   }
 
   .search-trains {
-    font-size: 20px;
+    font-size: 22px;
   }
 
   .label {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .search-button {
