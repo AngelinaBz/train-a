@@ -14,6 +14,7 @@ export const routes: Routes = [
       { path: '', redirectTo: 'stations', pathMatch: 'full' },
       { path: 'stations', component: StationsComponent },
       { path: 'carriages', component: CarriagesComponent },
+      // { path: 'routes', component: RoutesComponent }
     ],
   },
   { path: '**', redirectTo: 'signup' },
