@@ -59,10 +59,10 @@ export class ProfilePageComponent implements OnInit {
 
   ngOnInit() {
     this.userFacade.getUserProfile();
-    this.userFacade.state$.subscribe((user) => {
-      if (user.user) {
-        this.nameControl.setValue(user.user.name);
-        this.emailControl.setValue(user.user.email);
+    this.userFacade.user$.subscribe((user) => {
+      if (user) {
+        this.nameControl.setValue(user.name);
+        this.emailControl.setValue(user.email);
       }
     });
   }
