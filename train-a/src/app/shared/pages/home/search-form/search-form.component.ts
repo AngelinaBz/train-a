@@ -3,8 +3,8 @@ import { Component, ElementRef, EventEmitter, NgZone, OnInit, Output, ViewChild 
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 
-import { environment } from '../../../../environments/environment';
-import { SearchCriteria } from '../services/search.service';
+import { environment } from '../../../../../environments/environment';
+import { SearchCriteria } from '../../../models/search.models';
 
 interface MapboxGeocoderResult {
   place_name: string;

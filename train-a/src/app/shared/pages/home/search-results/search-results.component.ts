@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 
-import { SearchCriteria, SearchResult, SearchService } from '../services/search.service';
+import { SearchCriteria, SearchResult } from '../../../models/search.models';
+import { SearchService } from '../../../services/search.service';
 
 @Component({
   selector: 'app-search-results',
