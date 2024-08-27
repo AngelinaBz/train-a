@@ -9,7 +9,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatToolbar } from '@angular/material/toolbar';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 import { AuthFacade } from '../../../auth/state/auth.facade';
 import { paths } from '../../../shared/configs/paths';
@@ -36,6 +36,7 @@ import { UserFacade } from '../../state/user.facade';
     MatError,
     MatProgressSpinner,
     ReactiveFormsModule,
+    RouterLink,
   ],
   templateUrl: './profile-page.component.html',
   styleUrl: './profile-page.component.scss',
@@ -129,4 +130,6 @@ export class ProfilePageComponent implements OnInit {
   openPasswordChangeDialog(): void {
     this.dialog.open(ChangePasswordDialogComponent);
   }
+
+  protected readonly paths = paths;
 }

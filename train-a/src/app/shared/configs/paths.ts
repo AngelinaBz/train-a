@@ -3,4 +3,5 @@ export const paths = {
   signup: 'signup',
   signin: 'signin',
   profile: 'profile',
+  orders: 'orders',
 } as const;

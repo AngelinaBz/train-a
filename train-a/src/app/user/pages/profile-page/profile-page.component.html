@@ -46,6 +46,7 @@
         <mat-error *ngIf="emailControl.hasError('email')">Invalid email format</mat-error>
         <mat-error *ngIf="emailControl.hasError('requestError')">{{ emailControl.getError('requestError')?.message }}</mat-error>
       </mat-form-field>
+      <button mat-raised-button color="primary" [routerLink]="['/orders']">Orders</button>
       <button mat-raised-button color="accent" (click)="openPasswordChangeDialog()">Change Password</button>
       <button mat-raised-button color="warn" (click)="logout()">Logout</button>
     </div>

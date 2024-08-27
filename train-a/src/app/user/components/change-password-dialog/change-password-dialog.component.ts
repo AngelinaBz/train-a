@@ -6,6 +6,7 @@ import { MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle } from
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 
+import { notEmptyValidator } from '../../../shared/validators/notEmpty.validator';
 import { UserFacade } from '../../state/user.facade';
 
 @Component({
@@ -27,7 +28,7 @@ import { UserFacade } from '../../state/user.facade';
   styleUrl: './change-password-dialog.component.scss',
 })
 export class ChangePasswordDialogComponent {
-  newPasswordControl = new FormControl('', [Validators.required, Validators.minLength(8)]);
+  newPasswordControl = new FormControl('', [Validators.required, Validators.minLength(8), notEmptyValidator()]);
 
   constructor(
     public dialogRef: MatDialogRef<ChangePasswordDialogComponent>,
