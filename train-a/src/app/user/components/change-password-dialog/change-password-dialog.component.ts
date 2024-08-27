@@ -1,4 +1,4 @@
-import { AsyncPipe, JsonPipe, NgIf } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -22,14 +22,12 @@ import { UserFacade } from '../../state/user.facade';
     MatDialogTitle,
     ReactiveFormsModule,
     NgIf,
-    JsonPipe,
-    AsyncPipe,
   ],
   templateUrl: './change-password-dialog.component.html',
   styleUrl: './change-password-dialog.component.scss',
 })
 export class ChangePasswordDialogComponent {
-  newPasswordControl = new FormControl('', [Validators.required]);
+  newPasswordControl = new FormControl('', [Validators.required, Validators.minLength(8)]);
 
   constructor(
     public dialogRef: MatDialogRef<ChangePasswordDialogComponent>,
@@ -43,7 +41,7 @@ export class ChangePasswordDialogComponent {
   onSave(): void {
     if (this.newPasswordControl.valid && this.newPasswordControl.value) {
       this.userFacade.updateUserPassword({
-        password: this.newPasswordControl.value,
+        password: this.newPasswordControl.value.trim(),
         onSuccess: () => {
           this.dialogRef.close();
         },
