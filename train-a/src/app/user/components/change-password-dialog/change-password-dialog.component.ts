@@ -41,7 +41,7 @@ export class ChangePasswordDialogComponent {
   onSave(): void {
     if (this.newPasswordControl.valid && this.newPasswordControl.value) {
       this.userFacade.updateUserPassword({
-        password: this.newPasswordControl.value.trim(),
+        password: this.newPasswordControl.value,
         onSuccess: () => {
           this.dialogRef.close();
         },
