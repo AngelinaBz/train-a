@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 
-import { SearchCriteria, SearchResult } from '../../../models/search.models';
+import { SearchCriteria, SearchResult, Segment } from '../../../models/search.models';
 import { SearchService } from '../../../services/search.service';
 
 @Component({
@@ -19,7 +19,7 @@ export class SearchResultsComponent {
 
   performSearch(criteria: SearchCriteria) {
     this.searchService.search(criteria).subscribe({
-      next: (result) => {
+      next: (result: SearchResult) => {
         console.log('Search results received:', result);
         this.searchResults = result;
         this.searchError = null;
@@ -30,5 +30,18 @@ export class SearchResultsComponent {
         this.searchResults = null;
       },
     });
+  }
+
+  calculateDuration(segments: Segment[]): string {
+    if (segments.length === 0) return '';
+
+    const startTime = new Date(segments[0].time[0]);
+    const endTime = new Date(segments[segments.length - 1].time[1]);
+
+    const durationMs = endTime.getTime() - startTime.getTime();
+    const hours = Math.floor(durationMs / (1000 * 60 * 60));
+    const minutes = Math.floor((durationMs % (1000 * 60 * 60)) / (1000 * 60));
+
+    return `${hours}h ${minutes}m`;
   }
 }

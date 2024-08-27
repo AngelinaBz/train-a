@@ -3,34 +3,38 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { environment } from '../../../environments/environment';
-import { SearchCriteria, SearchResult } from '../models/search.models';
+import { SearchCriteria, SearchResult, StationInfo } from '../models/search.models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SearchService {
-  private readonly apiUrl = 'https://api.rasp.yandex.net/v3.0/search';
+  private readonly apiUrl = '/api/search';
+  private readonly stationsUrl = '/api/station';
 
   constructor(private http: HttpClient) {}
 
   search(criteria: SearchCriteria): Observable<SearchResult> {
-    let params = new HttpParams()
-      .set('from', criteria.fromCode || '')
-      .set('to', criteria.toCode || '')
+    const params = new HttpParams()
+      .set('fromLatitude', criteria.fromLatitude.toString())
+      .set('fromLongitude', criteria.fromLongitude.toString())
+      .set('toLatitude', criteria.toLatitude.toString())
+      .set('toLongitude', criteria.toLongitude.toString())
       .set('date', criteria.date)
-      .set('format', 'json')
-      .set('lang', 'ru_RU')
-      .set('apikey', environment.yaToken);
-
-    if (criteria.time) {
-      params = params.set('time', criteria.time.toString());
-    }
-    console.log('Request URL:', this.apiUrl, params.toString());
+      .set('time', criteria.time?.toString() || '');
 
     return this.http.get<SearchResult>(this.apiUrl, { params }).pipe(
       catchError((err) => {
         console.error('Search API error:', err);
+        return throwError(err);
+      }),
+    );
+  }
+
+  getStations(): Observable<StationInfo[]> {
+    return this.http.get<StationInfo[]>(this.stationsUrl).pipe(
+      catchError((err) => {
+        console.error('Stations API error:', err);
         return throwError(err);
       }),
     );

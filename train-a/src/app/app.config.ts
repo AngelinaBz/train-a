@@ -1,5 +1,6 @@
 import { provideHttpClient } from '@angular/common/http';
 import { ApplicationConfig, isDevMode, provideZoneChangeDetection } from '@angular/core';
+import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
 import { provideEffects } from '@ngrx/effects';
@@ -13,6 +14,7 @@ import { authReducer } from './auth/state/auth.reducers';
 export const providers = [
   provideZoneChangeDetection({ eventCoalescing: true }),
   provideRouter(routes),
+  provideAnimations(),
   provideAnimationsAsync(),
   provideHttpClient(),
   provideStore({
@@ -23,5 +25,5 @@ export const providers = [
 ];
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), provideHttpClient()],
+  providers: [...providers],
 };

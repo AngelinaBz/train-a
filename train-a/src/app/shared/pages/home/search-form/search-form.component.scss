@@ -126,17 +126,21 @@ input {
 
   &:hover {
     background-color: $primary-color, 90%;
-    color: #fff;
+    color: $primary-color;
   }
 
   &:active {
     background-color: $primary-color, 50%;
-    color: #fff;
+    color: $primary-color;
   }
 }
 
 .search-button {
-  width: 50%;
+  position: relative;
+  width: 180px;
+  min-width: 0;
+  box-sizing: border-box;
+  flex: auto;
   padding: 12px 24px;
   border: none;
   border-radius: 5px;
@@ -171,7 +175,7 @@ input {
   }
 
   .input-container {
-    flex-direction: column;
+    flex-direction: row;
   }
 
   .search-button {
@@ -221,5 +225,84 @@ input {
 
   .train-selection {
     flex-direction: column;
+  }
+}
+
+.mat-form-field {
+  width: 100%;
+
+  .mat-form-field-wrapper {
+    border: 1px solid $middle-gray;
+    border-radius: 5px;
+  }
+
+  .mat-form-field-flex {
+    background-color: #fff;
+  }
+
+  .mat-form-field-infix {
+    padding: 0;
+  }
+
+  .mat-input-element {
+    padding: 12px 24px;
+    color: #333;
+    font-family: $font-family;
+    font-size: 18px;
+  }
+
+  .mat-form-field-subscript-wrapper {
+    color: #888;
+  }
+
+  .mat-form-field-underline {
+    display: none;
+  }
+}
+
+.mat-autocomplete-panel {
+  border: 1px solid $middle-gray;
+  background: #fff;
+  box-shadow: 0 2px 4px $box-shadow-color;
+}
+
+.mat-option {
+  font-family: $font-family;
+  font-size: 18px;
+}
+
+.mat-datepicker-toggle {
+  color: $primary-color;
+}
+
+@media (width <= 940px) {
+  .train-selection {
+    flex-direction: column;
+  }
+
+  .train-selection-field {
+    margin-right: 0;
+    margin-bottom: 16px;
+  }
+
+  .search-button {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (width <= 768px) {
+  .train-selection {
+    flex-direction: column;
+  }
+
+  .train-selection-field {
+    margin-right: 0;
+    margin-bottom: 16px;
+  }
+
+  .search-button {
+    width: 100%;
+    text-align: center;
   }
 }

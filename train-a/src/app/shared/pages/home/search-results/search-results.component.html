@@ -1,26 +1,38 @@
-<div *ngIf="searchResults">
-  <h2>Search Results:</h2>
-  <div>
-    <h3>From: {{ searchResults.search.from.title }} ({{ searchResults.search.from.code }})</h3>
-    <h3>To: {{ searchResults.search.to.title }} ({{ searchResults.search.to.code }})</h3>
-    <p>Date: {{ searchResults.search.date }}</p>
-  </div>
-  <div *ngFor="let segment of searchResults.segments">
-    <h4>Segment:</h4>
-    <p>From: {{ segment.from.title }} ({{ segment.from.code }})</p>
-    <p>To: {{ segment.to.title }} ({{ segment.to.code }})</p>
-    <p>Arrival: {{ segment.arrival }}</p>
-    <p>Departure: {{ segment.departure }}</p>
-    <p>Has Transfers: {{ segment.has_transfers ? 'Yes' : 'No' }}</p>
-    <div *ngIf="segment.stops">
-      <h5>Stops:</h5>
-      <p *ngFor="let stop of segment.stops">
-        {{ stop }}
-      </p>
+<div *ngIf="searchResults?.routes?.length" class="container">
+  <div *ngFor="let route of searchResults!.routes" class="ticket">
+    <div class="ticket-header">
+      <div class="text-label">Departure Time:</div>
+      <div class="text-label">{{ route.departureTime }}</div>
+    </div>
+
+    <div class="ticket-header">
+      <div class="text-label">Arrival Time:</div>
+      <div class="text-label">{{ route.arrivalTime }}</div>
+    </div>
+
+    <div class="ticket-details">
+      <div class="text-label">Duration:</div>
+      <div class="text-label">{{ route.duration }}</div>
+    </div>
+
+    <div class="ticket-details">
+      <div class="text-label">From:</div>
+      <div class="text-label">{{ route.fromCity }}</div>
+    </div>
+
+    <div class="ticket-details">
+      <div class="text-label">To:</div>
+      <div class="text-label">{{ route.toCity }}</div>
+    </div>
+
+    <div class="ticket-price">
+      <div *ngIf="route.firstClassPrice">1st Class: ${{ route.firstClassPrice }}</div>
+      <div *ngIf="route.secondClassPrice">2nd Class: ${{ route.secondClassPrice }}</div>
+      <div *ngIf="route.womenOnlyPrice">Women Only: ${{ route.womenOnlyPrice }}</div>
     </div>
   </div>
 </div>
 
-<div *ngIf="searchError">
-  <p>{{ searchError }}</p>
+<div *ngIf="searchError" class="error-message">
+  {{ searchError }}
 </div>

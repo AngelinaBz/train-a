@@ -1,38 +1,42 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { Component, ElementRef, EventEmitter, NgZone, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
-import { environment } from '../../../../../environments/environment';
-import { SearchCriteria } from '../../../models/search.models';
-
-interface StationSuggestion {
-  title: string;
-  code: string;
-}
+import { SearchCriteria, StationInfo } from '../../../models/search.models';
+import { SearchService } from '../../../services/search.service';
 
 @Component({
   selector: 'app-search-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatAutocompleteModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+  ],
   templateUrl: './search-form.component.html',
   styleUrls: ['./search-form.component.scss'],
 })
 export class SearchFormComponent implements OnInit {
   searchForm: FormGroup;
-  private readonly yaToken = environment.yaToken;
-  @Output() search: EventEmitter<SearchCriteria> = new EventEmitter<SearchCriteria>();
+  fromCityOptions: StationInfo[] = [];
+  toCityOptions: StationInfo[] = [];
+  filteredFromCities: Observable<StationInfo[]> = new Observable<StationInfo[]>();
+  filteredToCities: Observable<StationInfo[]> = new Observable<StationInfo[]>();
 
-  @ViewChild('fromCity', { static: true }) fromCity!: ElementRef;
-  @ViewChild('toCity', { static: true }) toCity!: ElementRef;
+  @Output() search = new EventEmitter<SearchCriteria>();
 
-  private fromCode: string = '';
-  private toCode: string = '';
-
-  constructor(
-    private ngZone: NgZone,
-    private http: HttpClient,
-  ) {
+  constructor(private stationService: SearchService) {
     this.searchForm = new FormGroup({
       fromCity: new FormControl('', Validators.required),
       toCity: new FormControl('', Validators.required),
@@ -51,85 +55,56 @@ export class SearchFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.initializeYaAutocomplete();
+    this.loadStations();
   }
 
-  initializeYaAutocomplete() {
-    this.initializeStationAutocomplete(this.fromCity.nativeElement, 'fromCity', (code) => {
-      this.fromCode = code;
-    });
-    this.initializeStationAutocomplete(this.toCity.nativeElement, 'toCity', (code) => {
-      this.toCode = code;
+  loadStations(): void {
+    this.stationService.getStations().subscribe((stations) => {
+      this.fromCityOptions = stations;
+      this.toCityOptions = stations;
+      this.filteredFromCities = this.searchForm.get('fromCity')!.valueChanges.pipe(
+        startWith(''),
+        map((value) => this.filterCities(value, this.fromCityOptions)),
+      );
+      this.filteredToCities = this.searchForm.get('toCity')!.valueChanges.pipe(
+        startWith(''),
+        map((value) => this.filterCities(value, this.toCityOptions)),
+      );
     });
   }
 
-  initializeStationAutocomplete(element: HTMLElement, controlName: string, setCodeCallback: (code: string) => void) {
-    element.addEventListener('input', (event: Event) => {
-      const query = (event.target as HTMLInputElement).value;
-      console.log('Query:', query);
-      if (query.length > 2) {
-        this.http
-          .get<{
-            suggestions: StationSuggestion[];
-          }>(
-            `https://api.rasp.yandex.net/v3.0/suggest/?apikey=${this.yaToken}&lang=ru_RU&format=json&query=${encodeURIComponent(query)}`,
-          )
-          .subscribe({
-            next: (response) => {
-              console.log('Response:', response);
-              if (response.suggestions && response.suggestions.length > 0) {
-                const suggestion = response.suggestions[0];
-                const codeWithPrefix =
-                  suggestion.code.startsWith('s') || suggestion.code.startsWith('c') ? suggestion.code : `c${suggestion.code}`;
-                setCodeCallback(codeWithPrefix);
-                this.searchForm.patchValue({ [controlName]: suggestion.title });
-              } else {
-                setCodeCallback('');
-                this.searchForm.patchValue({ [controlName]: '' });
-              }
-            },
-            error: (error) => {
-              console.error('Error fetching suggestions:', error);
-            },
-          });
-      }
-    });
+  filterCities(value: string, options: StationInfo[]): StationInfo[] {
+    const filterValue = value.toLowerCase();
+    return options.filter((option) => option.city.toLowerCase().includes(filterValue));
   }
 
   swapLocations() {
-    const fromCity = this.searchForm.get('fromCity')?.value;
-    const toCity = this.searchForm.get('toCity')?.value;
+    const fromCityControl = this.searchForm.get('fromCity');
+    const toCityControl = this.searchForm.get('toCity');
 
-    this.searchForm.patchValue({
-      fromCity: toCity,
-      toCity: fromCity,
-    });
-
-    [this.fromCode, this.toCode] = [this.toCode, this.fromCode];
-
-    if (this.fromCity.nativeElement) {
-      this.fromCity.nativeElement.querySelector('input')!.value = toCity;
-    }
-    if (this.toCity.nativeElement) {
-      this.toCity.nativeElement.querySelector('input')!.value = fromCity;
+    if (fromCityControl && toCityControl) {
+      const fromCity = fromCityControl.value;
+      fromCityControl.setValue(toCityControl.value);
+      toCityControl.setValue(fromCity);
     }
   }
 
   onSubmit() {
-    console.log('From Code:', this.fromCode);
-    console.log('To Code:', this.toCode);
-    console.log('Date:', this.searchForm.get('date')?.value);
-    console.log('Time:', this.searchForm.get('time')?.value);
-
     if (this.searchForm.valid) {
-      const searchCriteria: SearchCriteria = {
-        fromCode: this.fromCode,
-        toCode: this.toCode,
-        date: this.searchForm.get('date')?.value,
-        time: this.searchForm.get('time')?.value,
-      };
+      const { fromCity, toCity, date, time } = this.searchForm.value;
+      const fromStation = this.fromCityOptions.find((station) => station.city === fromCity);
+      const toStation = this.toCityOptions.find((station) => station.city === toCity);
 
-      console.log('Submitting search criteria:', searchCriteria);
+      const searchCriteria: SearchCriteria = {
+        fromCity,
+        toCity,
+        fromLatitude: fromStation?.latitude || 0,
+        fromLongitude: fromStation?.longitude || 0,
+        toLatitude: toStation?.latitude || 0,
+        toLongitude: toStation?.longitude || 0,
+        date,
+        time,
+      };
 
       this.search.emit(searchCriteria);
     }
