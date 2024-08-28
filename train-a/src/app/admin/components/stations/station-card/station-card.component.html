@@ -1,0 +1,10 @@
+<div class="station-card" *ngIf="station">
+  <div class="station-name">{{ station.city }}</div>
+  <div class="station-ll">{{ station.latitude }}°, {{ station.longitude }}°</div>
+  <div class="station-connections">
+    Connected to:
+    <div class="connections-list">
+      <li *ngFor="let connectedStation of getConnectedStations((allStations$ | async) || [])">{{ connectedStation.city }},</li>
+    </div>
+  </div>
+</div>

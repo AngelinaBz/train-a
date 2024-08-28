@@ -2,13 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { GoogleMapsModule } from '@angular/google-maps';
 
+import { Marker } from '../../../models/map.model';
 import { MapService } from '../../../services/map/map.service';
 
-interface Marker {
-  lat: number;
-  lng: number;
-  city: string;
-}
 @Component({
   selector: 'app-map',
   standalone: true,
@@ -32,9 +28,7 @@ export class MapComponent implements OnInit {
   mapClick(event: google.maps.MapMouseEvent): void {
     const latLng = event.latLng?.toJSON();
     if (latLng) {
-      const newMarker = { lat: latLng.lat, lng: latLng.lng, city: 'marked сity' };
-      this.mapService.addMarker(newMarker.lat, newMarker.lng, newMarker.city);
-      this.mapService.setMarkerLocation(newMarker);
+      this.mapService.updateMarkerLocation(latLng.lat, latLng.lng);
     }
   }
 }
