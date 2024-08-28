@@ -72,4 +72,21 @@ export const authReducer = createReducer(
       error,
     }),
   ),
+  on(
+    AuthActions.logout,
+    (state): AuthState => ({
+      ...state,
+      isLoading: true,
+    }),
+  ),
+  on(
+    AuthActions.logoutSuccess,
+    (state): AuthState => ({
+      ...state,
+      isLoading: false,
+      isLoggedIn: false,
+      token: null,
+      error: null,
+    }),
+  ),
 );
