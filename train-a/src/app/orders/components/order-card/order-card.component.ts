@@ -41,6 +41,7 @@ export class OrderCardComponent implements OnInit {
   formattedStartTime: string = '';
   formattedEndTime: string = '';
   token: string | null = localStorage.getItem('auth_token');
+  status: string = '';
 
   constructor(
     private orderFacade: OrderFacade,
@@ -54,6 +55,7 @@ export class OrderCardComponent implements OnInit {
   ngOnInit() {
     console.log(this.order);
     if (this.token) {
+      this.status = this.order.status;
       this.stationFacade.loadStations(this.token);
       this.carriageFacade.loadCarriages(this.token);
       this.loadStationsData();

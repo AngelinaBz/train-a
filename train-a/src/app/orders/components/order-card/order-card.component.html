@@ -2,8 +2,8 @@
   <mat-card-header>
     <mat-card-title>{{ startStationName.toUpperCase() }} - {{ endStationName.toUpperCase() }} </mat-card-title>
     <p class="order-details__price">{{ totalPrice }}cu</p>
-    <p *ngIf="order.status === 'canceled'">{{ order.status }}</p>
-    <button mat-mini-fab *ngIf="order.status === 'active'" (click)="cancelOrder()">
+    <p *ngIf="status === 'canceled'">{{ status }}</p>
+    <button mat-mini-fab *ngIf="status === 'active'" (click)="cancelOrder()">
       <mat-icon>delete</mat-icon>
     </button>
   </mat-card-header>

@@ -21,7 +21,7 @@ export class AppComponent {
     if (token) {
       const order = {
         rideId: 2,
-        seat: 10,
+        seat: 11,
         stationStart: 54,
         stationEnd: 75,
       };
