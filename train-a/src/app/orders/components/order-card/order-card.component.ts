@@ -2,13 +2,17 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { map } from 'rxjs';
 
 import { CarriageFacade } from '../../../carriages/state/carriage.facade';
 import { Carriage } from '../../../carriages/state/carriage.model';
 import { StationFacade } from '../../../stations/state/station.facade';
+import { OrderFacade } from '../../state/order.facade';
 import { Order } from '../../state/order.model';
+import { CancelDialogComponent } from '../cancel-dialog/cancel-dialog.component';
 
 @Component({
   selector: 'app-order-card',
@@ -36,19 +40,22 @@ export class OrderCardComponent implements OnInit {
   totalPrice: number = 0;
   formattedStartTime: string = '';
   formattedEndTime: string = '';
+  token: string | null = localStorage.getItem('auth_token');
 
   constructor(
+    private orderFacade: OrderFacade,
     private stationFacade: StationFacade,
     private carriageFacade: CarriageFacade,
     private datePipe: DatePipe,
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog,
   ) {}
 
   ngOnInit() {
     console.log(this.order);
-    const token = localStorage.getItem('auth_token');
-    if (token) {
-      this.stationFacade.loadStations(token);
-      this.carriageFacade.loadCarriages(token);
+    if (this.token) {
+      this.stationFacade.loadStations(this.token);
+      this.carriageFacade.loadCarriages(this.token);
       this.loadStationsData();
       this.loadCarriageData();
       this.initializeTimes();
@@ -80,12 +87,7 @@ export class OrderCardComponent implements OnInit {
   }
 
   initializeTimes() {
-    if (
-      this.startIndex >= 0 &&
-      this.endIndex >= 0 &&
-      this.startIndex < this.endIndex &&
-      this.order.schedule.segments.length === this.order.path.length - 1
-    ) {
+    if (this.startIndex >= 0 && this.endIndex >= 0 && this.startIndex < this.endIndex) {
       this.startTime = new Date(this.order.schedule.segments[this.startIndex].time[0]);
       this.endTime = new Date(this.order.schedule.segments[this.endIndex - 1].time[1]);
       this.duration = this.calculateDuration(this.startTime, this.endTime);
@@ -94,8 +96,8 @@ export class OrderCardComponent implements OnInit {
     }
   }
 
-  calculateDuration(start: Date, end: Date): string {
-    const diffMs = end.getTime() - start.getTime();
+  calculateDuration(startTime: Date, endTime: Date): string {
+    const diffMs = endTime.getTime() - startTime.getTime();
     const diffHrs = Math.floor(diffMs / (1000 * 60 * 60));
     const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
     return `${diffHrs}h ${diffMins}m`;
@@ -135,6 +137,26 @@ export class OrderCardComponent implements OnInit {
   }
 
   cancelOrder() {
-    console.log('cancel');
+    const dialogRef = this.dialog.open(CancelDialogComponent);
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result && this.token) {
+        this.orderFacade.cancelOrder(this.token, this.order.id);
+        this.orderFacade.isCancelSuccess$.subscribe((success) => {
+          if (success && this.token) {
+            this.snackBar.open('The order has been successfully cancelled', 'Close', {
+              duration: 3000,
+            });
+            this.orderFacade.loadOrders(this.token);
+          }
+        });
+        this.orderFacade.orderError$.subscribe((error) => {
+          if (error) {
+            this.snackBar.open(`Error: ${error.message}`, 'Close', {
+              duration: 3000,
+            });
+          }
+        });
+      }
+    });
   }
 }
