@@ -1,5 +1,5 @@
-import { provideHttpClient } from '@angular/common/http';
-import { ApplicationConfig, isDevMode, provideZoneChangeDetection } from '@angular/core';
+import { HttpClientModule, provideHttpClient } from '@angular/common/http';
+import { ApplicationConfig, importProvidersFrom, isDevMode, provideZoneChangeDetection } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
 import { provideEffects } from '@ngrx/effects';
@@ -17,6 +17,7 @@ import { StationEffects } from './stations/state/station.effects';
 import { stationReducer } from './stations/state/station.reducers';
 
 export const providers = [
+  importProvidersFrom(HttpClientModule),
   provideZoneChangeDetection({ eventCoalescing: true }),
   provideRouter(routes),
   provideAnimationsAsync(),
