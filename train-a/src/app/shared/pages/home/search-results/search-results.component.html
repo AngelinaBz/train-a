@@ -1,38 +1,90 @@
-<div *ngIf="searchResults?.routes?.length" class="container">
-  <div *ngFor="let route of searchResults!.routes" class="ticket">
-    <div class="ticket-header">
-      <div class="text-label">Departure Time:</div>
-      <div class="text-label">{{ route.departureTime }}</div>
-    </div>
+<div class="container">
+  <div *ngIf="searchResults && searchResults.routes && searchResults.routes.length">
+    <div *ngFor="let route of searchResults.routes" class="ticket">
+      <div class="ticket-header">
+        <div class="departure">
+          <div class="time">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6l5.25 3.15-.75 1.23L11 13V7z"
+                fill="#000"
+              />
+            </svg>
+            <span
+              *ngIf="route.schedule && route.schedule.length && route.schedule[0].segments && route.schedule[0].segments.length"
+            >
+              {{ route.schedule[0].segments[0].time[0] | date: 'shortTime' }}
+            </span>
+          </div>
+          <div class="date">
+            <span>{{ route.schedule[0].segments[0].time[0] | date: 'MMMM d' }}</span>
+          </div>
+          <div class="route">
+            <span>{{ searchResults.from.city }}</span>
+          </div>
+        </div>
 
-    <div class="ticket-header">
-      <div class="text-label">Arrival Time:</div>
-      <div class="text-label">{{ route.arrivalTime }}</div>
-    </div>
+        <div class="route-line">
+          <svg height="10" width="100">
+            <circle cx="5" cy="5" r="5" fill="none" stroke="black" stroke-width="2" />
+            <line x1="5" y1="5" x2="95" y2="5" stroke="black" stroke-dasharray="5,5" />
+          </svg>
+        </div>
 
-    <div class="ticket-details">
-      <div class="text-label">Duration:</div>
-      <div class="text-label">{{ route.duration }}</div>
-    </div>
+        <div
+          class="duration"
+          *ngIf="route.schedule && route.schedule.length && route.schedule[0].segments && route.schedule[0].segments.length"
+        >
+          <span>{{ calculateDuration(route.schedule[0].segments[0].time[0], route.schedule[0].segments[0].time[1]) }}</span>
+        </div>
 
-    <div class="ticket-details">
-      <div class="text-label">From:</div>
-      <div class="text-label">{{ route.fromCity }}</div>
-    </div>
+        <div class="route-line">
+          <svg height="10" width="100">
+            <line x1="5" y1="5" x2="95" y2="5" stroke="black" stroke-dasharray="5,5" />
+            <circle cx="95" cy="5" r="5" fill="black" stroke="black" stroke-width="2" />
+          </svg>
+        </div>
 
-    <div class="ticket-details">
-      <div class="text-label">To:</div>
-      <div class="text-label">{{ route.toCity }}</div>
-    </div>
+        <div class="arrival">
+          <div class="time">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6l5.25 3.15-.75 1.23L11 13V7z"
+                fill="#000"
+              />
+            </svg>
+            <span
+              *ngIf="route.schedule && route.schedule.length && route.schedule[0].segments && route.schedule[0].segments.length"
+            >
+              {{ route.schedule[0].segments[0].time[1] | date: 'shortTime' }}
+            </span>
+          </div>
+          <div class="date">
+            <span>{{ route.schedule[0].segments[0].time[1] | date: 'MMMM d' }}</span>
+          </div>
+          <div class="route">
+            <span>{{ searchResults.to.city }}</span>
+          </div>
+        </div>
+      </div>
 
-    <div class="ticket-price">
-      <div *ngIf="route.firstClassPrice">1st Class: ${{ route.firstClassPrice }}</div>
-      <div *ngIf="route.secondClassPrice">2nd Class: ${{ route.secondClassPrice }}</div>
-      <div *ngIf="route.womenOnlyPrice">Women Only: ${{ route.womenOnlyPrice }}</div>
+      <div class="ticket-details">
+        <div *ngIf="route.price">
+          <div class="carriage" *ngIf="route.price['carriage1']">
+            <span>1st Class: ${{ route.price['carriage1'] }}</span>
+          </div>
+          <div class="carriage" *ngIf="route.price['carriage2']">
+            <span>2nd Class: ${{ route.price['carriage2'] }}</span>
+          </div>
+          <div class="carriage" *ngIf="route.price['carriage3']">
+            <span>Women Only: ${{ route.price['carriage3'] }}</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-</div>
 
-<div *ngIf="searchError" class="error-message">
-  {{ searchError }}
+  <div *ngIf="searchError" class="error-message">
+    {{ searchError }}
+  </div>
 </div>

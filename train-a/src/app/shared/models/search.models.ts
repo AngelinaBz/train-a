@@ -17,14 +17,19 @@ export interface StationInfo {
 }
 export interface SearchResult {
   routes: Array<{
-    departureTime: string;
-    arrivalTime: string;
-    duration: string;
-    fromCity: string;
-    toCity: string;
-    firstClassPrice?: number;
-    secondClassPrice?: number;
-    womenOnlyPrice?: number;
+    id: number;
+    path: number[];
+    schedule: Array<{
+      rideId: number;
+      segments: Array<{
+        occupiedSeats: number[];
+        price: { [key: string]: number };
+        time: [string, string];
+      }>;
+    }>;
+    carriages: string[];
+    price: { [key: string]: number };
+    time: [string, string];
   }>;
   from: {
     stationId: number;
@@ -43,7 +48,6 @@ export interface SearchResult {
     };
   };
 }
-
 export interface Route {
   id: number;
   path: number[];

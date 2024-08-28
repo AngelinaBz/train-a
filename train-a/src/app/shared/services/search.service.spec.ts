@@ -1,5 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { StationInfo } from '../models/search.models';
 import { SearchService } from './search.service';
@@ -10,7 +11,7 @@ describe('SearchService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, BrowserAnimationsModule],
       providers: [SearchService],
     });
 
@@ -33,7 +34,7 @@ describe('SearchService', () => {
       expect(stations).toEqual(mockStations);
     });
 
-    const req = httpMock.expectOne('http://localhost:9876/api/station');
+    const req = httpMock.expectOne('/api/station');
     expect(req.request.method).toBe('GET');
     req.flush(mockStations);
   });

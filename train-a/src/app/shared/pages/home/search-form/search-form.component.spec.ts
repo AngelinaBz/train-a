@@ -1,5 +1,6 @@
 import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { SearchFormComponent } from './search-form.component';
 
@@ -9,7 +10,7 @@ describe('SearchFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SearchFormComponent, HttpClientModule],
+      imports: [SearchFormComponent, HttpClientModule, BrowserAnimationsModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SearchFormComponent);

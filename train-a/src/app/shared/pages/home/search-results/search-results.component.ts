@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 
-import { SearchCriteria, SearchResult, Segment } from '../../../models/search.models';
+import { SearchCriteria, SearchResult } from '../../../models/search.models';
 import { SearchService } from '../../../services/search.service';
 
 @Component({
@@ -32,16 +32,16 @@ export class SearchResultsComponent {
     });
   }
 
-  calculateDuration(segments: Segment[]): string {
-    if (segments.length === 0) return '';
+  calculateDuration(startTime: string, endTime: string): string {
+    if (!startTime || !endTime) return '';
+    const start = new Date(startTime);
+    const end = new Date(endTime);
 
-    const startTime = new Date(segments[0].time[0]);
-    const endTime = new Date(segments[segments.length - 1].time[1]);
+    if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) return '';
 
-    const durationMs = endTime.getTime() - startTime.getTime();
+    const durationMs = end.getTime() - start.getTime();
     const hours = Math.floor(durationMs / (1000 * 60 * 60));
     const minutes = Math.floor((durationMs % (1000 * 60 * 60)) / (1000 * 60));
-
     return `${hours}h ${minutes}m`;
   }
 }
