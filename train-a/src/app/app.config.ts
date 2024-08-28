@@ -9,6 +9,12 @@ import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { routes } from './app.routes';
 import { AuthEffects } from './auth/state/auth.effects';
 import { authReducer } from './auth/state/auth.reducers';
+import { CarriageEffects } from './carriages/state/carriage.effects';
+import { carriageReducer } from './carriages/state/carriage.reducers';
+import { OrderEffects } from './orders/state/order.effects';
+import { orderReducer } from './orders/state/order.reducers';
+import { StationEffects } from './stations/state/station.effects';
+import { stationReducer } from './stations/state/station.reducers';
 
 export const providers = [
   provideZoneChangeDetection({ eventCoalescing: true }),
@@ -17,8 +23,11 @@ export const providers = [
   provideHttpClient(),
   provideStore({
     auth: authReducer,
+    order: orderReducer,
+    station: stationReducer,
+    carriage: carriageReducer,
   }),
-  provideEffects(AuthEffects),
+  provideEffects(AuthEffects, OrderEffects, StationEffects, CarriageEffects),
   provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
 ];
 
