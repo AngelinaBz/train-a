@@ -5,7 +5,6 @@ import { AdminComponent } from './admin/pages/admin/admin.component';
 import { SignupComponent } from './auth/pages/signup/signup.component';
 import { authGuard } from './auth/guards/auth/auth.guard';
 import { SigninComponent } from './auth/pages/signin/signin.component';
-import { SignupComponent } from './auth/pages/signup/signup.component';
 import { OrdersComponent } from './orders/pages/orders.component';
 
 export const routes: Routes = [
