@@ -1,0 +1,30 @@
+@import '../../../../styles';
+
+.stations-container {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+
+  .map-data-container {
+    display: flex;
+    gap: 30px;
+
+    @media screen and (width <= 700px) {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .station-inputs-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      .input {
+        min-width: 100px;
+      }
+    }
+  }
+}
