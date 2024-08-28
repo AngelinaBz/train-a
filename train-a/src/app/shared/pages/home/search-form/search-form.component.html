@@ -24,11 +24,20 @@
         </div>
         <div class="date-group">
           <mat-form-field class="from-to-group" appearance="fill">
-            <input class="input" matInput id="date" formControlName="date" [matDatepicker]="picker" placeholder="mm/dd/yyyy" />
+            <input
+              class="input"
+              matInput
+              id="date"
+              formControlName="date"
+              [matDatepicker]="picker"
+              placeholder="mm/dd/yyyy"
+              [min]="today"
+            />
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
         </div>
+
         <div class="date-group">
           <mat-form-field appearance="fill" *ngIf="searchForm.get('date')?.value">
             <input class="input" matInput formControlName="time" type="time" />

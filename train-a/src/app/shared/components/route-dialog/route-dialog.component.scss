@@ -1,0 +1,63 @@
+$primary-color: #213786;
+$secondary-color: #4f4f4f;
+$light-gray: #f7f6f8;
+$middle-gray: #d4d5d6;
+$font-family: 'Roboto', sans-serif;
+$box-shadow-color: rgb(0 0 0 / 10%);
+
+mat-dialog-content {
+  overflow: auto;
+  max-height: 400px;
+  font-family: $font-family;
+}
+
+.route-summary {
+  margin-bottom: 16px;
+  font-size: 1rem;
+}
+
+.schedule-table {
+  display: flex;
+  flex-direction: column;
+}
+
+.table-header,
+.table-row {
+  display: flex;
+  width: 100%;
+}
+
+.header-item,
+.table-cell {
+  flex: 1;
+  padding: 8px;
+  border-bottom: 1px solid $light-gray;
+  text-align: center;
+}
+
+.table-header {
+  border-bottom: 2px solid $middle-gray;
+  font-weight: bold;
+}
+
+.table-cell {
+  font-size: 0.9rem;
+}
+
+.table-row:not(:last-child) {
+  border-bottom: 1px solid $light-gray;
+}
+
+button.mat-button {
+  background-color: $primary-color;
+  color: white;
+  font-size: 1rem;
+}
+
+h1.mat-dialog-title {
+  padding: 16px;
+  border-bottom: 1px solid $middle-gray;
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 500;
+}

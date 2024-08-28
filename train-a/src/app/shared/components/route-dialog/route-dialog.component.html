@@ -1,0 +1,28 @@
+<h1 mat-dialog-title>Route {{ data.routeId }}</h1>
+<div mat-dialog-content>
+  <div class="route-summary">
+    <div><strong>Start:</strong> {{ data.firstStation }}</div>
+    <div><strong>End:</strong> {{ data.lastStation }}</div>
+  </div>
+  <div class="schedule-table">
+    <div class="table-header">
+      <div class="header-item">Time</div>
+      <div class="header-item">City</div>
+      <div class="header-item">Interval</div>
+    </div>
+    <div *ngFor="let segment of data.schedule; let last = last" class="table-row">
+      <div class="table-cell">
+        {{ last ? formatDate(segment.arrivalTime) : formatDate(segment.departureTime) }}
+      </div>
+      <div class="table-cell">
+        {{ segment.stationName }}
+      </div>
+      <div class="table-cell">
+        {{ segment.interval }}
+      </div>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onClose()">Close</button>
+</div>

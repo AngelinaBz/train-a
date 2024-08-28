@@ -33,6 +33,7 @@ export class SearchFormComponent implements OnInit {
   toCityOptions: StationInfo[] = [];
   filteredFromCities: Observable<StationInfo[]> = new Observable<StationInfo[]>();
   filteredToCities: Observable<StationInfo[]> = new Observable<StationInfo[]>();
+  today: Date = new Date();
 
   @Output() search = new EventEmitter<SearchCriteria>();
 
@@ -40,7 +41,7 @@ export class SearchFormComponent implements OnInit {
     this.searchForm = new FormGroup({
       fromCity: new FormControl('', Validators.required),
       toCity: new FormControl('', Validators.required),
-      date: new FormControl('', Validators.required),
+      date: new FormControl(this.today, Validators.required),
       time: new FormControl({ value: '', disabled: true }),
     });
 

@@ -51,8 +51,13 @@ export interface SearchResult {
 export interface Route {
   id: number;
   path: number[];
+  schedule: Array<{
+    rideId: number;
+    segments: Segment[];
+  }>;
   carriages: string[];
-  schedule: Schedule[];
+  price: { [key: string]: number };
+  time: [string, string];
 }
 
 export interface Schedule {
@@ -67,7 +72,7 @@ export interface RouteSchedule {
 }
 
 export interface Segment {
-  time: string[];
-  price: Record<string, number>;
   occupiedSeats: number[];
+  price: { [key: string]: number };
+  time: [string, string];
 }
