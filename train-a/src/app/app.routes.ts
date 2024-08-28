@@ -9,7 +9,6 @@ import { SignupComponent } from './auth/pages/signup/signup.component';
 import { OrdersComponent } from './orders/pages/orders.component';
 
 export const routes: Routes = [
-  { path: 'signup', component: SignupComponent },
   {
     path: 'admin',
     component: AdminComponent,
