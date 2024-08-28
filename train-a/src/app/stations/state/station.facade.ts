@@ -9,6 +9,7 @@ import * as StationSelectors from './station.selectors';
 })
 export class StationFacade {
   stations$ = this.store.select(StationSelectors.selectStations);
+  isLoading$ = this.store.select(StationSelectors.selectIsLoading);
   stationError$ = this.store.select(StationSelectors.selectError);
 
   constructor(private store: Store) {}

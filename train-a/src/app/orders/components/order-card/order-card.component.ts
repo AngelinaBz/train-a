@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { map } from 'rxjs';
 
+import { AuthFacade } from '../../../auth/state/auth.facade';
 import { CarriageFacade } from '../../../carriages/state/carriage.facade';
 import { Carriage } from '../../../carriages/state/carriage.model';
 import { StationFacade } from '../../../stations/state/station.facade';
@@ -27,26 +28,27 @@ export class OrderCardComponent implements OnInit {
 
   stations$ = this.stationFacade.stations$;
   carriages$ = this.carriageFacade.carriages$;
+  token: string | null = null;
+  status: string = '';
   startStationName: string = '';
   startIndex: number = 0;
   endStationName: string = '';
   endIndex: number = 0;
   startTime: Date | null = null;
   endTime: Date | null = null;
+  formattedStartTime: string = '';
+  formattedEndTime: string = '';
   duration: string = '';
   carriageName: string = '';
   carriageNumber: number = 0;
   seatNumber: number = 0;
   totalPrice: number = 0;
-  formattedStartTime: string = '';
-  formattedEndTime: string = '';
-  token: string | null = localStorage.getItem('auth_token');
-  status: string = '';
 
   constructor(
     private orderFacade: OrderFacade,
     private stationFacade: StationFacade,
     private carriageFacade: CarriageFacade,
+    private authFacade: AuthFacade,
     private datePipe: DatePipe,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
@@ -54,14 +56,17 @@ export class OrderCardComponent implements OnInit {
 
   ngOnInit() {
     console.log(this.order);
-    if (this.token) {
-      this.status = this.order.status;
-      this.stationFacade.loadStations(this.token);
-      this.carriageFacade.loadCarriages(this.token);
-      this.loadStationsData();
-      this.loadCarriageData();
-      this.initializeTimes();
-    }
+    this.authFacade.authToken$.subscribe((token) => {
+      if (token) {
+        this.token = token;
+        this.status = this.order.status;
+        this.stationFacade.loadStations(this.token);
+        this.carriageFacade.loadCarriages(this.token);
+        this.loadStationsData();
+        this.loadCarriageData();
+        this.initializeTimes();
+      }
+    });
   }
 
   loadStationsData() {

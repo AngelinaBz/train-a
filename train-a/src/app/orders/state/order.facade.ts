@@ -10,6 +10,7 @@ import * as OrderSelectors from './order.selectors';
 export class OrderFacade {
   orders$ = this.store.select(OrderSelectors.selectOrders);
   orderError$ = this.store.select(OrderSelectors.selectError);
+  isLoading$ = this.store.select(OrderSelectors.selectIsLoading);
   isCancelSuccess$ = this.store.select(OrderSelectors.selectIsCancelSuccess);
 
   constructor(private store: Store) {}
