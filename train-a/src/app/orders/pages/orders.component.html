@@ -2,4 +2,4 @@
   <span>My Orders</span>
 </mat-toolbar>
 
-<app-order-card *ngFor="let order of orders$ | async" [order]="order"></app-order-card>
+<app-order-card *ngFor="let order of sortedOrders" [order]="order"></app-order-card>
