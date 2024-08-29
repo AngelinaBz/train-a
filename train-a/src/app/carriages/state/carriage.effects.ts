@@ -19,7 +19,6 @@ export class CarriageEffects {
       mergeMap(() => {
         return this.http.get<Carriage[]>('/api/carriage').pipe(
           map((carriages) => {
-            console.log(carriages);
             return carriageActions.loadCarriagesSuccess({ carriages });
           }),
           catchError((error: HttpErrorResponse) => of(carriageActions.loadCarriagesFailure({ error: error.error }))),

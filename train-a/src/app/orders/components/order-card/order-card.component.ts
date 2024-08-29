@@ -7,7 +7,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { map } from 'rxjs';
 
-import { AuthFacade } from '../../../auth/state/auth.facade';
 import { CarriageFacade } from '../../../carriages/state/carriage.facade';
 import { Carriage } from '../../../carriages/state/carriage.model';
 import { StationFacade } from '../../../stations/state/station.facade';
@@ -44,19 +43,19 @@ export class OrderCardComponent implements OnInit {
     private orderFacade: OrderFacade,
     private stationFacade: StationFacade,
     private carriageFacade: CarriageFacade,
-    private authFacade: AuthFacade,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
   ) {}
 
   ngOnInit() {
-    console.log(this.order);
-    this.status = this.order.status;
-    this.stationFacade.loadStations();
-    this.carriageFacade.loadCarriages();
-    this.loadStationsData();
-    this.loadCarriageData();
-    this.initializeTimes();
+    if (this.order) {
+      this.status = this.order.status;
+      this.stationFacade.loadStations();
+      this.carriageFacade.loadCarriages();
+      this.loadStationsData();
+      this.loadCarriageData();
+      this.initializeTimes();
+    }
   }
 
   loadStationsData() {
