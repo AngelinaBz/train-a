@@ -7,14 +7,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
-import { Store } from '@ngrx/store';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
 import { cityNameValidator, latitudeValidator, longitudeValidator } from '../../../shared/validators/station-validation';
 import { Station, StationList } from '../../models/map.model';
 import { MapService } from '../../services/map/map.service';
-import * as StationActions from '../../state/station.actions';
-import { selectLoading, selectStations } from '../../state/station.selectors';
+import { StationFacade } from '../../state/station.facade';
 import { MapComponent } from './map/map.component';
 import { StationCardComponent } from './station-card/station-card.component';
 
@@ -38,32 +36,27 @@ import { StationCardComponent } from './station-card/station-card.component';
   styleUrl: './stations.component.scss',
 })
 export class StationsComponent implements OnInit, OnDestroy {
-  stationForm: FormGroup;
-  allStations$!: Observable<StationList[]>;
-  errorMessage: string | null = null;
-  successMessage: string | null = null;
-  loading$: Observable<boolean>;
-
+  stationForm!: FormGroup;
+  errorMessage!: string | null;
+  successMessage!: string | null;
+  loading$ = this.stationFacade.loading$;
+  allStations$ = this.stationFacade.allStations$;
   private destroy$ = new Subject<void>();
 
   constructor(
     private fb: FormBuilder,
     private mapService: MapService,
-    private store: Store,
-  ) {
-    this.allStations$ = store.select(selectStations);
-    this.loading$ = this.store.select(selectLoading);
+    private stationFacade: StationFacade,
+  ) {}
 
+  ngOnInit(): void {
     this.stationForm = this.fb.group({
       cityName: ['', cityNameValidator],
       latitude: ['', latitudeValidator],
       longitude: ['', longitudeValidator],
       connections: this.fb.array([this.createConnection()]),
     });
-  }
-
-  ngOnInit(): void {
-    this.store.dispatch(StationActions.loadStations());
+    this.stationFacade.loadStations();
 
     this.mapService.markerClick$.pipe(takeUntil(this.destroy$)).subscribe((marker) => {
       if (marker) {
@@ -112,6 +105,17 @@ export class StationsComponent implements OnInit, OnDestroy {
     }
   }
 
+  resetForm(): void {
+    setTimeout(() => {
+      this.stationForm.reset();
+      this.successMessage = null;
+      this.errorMessage = null;
+      while (this.connections.length > 1) {
+        this.connections.removeAt(1);
+      }
+    }, 3000);
+  }
+
   saveConnection(): void {
     if (this.stationForm.valid) {
       const selectedCities = this.stationForm.value.connections.map(
@@ -131,14 +135,10 @@ export class StationsComponent implements OnInit, OnDestroy {
         relations: this.stationForm.value.connections.map((conn: { stationName: StationList }) => conn.stationName.id),
       };
 
-      this.store.dispatch(StationActions.createStation({ station: stationData }));
+      this.stationFacade.createStation(stationData);
 
       this.successMessage = 'Station connection successfully created';
-
-      setTimeout(() => {
-        this.stationForm.reset();
-        this.successMessage = null;
-      }, 3000);
+      this.resetForm();
     }
   }
 }
