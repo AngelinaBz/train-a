@@ -6,6 +6,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin: 25px 0;
   gap: 30px;
 
   .map-data-container {
@@ -56,4 +57,17 @@
     gap: 10px;
     overflow-y: scroll;
   }
+}
+
+.error-message {
+  margin-top: -10px;
+  color: $error-color;
+  font-size: 0.7rem;
+}
+
+.success-message {
+  margin-top: -10px;
+  color: $success-color;
+  font-size: 0.7rem;
+  font-weight: 600;
 }

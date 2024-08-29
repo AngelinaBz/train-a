@@ -25,7 +25,7 @@
           <mat-form-field appearance="fill" class="input">
             <mat-label>Choose station</mat-label>
             <mat-select formControlName="stationName" (selectionChange)="onConnectionSelect(i)">
-              <mat-option *ngFor="let station of stations$ | async" [value]="station">
+              <mat-option *ngFor="let station of allStations$ | async" [value]="station">
                 {{ station.city }}
               </mat-option>
             </mat-select>
@@ -35,11 +35,14 @@
             <mat-icon>delete</mat-icon>
           </button>
         </div>
+        <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
       </div>
       <button mat-raised-button class="save-button" (click)="saveConnection()">Save</button>
+      <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
     </div>
   </div>
-  <div class="stations-list-container">
-    <app-station-card *ngFor="let station of stations$ | async" [station]="station"></app-station-card>
+  <div *ngIf="(loading$ | async) === true">Loading...</div>
+  <div *ngIf="(loading$ | async) === false" class="stations-list-container">
+    <app-station-card *ngFor="let station of allStations$ | async" [station]="station"></app-station-card>
   </div>
 </div>

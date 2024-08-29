@@ -29,6 +29,10 @@
       color: $subtext-color;
       font-weight: 400;
       gap: 5px;
+
+      li {
+        list-style-type: none;
+      }
     }
   }
 }
