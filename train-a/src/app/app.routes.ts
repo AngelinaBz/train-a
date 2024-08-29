@@ -8,6 +8,7 @@ import { SigninComponent } from './auth/pages/signin/signin.component';
 import { SignupComponent } from './auth/pages/signup/signup.component';
 import { OrdersPageComponent } from './orders/pages/orders-page/orders-page.component';
 import { paths } from './shared/configs/paths';
+import { HomeComponent } from './shared/pages/home/home.component';
 import { ProfilePageComponent } from './user/pages/profile-page/profile-page.component';
 
 export const routes: Routes = [
@@ -40,6 +41,11 @@ export const routes: Routes = [
         redirectTo: paths.main,
       }),
     ],
+  },
+  {
+    path: paths.main,
+    component: HomeComponent,
+    canActivate: [authGuard({ needAuth: true, redirectTo: paths.signin })],
   },
   {
     path: 'admin',
