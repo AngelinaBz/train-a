@@ -49,11 +49,13 @@ export const stationReducer = createReducer(
   ),
   on(
     StationActions.createStationSuccess,
-    (state): StationState => ({
+    (state, { station }): StationState => ({
       ...state,
+      stations: [...state.stations, station],
       loading: false,
     }),
   ),
+
   on(
     StationActions.createStationFailure,
     (state, { error }): StationState => ({

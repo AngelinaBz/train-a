@@ -33,7 +33,16 @@ export class StationEffects {
       ofType(StationActions.createStation),
       mergeMap(({ station }) =>
         this.http.post<{ id: number }>(this.apiUrl, station).pipe(
-          map((response) => StationActions.createStationSuccess({ id: response.id })),
+          map((response) =>
+            StationActions.createStationSuccess({
+              id: response.id,
+              station: {
+                ...station,
+                id: response.id,
+                connectedTo: [],
+              },
+            }),
+          ),
           catchError((error) => of(StationActions.createStationFailure({ error }))),
         ),
       ),

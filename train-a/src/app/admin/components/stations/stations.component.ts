@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
@@ -10,10 +10,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { Store } from '@ngrx/store';
 import { Observable, Subject, takeUntil } from 'rxjs';
 
+import { cityNameValidator, latitudeValidator, longitudeValidator } from '../../../shared/validators/station-validation';
 import { Station, StationList } from '../../models/map.model';
 import { MapService } from '../../services/map/map.service';
 import * as StationActions from '../../state/station.actions';
-import { selectStations } from '../../state/station.selectors';
+import { selectLoading, selectStations } from '../../state/station.selectors';
 import { MapComponent } from './map/map.component';
 import { StationCardComponent } from './station-card/station-card.component';
 
@@ -38,7 +39,11 @@ import { StationCardComponent } from './station-card/station-card.component';
 })
 export class StationsComponent implements OnInit, OnDestroy {
   stationForm: FormGroup;
-  stations$!: Observable<StationList[]>;
+  allStations$!: Observable<StationList[]>;
+  errorMessage: string | null = null;
+  successMessage: string | null = null;
+  loading$: Observable<boolean>;
+
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -46,11 +51,13 @@ export class StationsComponent implements OnInit, OnDestroy {
     private mapService: MapService,
     private store: Store,
   ) {
-    this.stations$ = store.select(selectStations);
+    this.allStations$ = store.select(selectStations);
+    this.loading$ = this.store.select(selectLoading);
+
     this.stationForm = this.fb.group({
-      cityName: ['', Validators.required],
-      latitude: [null, [Validators.required, Validators.min(-90), Validators.max(90)]],
-      longitude: [null, [Validators.required, Validators.min(-180), Validators.max(180)]],
+      cityName: ['', cityNameValidator],
+      latitude: ['', latitudeValidator],
+      longitude: ['', longitudeValidator],
       connections: this.fb.array([this.createConnection()]),
     });
   }
@@ -60,7 +67,7 @@ export class StationsComponent implements OnInit, OnDestroy {
 
     this.mapService.markerClick$.pipe(takeUntil(this.destroy$)).subscribe((marker) => {
       if (marker) {
-        this.updateFormWithMarker(marker);
+        this.updateFormWithMarkerData(marker);
       }
     });
   }
@@ -76,11 +83,11 @@ export class StationsComponent implements OnInit, OnDestroy {
 
   createConnection(): FormGroup {
     return this.fb.group({
-      stationName: [null, Validators.required],
+      stationName: [null, cityNameValidator],
     });
   }
 
-  updateFormWithMarker(marker: { lat: number; lng: number; city?: string }): void {
+  updateFormWithMarkerData(marker: { lat: number; lng: number; city?: string }): void {
     this.stationForm.patchValue({
       latitude: marker.lat,
       longitude: marker.lng,
@@ -89,6 +96,7 @@ export class StationsComponent implements OnInit, OnDestroy {
   }
 
   onConnectionSelect(index: number): void {
+    this.errorMessage = null;
     const selectedStation = this.connections.at(index).get('stationName')?.value;
     if (selectedStation) {
       this.mapService.addMarker(selectedStation.latitude, selectedStation.longitude, selectedStation.city);
@@ -106,13 +114,31 @@ export class StationsComponent implements OnInit, OnDestroy {
 
   saveConnection(): void {
     if (this.stationForm.valid) {
+      const selectedCities = this.stationForm.value.connections.map(
+        (conn: { stationName: StationList }) => conn.stationName.city,
+      );
+      const hasDuplicates = selectedCities.some((city: string, index: number) => selectedCities.indexOf(city) !== index);
+
+      if (hasDuplicates) {
+        this.errorMessage = 'The same city cannot be selected twice.';
+        return;
+      }
+
       const stationData: Station = {
         city: this.stationForm.value.cityName,
         latitude: this.stationForm.value.latitude,
         longitude: this.stationForm.value.longitude,
         relations: this.stationForm.value.connections.map((conn: { stationName: StationList }) => conn.stationName.id),
       };
+
       this.store.dispatch(StationActions.createStation({ station: stationData }));
+
+      this.successMessage = 'Station connection successfully created';
+
+      setTimeout(() => {
+        this.stationForm.reset();
+        this.successMessage = null;
+      }, 3000);
     }
   }
 }

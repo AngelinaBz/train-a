@@ -10,6 +10,9 @@ export const loadStationsFailure = createAction('[Station] Load Stations Failure
 
 export const createStation = createAction('[Station] Create Station', props<{ station: Station }>());
 
-export const createStationSuccess = createAction('[Station] Create Station Success', props<{ id: number }>());
-
 export const createStationFailure = createAction('[Station] Create Station Failure', props<{ error: string }>());
+
+export const createStationSuccess = createAction(
+  '[Station] Create Station Success',
+  props<{ id: number; station: StationList }>(),
+);
