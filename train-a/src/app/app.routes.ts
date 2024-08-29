@@ -7,8 +7,40 @@ import { authGuard } from './auth/guards/auth/auth.guard';
 import { SigninComponent } from './auth/pages/signin/signin.component';
 import { SignupComponent } from './auth/pages/signup/signup.component';
 import { OrdersComponent } from './orders/pages/orders.component';
+import { paths } from './shared/configs/paths';
+import { ProfilePageComponent } from './user/pages/profile-page/profile-page.component';
 
 export const routes: Routes = [
+  {
+    path: paths.signup,
+    component: SignupComponent,
+    canActivate: [
+      authGuard({
+        needAuth: false,
+        redirectTo: paths.main,
+      }),
+    ],
+  },
+  {
+    path: paths.profile,
+    component: ProfilePageComponent,
+    canActivate: [authGuard({ needAuth: true, redirectTo: paths.signin })],
+  },
+  {
+    path: paths.orders,
+    component: OrdersComponent,
+    canActivate: [authGuard({ needAuth: true, redirectTo: paths.signin })],
+  },
+  {
+    path: paths.signin,
+    component: SigninComponent,
+    canActivate: [
+      authGuard({
+        needAuth: false,
+        redirectTo: paths.main,
+      }),
+    ],
+  },
   {
     path: 'admin',
     component: AdminComponent,
@@ -19,7 +51,4 @@ export const routes: Routes = [
       // { path: 'routes', component: RoutesComponent }
     ],
   },
-  { path: 'signup', component: SignupComponent, canActivate: [authGuard] },
-  { path: 'signin', component: SigninComponent, canActivate: [authGuard] },
-  { path: 'orders', component: OrdersComponent },
 ];
