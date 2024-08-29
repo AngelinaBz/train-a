@@ -3,6 +3,8 @@ import { Component, inject, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButton } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle } from '@angular/material/dialog';
+import { MatError } from '@angular/material/form-field';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 import { ApiError } from '../../../shared/models/ApiError.model';
 import RideDetails from '../../models/RideDetails.model';
@@ -31,6 +33,8 @@ type TableRow = {
     NgIf,
     DatePipe,
     NgClass,
+    MatError,
+    MatProgressSpinner,
   ],
   templateUrl: './route-details-modal.component.html',
   styleUrl: './route-details-modal.component.scss',
