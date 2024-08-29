@@ -9,9 +9,11 @@ import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { StationEffects } from './admin/state/station.effects';
 import { stationReducer } from './admin/state/station.reducer';
 import { routes } from './app.routes';
-import authInterceptor from './auth/interceptor/auth.interceptor';
+import authInterceptor from './auth/interceptors/auth.interceptor';
 import { AuthEffects } from './auth/state/auth.effects';
 import { authReducer } from './auth/state/auth.reducers';
+import * as userEffects from './user/state/user.effects';
+import { userReducer } from './user/state/user.reducers';
 
 export const providers = [
   importProvidersFrom(HttpClientModule),
@@ -19,13 +21,13 @@ export const providers = [
   provideZoneChangeDetection({ eventCoalescing: true }),
   provideRouter(routes),
   provideAnimationsAsync(),
-  provideHttpClient(),
+  provideHttpClient(withInterceptors([authInterceptor])),
   provideStore({
+    user: userReducer,
     auth: authReducer,
     station: stationReducer,
   }),
-  provideEffects(AuthEffects),
-  provideEffects(StationEffects),
+  provideEffects(userEffects, AuthEffects, StationEffects),
   provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
 ];
 
