@@ -3,7 +3,7 @@
   <div class="route" *ngIf="data()">
     <span>Time</span>
     <span>Station</span>
-    <div class="route__stop">
+    <div class="route__stop-title">
       <span> Stop </span>
     </div>
     @for (row of tableData; track $index) {
@@ -30,7 +30,9 @@
       </div>
     }
   </div>
-  <mat-spinner class="spinner" strokeWidth="3" *ngIf="isLoading()"> </mat-spinner>
+  <div class="spinner" *ngIf="isLoading()">
+    <mat-spinner strokeWidth="3"> </mat-spinner>
+  </div>
   <mat-error *ngIf="error()"> {{ error()?.message }} </mat-error>
 </mat-dialog-content>
 <mat-dialog-actions>
