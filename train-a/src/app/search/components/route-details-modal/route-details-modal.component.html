@@ -1,0 +1,36 @@
+<h2 mat-dialog-title>Route {{ data()?.rideId }}</h2>
+<mat-dialog-content class="route-wrapper" *ngIf="data()">
+  <div class="route">
+    <span>Time</span>
+    <span>Station</span>
+    <div class="route__stop">
+      <span> Stop </span>
+    </div>
+    @for (row of tableData; track $index) {
+      <div class="route__time">
+        <span>
+          {{ row.time.start | date: 'H:mm' }}
+        </span>
+        <span>
+          {{ row.time.end | date: 'H:mm' }}
+        </span>
+      </div>
+      <div
+        class="route__station"
+        [ngClass]="{ 'route__station--first': $index === 0, 'route__station--last': $index === tableData.length - 1 }"
+      >
+        <div class="route__station-text">
+          {{ row.station }}
+        </div>
+      </div>
+      <div class="route__stop">
+        <span>
+          {{ row.stop }}
+        </span>
+      </div>
+    }
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>
