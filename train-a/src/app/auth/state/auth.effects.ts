@@ -48,4 +48,19 @@ export class AuthEffects {
       ),
     );
   });
+
+  logout$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(authActions.logout),
+      mergeMap(() =>
+        this.http.delete('/api/logout').pipe(
+          tap(() => {
+            localStorage.removeItem('auth_token');
+          }),
+          map(() => authActions.logoutSuccess()),
+          catchError(() => of(authActions.logoutSuccess())),
+        ),
+      ),
+    );
+  });
 }
