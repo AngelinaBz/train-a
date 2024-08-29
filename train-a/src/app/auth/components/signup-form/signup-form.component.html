@@ -25,7 +25,7 @@
     </mat-error>
   </mat-form-field>
   <div class="buttons-container">
-    <button mat-flat-button [disabled]="!isValid" class="signup" (click)="onSubmit()">Register</button>
+    <button mat-flat-button [disabled]="!isValid || (isLoading$ | async)" class="signup" (click)="onSubmit()">Register</button>
     <button mat-button routerLink="/signin">Sign In</button>
   </div>
 </form>

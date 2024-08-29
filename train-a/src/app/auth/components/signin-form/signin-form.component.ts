@@ -20,6 +20,7 @@ export class SigninFormComponent implements OnInit {
   isSubmitted = false;
   authError$ = this.authFacade.authError$;
   authToken$ = this.authFacade.authToken$;
+  isLoading$ = this.authFacade.isLoading$;
 
   constructor(
     private fb: FormBuilder,
