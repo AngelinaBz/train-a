@@ -1,10 +1,10 @@
 import { createReducer, on } from '@ngrx/store';
 
-import { StationList } from '../models/map.model';
+import { StationResponse } from '../models/map.model';
 import * as StationActions from './station.actions';
 
 export interface StationState {
-  stations: StationList[];
+  stations: StationResponse[];
   loading: boolean;
   loadingDeleting: boolean;
   error: string | null;

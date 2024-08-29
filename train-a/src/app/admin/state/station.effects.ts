@@ -4,7 +4,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 
-import { StationList } from '../models/map.model';
+import { StationResponse } from '../models/map.model';
 import * as StationActions from './station.actions';
 
 @Injectable()
@@ -20,7 +20,7 @@ export class StationEffects {
     return this.actions$.pipe(
       ofType(StationActions.loadStations),
       mergeMap(() =>
-        this.http.get<StationList[]>(this.apiUrl).pipe(
+        this.http.get<StationResponse[]>(this.apiUrl).pipe(
           map((stations) => StationActions.loadStationsSuccess({ stations })),
           catchError((error) => of(StationActions.loadStationsFailure({ error }))),
         ),
@@ -31,15 +31,14 @@ export class StationEffects {
   createStation$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(StationActions.createStation),
-      mergeMap(({ station }) =>
+      mergeMap(({ station, connectedTo }) =>
         this.http.post<{ id: number }>(this.apiUrl, station).pipe(
           map((response) =>
             StationActions.createStationSuccess({
-              id: response.id,
               station: {
                 ...station,
                 id: response.id,
-                connectedTo: [],
+                connectedTo,
               },
             }),
           ),

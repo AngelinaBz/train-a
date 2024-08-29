@@ -10,7 +10,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { Subject, takeUntil } from 'rxjs';
 
 import { cityNameValidator, latitudeValidator, longitudeValidator } from '../../../shared/validators/station-validation';
-import { Station, StationList } from '../../models/map.model';
+import { Station, StationResponse } from '../../models/map.model';
 import { MapService } from '../../services/map/map.service';
 import { StationFacade } from '../../state/station.facade';
 import { MapComponent } from './map/map.component';
@@ -119,9 +119,10 @@ export class StationsComponent implements OnInit, OnDestroy {
   saveConnection(): void {
     if (this.stationForm.valid) {
       const selectedCities = this.stationForm.value.connections.map(
-        (conn: { stationName: StationList }) => conn.stationName.city,
+        (connection: { stationName: StationResponse }) => connection.stationName,
       );
-      const hasDuplicates = selectedCities.some((city: string, index: number) => selectedCities.indexOf(city) !== index);
+      const selectedCitiesIds = selectedCities.map((conn: StationResponse) => conn.city);
+      const hasDuplicates = selectedCitiesIds.some((city: string, index: number) => selectedCitiesIds.indexOf(city) !== index);
 
       if (hasDuplicates) {
         this.errorMessage = 'The same city cannot be selected twice.';
@@ -132,10 +133,10 @@ export class StationsComponent implements OnInit, OnDestroy {
         city: this.stationForm.value.cityName,
         latitude: this.stationForm.value.latitude,
         longitude: this.stationForm.value.longitude,
-        relations: this.stationForm.value.connections.map((conn: { stationName: StationList }) => conn.stationName.id),
+        relations: this.stationForm.value.connections.map((conn: { stationName: StationResponse }) => conn.stationName.id),
       };
 
-      this.stationFacade.createStation(stationData);
+      this.stationFacade.createStation(stationData, selectedCities);
 
       this.successMessage = 'Station connection successfully created';
       this.resetForm();

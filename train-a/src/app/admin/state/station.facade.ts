@@ -19,8 +19,8 @@ export class StationFacade {
     this.store.dispatch(StationActions.loadStations());
   }
 
-  createStation(station: Station): void {
-    this.store.dispatch(StationActions.createStation({ station }));
+  createStation(station: Station, connectedTo: { id: number; distance: number }[]): void {
+    this.store.dispatch(StationActions.createStation({ station, connectedTo }));
   }
 
   deleteStation(id: number): void {

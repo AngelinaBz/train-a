@@ -4,7 +4,7 @@ export interface Marker {
   city: string;
 }
 
-export interface StationList {
+export interface StationResponse {
   id: number;
   city: string;
   latitude: number;

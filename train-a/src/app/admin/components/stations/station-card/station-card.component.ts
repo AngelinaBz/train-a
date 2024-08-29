@@ -4,7 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { Observable } from 'rxjs';
 
-import { StationList } from '../../../models/map.model';
+import { StationResponse } from '../../../models/map.model';
 import { StationFacade } from '../../../state/station.facade';
 
 @Component({
@@ -15,8 +15,8 @@ import { StationFacade } from '../../../state/station.facade';
   styleUrl: './station-card.component.scss',
 })
 export class StationCardComponent implements OnInit {
-  @Input() station!: StationList;
-  allStations$!: Observable<StationList[]>;
+  @Input() station!: StationResponse;
+  allStations$!: Observable<StationResponse[]>;
   loadingDeleting$!: Observable<boolean>;
 
   constructor(private stationFacade: StationFacade) {}
@@ -26,7 +26,7 @@ export class StationCardComponent implements OnInit {
     this.loadingDeleting$ = this.stationFacade.loadingDeleting$;
   }
 
-  getConnectedStations(allStations: StationList[]): { city: string }[] {
+  getConnectedStations(allStations: StationResponse[]): { city: string }[] {
     if (!this.station || !this.station.connectedTo || !allStations) {
       return [];
     }
