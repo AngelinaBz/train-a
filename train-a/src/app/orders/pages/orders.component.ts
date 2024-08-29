@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
+import { CarriageFacade } from '../../carriages/state/carriage.facade';
+import { StationFacade } from '../../stations/state/station.facade';
 import { OrderCardComponent } from '../components/order-card/order-card.component';
 import { OrderFacade } from '../state/order.facade';
 import { Order } from '../state/order.model';
@@ -17,10 +19,16 @@ export class OrdersComponent implements OnInit {
   orders$ = this.orderFacade.orders$;
   sortedOrders: Order[] = [];
 
-  constructor(private orderFacade: OrderFacade) {}
+  constructor(
+    private orderFacade: OrderFacade,
+    private stationFacade: StationFacade,
+    private carriageFacade: CarriageFacade,
+  ) {}
 
   ngOnInit() {
     this.loadOrders();
+    this.stationFacade.loadStations();
+    this.carriageFacade.loadCarriages();
   }
 
   loadOrders() {

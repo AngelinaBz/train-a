@@ -50,8 +50,6 @@ export class OrderCardComponent implements OnInit {
   ngOnInit() {
     if (this.order) {
       this.status = this.order.status;
-      this.stationFacade.loadStations();
-      this.carriageFacade.loadCarriages();
       this.loadStationsData();
       this.loadCarriageData();
       this.initializeTimes();
