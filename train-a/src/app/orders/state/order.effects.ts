@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, of } from 'rxjs';
@@ -21,11 +21,7 @@ export class OrderEffects {
         if (action.all) {
           params = params.set('all', 'true');
         }
-        const headers = new HttpHeaders({
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${action.token}`,
-        });
-        return this.http.get<Order[]>('/api/order', { headers, params }).pipe(
+        return this.http.get<Order[]>('/api/order', { params }).pipe(
           map((orders) => {
             return orderActions.loadOrdersSuccess({ orders });
           }),
@@ -39,11 +35,7 @@ export class OrderEffects {
     return this.actions$.pipe(
       ofType(orderActions.cancelOrder),
       mergeMap((action) => {
-        const headers = new HttpHeaders({
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${action.token}`,
-        });
-        return this.http.delete(`/api/order/${action.orderId}`, { headers }).pipe(
+        return this.http.delete(`/api/order/${action.orderId}`).pipe(
           map(() => {
             return orderActions.cancelOrderSuccess();
           }),

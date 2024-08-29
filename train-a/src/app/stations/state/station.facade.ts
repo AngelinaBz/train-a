@@ -14,7 +14,7 @@ export class StationFacade {
 
   constructor(private store: Store) {}
 
-  loadStations(token: string): void {
-    this.store.dispatch(StationActions.loadStations({ token }));
+  loadStations(): void {
+    this.store.dispatch(StationActions.loadStations());
   }
 }

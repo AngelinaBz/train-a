@@ -27,7 +27,6 @@ export class OrderCardComponent implements OnInit {
 
   stations$ = this.stationFacade.stations$;
   carriages$ = this.carriageFacade.carriages$;
-  token: string | null = null;
   status: string = '';
   startStationName: string = '';
   startIndex: number = 0;
@@ -52,17 +51,12 @@ export class OrderCardComponent implements OnInit {
 
   ngOnInit() {
     console.log(this.order);
-    this.authFacade.authToken$.subscribe((token) => {
-      if (token) {
-        this.token = token;
-        this.status = this.order.status;
-        this.stationFacade.loadStations(this.token);
-        this.carriageFacade.loadCarriages(this.token);
-        this.loadStationsData();
-        this.loadCarriageData();
-        this.initializeTimes();
-      }
-    });
+    this.status = this.order.status;
+    this.stationFacade.loadStations();
+    this.carriageFacade.loadCarriages();
+    this.loadStationsData();
+    this.loadCarriageData();
+    this.initializeTimes();
   }
 
   loadStationsData() {
@@ -140,14 +134,14 @@ export class OrderCardComponent implements OnInit {
   cancelOrder() {
     const dialogRef = this.dialog.open(CancelDialogComponent);
     dialogRef.afterClosed().subscribe((result) => {
-      if (result && this.token) {
-        this.orderFacade.cancelOrder(this.token, this.order.id);
+      if (result) {
+        this.orderFacade.cancelOrder(this.order.id);
         this.orderFacade.isCancelSuccess$.subscribe((success) => {
-          if (success && this.token) {
+          if (success) {
             this.snackBar.open('The order has been successfully cancelled', 'Close', {
               duration: 3000,
             });
-            this.orderFacade.loadOrders(this.token);
+            this.orderFacade.loadOrders();
           }
         });
         this.orderFacade.orderError$.subscribe((error) => {

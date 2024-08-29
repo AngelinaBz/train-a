@@ -15,11 +15,11 @@ export class OrderFacade {
 
   constructor(private store: Store) {}
 
-  loadOrders(token: string, all?: boolean): void {
-    this.store.dispatch(OrderActions.loadOrders({ token, all }));
+  loadOrders(all?: boolean): void {
+    this.store.dispatch(OrderActions.loadOrders({ all }));
   }
 
-  cancelOrder(token: string, orderId: number): void {
-    this.store.dispatch(OrderActions.cancelOrder({ token, orderId }));
+  cancelOrder(orderId: number): void {
+    this.store.dispatch(OrderActions.cancelOrder({ orderId }));
   }
 }

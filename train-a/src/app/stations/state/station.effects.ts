@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, of } from 'rxjs';
@@ -16,12 +16,8 @@ export class StationEffects {
   loadStations$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(stationActions.loadStations),
-      mergeMap((action) => {
-        const headers = new HttpHeaders({
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${action.token}`,
-        });
-        return this.http.get<Station[]>('/api/station', { headers }).pipe(
+      mergeMap(() => {
+        return this.http.get<Station[]>('/api/station').pipe(
           map((stations) => {
             return stationActions.loadStationsSuccess({ stations });
           }),

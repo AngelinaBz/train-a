@@ -14,7 +14,7 @@ export class CarriageFacade {
 
   constructor(private store: Store) {}
 
-  loadCarriages(token: string): void {
-    this.store.dispatch(CarriageActions.loadCarriages({ token }));
+  loadCarriages(): void {
+    this.store.dispatch(CarriageActions.loadCarriages());
   }
 }

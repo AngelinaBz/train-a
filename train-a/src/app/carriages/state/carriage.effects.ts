@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, of } from 'rxjs';
@@ -16,12 +16,8 @@ export class CarriageEffects {
   loadCarriages$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(carriageActions.loadCarriages),
-      mergeMap((action) => {
-        const headers = new HttpHeaders({
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${action.token}`,
-        });
-        return this.http.get<Carriage[]>('/api/carriage', { headers }).pipe(
+      mergeMap(() => {
+        return this.http.get<Carriage[]>('/api/carriage').pipe(
           map((carriages) => {
             console.log(carriages);
             return carriageActions.loadCarriagesSuccess({ carriages });

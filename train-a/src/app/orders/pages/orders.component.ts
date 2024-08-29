@@ -24,13 +24,10 @@ export class OrdersComponent implements OnInit {
   }
 
   loadOrders() {
-    const token = localStorage.getItem('auth_token');
-    if (token) {
-      this.orderFacade.loadOrders(token, false);
-      this.orders$.subscribe((orders) => {
-        this.sortedOrders = this.sortOrdersByStartTime([...orders]);
-      });
-    }
+    this.orderFacade.loadOrders(false);
+    this.orders$.subscribe((orders) => {
+      this.sortedOrders = this.sortOrdersByStartTime([...orders]);
+    });
   }
 
   sortOrdersByStartTime(orders: Order[]): Order[] {
