@@ -48,4 +48,16 @@ export class StationEffects {
       ),
     );
   });
+
+  deleteStation$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(StationActions.deleteStation),
+      mergeMap((action) =>
+        this.http.delete<void>(`${this.apiUrl}/${action.id}`).pipe(
+          map(() => StationActions.deleteStationSuccess({ id: action.id })),
+          catchError((error) => of(StationActions.deleteStationFailure({ error }))),
+        ),
+      ),
+    );
+  });
 }

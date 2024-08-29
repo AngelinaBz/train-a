@@ -16,3 +16,9 @@ export const createStationSuccess = createAction(
   '[Station] Create Station Success',
   props<{ id: number; station: StationList }>(),
 );
+
+export const deleteStation = createAction('[Station] Delete Station', props<{ id: number }>());
+
+export const deleteStationSuccess = createAction('[Station] Delete Station Success', props<{ id: number }>());
+
+export const deleteStationFailure = createAction('[Station] Delete Station Failure', props<{ error: string }>());

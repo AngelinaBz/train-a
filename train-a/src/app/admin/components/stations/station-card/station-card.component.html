@@ -1,5 +1,9 @@
 <div class="station-card" *ngIf="station">
-  <div class="station-name">{{ station.city }}</div>
+  <div class="station-name-container">
+    <div class="station-name">{{ station.city }}</div>
+    <div class="spinner" *ngIf="(loadingDeleting$ | async) === true"></div>
+    <mat-icon *ngIf="(loadingDeleting$ | async) === false" class="delete" (click)="deletStation()">delete</mat-icon>
+  </div>
   <div class="station-ll">{{ station.latitude }}°, {{ station.longitude }}°</div>
   <div class="station-connections">
     Connected to:

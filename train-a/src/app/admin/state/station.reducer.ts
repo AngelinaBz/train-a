@@ -6,12 +6,14 @@ import * as StationActions from './station.actions';
 export interface StationState {
   stations: StationList[];
   loading: boolean;
+  loadingDeleting: boolean;
   error: string | null;
 }
 
 export const initialState: StationState = {
   stations: [],
   loading: false,
+  loadingDeleting: false,
   error: null,
 };
 
@@ -62,6 +64,30 @@ export const stationReducer = createReducer(
       ...state,
       error,
       loading: false,
+    }),
+  ),
+  on(
+    StationActions.deleteStation,
+    (state): StationState => ({
+      ...state,
+      loadingDeleting: true,
+    }),
+  ),
+  on(
+    StationActions.deleteStationSuccess,
+    (state, { id }): StationState => ({
+      ...state,
+      stations: state.stations.filter((station) => station.id !== id),
+      loadingDeleting: false,
+    }),
+  ),
+
+  on(
+    StationActions.deleteStationFailure,
+    (state, { error }): StationState => ({
+      ...state,
+      error,
+      loadingDeleting: false,
     }),
   ),
 );
