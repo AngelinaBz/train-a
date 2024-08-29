@@ -9,10 +9,10 @@
     @for (row of tableData; track $index) {
       <div class="route__time">
         <span>
-          {{ row.time.start | date: 'H:mm' }}
+          {{ row.time.start | date: 'dd.MM H:mm' }}
         </span>
         <span>
-          {{ row.time.end | date: 'H:mm' }}
+          {{ row.time.end | date: 'dd.MM H:mm' }}
         </span>
       </div>
       <div
