@@ -11,9 +11,9 @@
   <mat-card-content class="order-details">
     <div class="order-details__time-carriage">
       <div class="order-time">
-        <div class="start-time">{{ formattedStartTime }}</div>
+        <div class="start-time">{{ startTime | date: 'MMMM dd, HH:mm' }}</div>
         <div class="duration">{{ duration }}</div>
-        <div class="end-time">{{ formattedEndTime }}</div>
+        <div class="end-time">{{ endTime | date: 'MMMM dd, HH:mm' }}</div>
       </div>
       <div class="order-carriage">
         <div class="carriage-type">Carriage type: {{ carriageName }}</div>

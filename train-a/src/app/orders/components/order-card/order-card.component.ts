@@ -18,10 +18,9 @@ import { CancelDialogComponent } from '../cancel-dialog/cancel-dialog.component'
 @Component({
   selector: 'app-order-card',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule],
+  imports: [CommonModule, DatePipe, MatCardModule, MatButtonModule, MatIconModule],
   templateUrl: './order-card.component.html',
   styleUrl: './order-card.component.scss',
-  providers: [DatePipe],
 })
 export class OrderCardComponent implements OnInit {
   @Input() order!: Order;
@@ -36,8 +35,6 @@ export class OrderCardComponent implements OnInit {
   endIndex: number = 0;
   startTime: Date | null = null;
   endTime: Date | null = null;
-  formattedStartTime: string = '';
-  formattedEndTime: string = '';
   duration: string = '';
   carriageName: string = '';
   carriageNumber: number = 0;
@@ -49,7 +46,6 @@ export class OrderCardComponent implements OnInit {
     private stationFacade: StationFacade,
     private carriageFacade: CarriageFacade,
     private authFacade: AuthFacade,
-    private datePipe: DatePipe,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
   ) {}
@@ -98,8 +94,6 @@ export class OrderCardComponent implements OnInit {
       this.startTime = new Date(this.order.schedule.segments[this.startIndex].time[0]);
       this.endTime = new Date(this.order.schedule.segments[this.endIndex - 1].time[1]);
       this.duration = this.calculateDuration(this.startTime, this.endTime);
-      this.formattedStartTime = this.datePipe.transform(this.startTime, 'MMMM dd, HH:mm')!;
-      this.formattedEndTime = this.datePipe.transform(this.endTime, 'MMMM dd, HH:mm')!;
     }
   }
 
