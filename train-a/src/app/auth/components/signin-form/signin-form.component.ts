@@ -20,6 +20,7 @@ export class SigninFormComponent implements OnInit {
   isSubmitted = false;
   authError$ = this.authFacade.authError$;
   authToken$ = this.authFacade.authToken$;
+  isLoading$ = this.authFacade.isLoading$;
 
   constructor(
     private fb: FormBuilder,
@@ -53,7 +54,7 @@ export class SigninFormComponent implements OnInit {
       const control = this.signinForm.get(field);
       if (control?.hasError('serverError')) {
         control.setErrors({ serverError: null });
-        control.updateValueAndValidity({ onlySelf: true });
+        control.updateValueAndValidity({ emitEvent: false });
       }
     });
   }

@@ -17,7 +17,7 @@
   </mat-form-field>
 
   <div class="buttons-container">
-    <button mat-flat-button [disabled]="!isValid" class="signin" (click)="onSubmit()">Sign In</button>
+    <button mat-flat-button [disabled]="!isValid || (isLoading$ | async)" class="signin" (click)="onSubmit()">Sign In</button>
     <button mat-button routerLink="/signup">Sign Up</button>
   </div>
 </form>
