@@ -11,6 +11,8 @@ import { routes } from './app.routes';
 import authInterceptor from './auth/interceptors/auth.interceptor';
 import { AuthEffects } from './auth/state/auth.effects';
 import { authReducer } from './auth/state/auth.reducers';
+import * as detailsEffects from './search/state/details/details.effects';
+import { detailsReducer } from './search/state/details/details.reducers';
 import * as userEffects from './user/state/user.effects';
 import { userReducer } from './user/state/user.reducers';
 
@@ -24,8 +26,9 @@ export const providers = [
   provideStore({
     user: userReducer,
     auth: authReducer,
+    details: detailsReducer,
   }),
-  provideEffects(userEffects, AuthEffects),
+  provideEffects(userEffects, AuthEffects, detailsEffects),
   provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
 ];
 

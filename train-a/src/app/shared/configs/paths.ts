@@ -4,4 +4,8 @@ export const paths = {
   signin: 'signin',
   profile: 'profile',
   orders: 'orders',
+  admin: 'admin',
+  stations: 'stations',
+  carriages: 'carriages',
+  routes: 'routes',
 } as const;
