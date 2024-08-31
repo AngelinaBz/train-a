@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatIcon } from '@angular/material/icon';
 
 import { CarriageFacade } from '../../../carriages/state/carriage.facade';
 import { Carriage } from '../../../carriages/state/carriage.model';
@@ -11,7 +13,7 @@ import { Route } from '../../models/route.model';
 @Component({
   selector: 'app-route-card',
   standalone: true,
-  imports: [MatCardModule, CommonModule],
+  imports: [MatCardModule, CommonModule, MatButtonModule, MatIcon],
   templateUrl: './route-card.component.html',
   styleUrl: './route-card.component.scss',
 })

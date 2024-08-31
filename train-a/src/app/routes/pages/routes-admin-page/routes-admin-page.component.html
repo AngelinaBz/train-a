@@ -1,3 +1,6 @@
 <div class="routes-container">
   <app-route-card *ngFor="let route of routes$ | async" [route]="route"></app-route-card>
 </div>
+<div class="spinner" *ngIf="isLoading$ | async">
+  <mat-spinner strokeWidth="3"></mat-spinner>
+</div>

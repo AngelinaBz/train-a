@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 import { CarriageFacade } from '../../../carriages/state/carriage.facade';
 import { StationFacade } from '../../../stations/state/station.facade';
@@ -9,12 +10,13 @@ import { RoutesFacade } from '../../state/routes.facade';
 @Component({
   selector: 'app-routes-admin-page',
   standalone: true,
-  imports: [RouteCardComponent, CommonModule],
+  imports: [RouteCardComponent, CommonModule, MatProgressSpinner],
   templateUrl: './routes-admin-page.component.html',
   styleUrl: './routes-admin-page.component.scss',
 })
 export class RoutesAdminPageComponent implements OnInit {
   routes$ = this.routesFacade.routes$;
+  isLoading$ = this.routesFacade.isLoading$;
 
   constructor(
     private routesFacade: RoutesFacade,

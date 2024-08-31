@@ -3,6 +3,21 @@
   flex-direction: column;
   gap: 10px;
 
+  mat-card-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    .buttons-container {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 5px;
+    }
+  }
+
   .route-details {
     display: flex;
     flex-direction: column;
