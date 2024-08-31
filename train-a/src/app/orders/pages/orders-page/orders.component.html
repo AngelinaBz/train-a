@@ -1,5 +1,10 @@
 <mat-toolbar color="primary">
-  <span>My Orders</span>
+  <span *ngIf="!isManager">My Orders</span>
+  <span *ngIf="isManager">Orders</span>
 </mat-toolbar>
-
-<app-order-card *ngFor="let order of sortedOrders" [order]="order"></app-order-card>
+<div class="spinner" *ngIf="isLoading$ | async">
+  <mat-spinner strokeWidth="3"> </mat-spinner>
+</div>
+<div class="orders-container">
+  <app-order-card *ngFor="let order of sortedOrders" [order]="order"></app-order-card>
+</div>
