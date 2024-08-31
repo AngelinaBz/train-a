@@ -19,7 +19,7 @@ export class UserFacade {
   isLoading$ = this.store.select(userSelectors.selectIsLoading);
   errors$ = this.store.select(userSelectors.selectErrors);
   user$ = this.store.select(userSelectors.selectUser);
-  users$ = this.store.select(userSelectors.selectAllUsers);
+  allUsers$ = this.store.select(userSelectors.selectAllUsers);
 
   constructor(private store: Store) {}
 

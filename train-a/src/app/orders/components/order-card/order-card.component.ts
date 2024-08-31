@@ -68,7 +68,7 @@ export class OrderCardComponent implements OnInit {
         this.user = user;
       }
     });
-    this.userFacade.users$.subscribe((users) => {
+    this.userFacade.allUsers$.subscribe((users) => {
       if (users) {
         this.orderUser = users.find((user) => user.id === this.order.userId);
       }
