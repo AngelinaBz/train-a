@@ -1,18 +1,19 @@
-<mat-card class="carriage-card" *ngIf="carriagesData">
-  <div class="carriage">
-    <div class="seats">
-      <div class="rows-wrapper">
-        <div class="row" *ngFor="let row of carriagesData.rightRows; let rowIndex = index">
-          <div class="seat right" *ngFor="let seat of row">{{ seat }}</div>
-        </div>
+<mat-card class="carriage" *ngIf="carriagesData">
+  <div class="carriage-info">
+    <div class="name">{{ carriagesData.name }}</div>
+    <button mat-icon-button aria-label>
+      <mat-icon>settings</mat-icon>
+    </button>
+  </div>
+  <div class="seats">
+    <div class="rows-wrapper">
+      <div class="row" *ngFor="let row of carriagesData.rightRows; let rowIndex = index">
+        <div class="seat right" *ngFor="let seat of row">{{ seat }}</div>
       </div>
-
-      <mat-divider></mat-divider>
-
-      <div class="rows-wrapper">
-        <div class="row" *ngFor="let row of carriagesData.leftRows; let rowIndex = index">
-          <div class="seat left" *ngFor="let seat of row">{{ seat }}</div>
-        </div>
+    </div>
+    <div class="rows-wrapper">
+      <div class="row" *ngFor="let row of carriagesData.leftRows; let rowIndex = index">
+        <div class="seat left" *ngFor="let seat of row">{{ seat }}</div>
       </div>
     </div>
   </div>

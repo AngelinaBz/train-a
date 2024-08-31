@@ -1,3 +1,40 @@
 <div class="carriages-container">
-  <app-carriage-card *ngFor="let carriage of carriages$ | async" [carriage]="carriage"></app-carriage-card>
+  <div class="create-form-container">
+    <button mat-raised-button color="primary" (click)="toggleForm()" class="create-button" *ngIf="!isFormVisible">Create</button>
+
+    <form *ngIf="isFormVisible" [formGroup]="carriageForm" class="carriage-form" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="fill">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Rows</mat-label>
+        <input matInput formControlName="rows" type="number" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Left Seats</mat-label>
+        <input matInput formControlName="leftSeats" type="number" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Right Seats</mat-label>
+        <input matInput formControlName="rightSeats" type="number" required />
+      </mat-form-field>
+
+      <div class="form-buttons">
+        <button mat-raised-button color="accent" type="submit">Save</button>
+        <button mat-button color="warn" type="button" (click)="onCancel()">Cancel</button>
+      </div>
+    </form>
+  </div>
+
+  <div *ngIf="isFormVisible && carriageForm.valid" class="carriage-preview">
+    <app-carriage-card [carriage]="carriageForm.value"></app-carriage-card>
+  </div>
+
+  <div class="carriages-list">
+    <app-carriage-card *ngFor="let carriage of carriages$ | async" [carriage]="carriage"></app-carriage-card>
+  </div>
 </div>

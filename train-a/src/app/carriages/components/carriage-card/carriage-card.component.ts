@@ -1,14 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
 
 import { Carriage } from '../../state/carriage.model';
 
 @Component({
   selector: 'app-carriage-card',
   standalone: true,
-  imports: [MatCardModule, CommonModule, MatDividerModule],
+  imports: [MatCardModule, CommonModule, MatButtonModule, MatIconModule],
   templateUrl: './carriage-card.component.html',
   styleUrl: './carriage-card.component.scss',
 })
@@ -16,6 +17,7 @@ export class CarriageCardComponent implements OnInit {
   @Input() carriage!: Carriage;
 
   carriagesData: {
+    name: string;
     leftSeats: number;
     rightSeats: number;
     rows: number;
@@ -31,6 +33,7 @@ export class CarriageCardComponent implements OnInit {
   }
 
   private initializeRows(carriage: Carriage): {
+    name: string;
     leftSeats: number;
     rightSeats: number;
     rows: number;
@@ -74,6 +77,7 @@ export class CarriageCardComponent implements OnInit {
       totalSeats,
       rightRows,
       leftRows,
+      name: carriage.name,
     };
   }
 }
