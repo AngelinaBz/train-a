@@ -28,4 +28,18 @@ export class Routesffects {
       }),
     );
   });
+
+  deleteRoute$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(routesActions.deleteRoute),
+      mergeMap((action) => {
+        return this.http.delete(`${this.apiUrl}/${action.routeId}`).pipe(
+          map(() => {
+            return routesActions.deleteRouteSuccess();
+          }),
+          catchError((error: HttpErrorResponse) => of(routesActions.deleteRouteFailure({ error: error.error }))),
+        );
+      }),
+    );
+  });
 }

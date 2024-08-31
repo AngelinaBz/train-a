@@ -9,3 +9,5 @@ export const selectIsLoading = createSelector(selectRoutesState, (state: RoutesS
 export const selectError = createSelector(selectRoutesState, (state: RoutesState) => state.error);
 
 export const selectRoutes = createSelector(selectRoutesState, (state: RoutesState) => state.routes);
+
+export const selectIsDeleteSuccess = createSelector(selectRoutesState, (state: RoutesState) => state.isDeleteSuccess);
