@@ -9,8 +9,8 @@ import { Roles } from '../../../user/models/Roles.model';
 import User from '../../../user/models/User.model';
 import { UserFacade } from '../../../user/state/user.facade';
 import { OrderCardComponent } from '../../components/order-card/order-card.component';
+import { Order } from '../../models/order.model';
 import { OrderFacade } from '../../state/order.facade';
-import { Order } from '../../state/order.model';
 
 @Component({
   selector: 'app-orders',

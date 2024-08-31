@@ -14,8 +14,8 @@ import { Roles } from '../../../user/models/Roles.model';
 import User from '../../../user/models/User.model';
 import UserWithId from '../../../user/models/UserWithId';
 import { UserFacade } from '../../../user/state/user.facade';
+import { Order } from '../../models/order.model';
 import { OrderFacade } from '../../state/order.facade';
-import { Order } from '../../state/order.model';
 import { CancelDialogComponent } from '../cancel-dialog/cancel-dialog.component';
 
 @Component({
