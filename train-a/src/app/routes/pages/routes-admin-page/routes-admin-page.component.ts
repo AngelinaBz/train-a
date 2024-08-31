@@ -1,21 +1,26 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { MatToolbar } from '@angular/material/toolbar';
 
+import { CarriageFacade } from '../../../carriages/state/carriage.facade';
+import { StationFacade } from '../../../stations/state/station.facade';
 import { RouteCardComponent } from '../../components/route-card/route-card.component';
 import { RoutesFacade } from '../../state/routes.facade';
 
 @Component({
   selector: 'app-routes-admin-page',
   standalone: true,
-  imports: [MatToolbar, RouteCardComponent, CommonModule],
+  imports: [RouteCardComponent, CommonModule],
   templateUrl: './routes-admin-page.component.html',
   styleUrl: './routes-admin-page.component.scss',
 })
 export class RoutesAdminPageComponent implements OnInit {
   routes$ = this.routesFacade.routes$;
 
-  constructor(private routesFacade: RoutesFacade) {}
+  constructor(
+    private routesFacade: RoutesFacade,
+    private stationFacade: StationFacade,
+    private carriageFacade: CarriageFacade,
+  ) {}
 
   ngOnInit() {
     this.routesFacade.loadRoutes();
@@ -24,5 +29,7 @@ export class RoutesAdminPageComponent implements OnInit {
         console.log(routes);
       }
     });
+    this.carriageFacade.loadCarriages();
+    this.stationFacade.loadStations();
   }
 }

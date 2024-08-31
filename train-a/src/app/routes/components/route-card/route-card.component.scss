@@ -1,0 +1,25 @@
+.route-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  .route-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 10px;
+
+    p {
+      margin: 0;
+      font-weight: 700;
+    }
+  }
+}
+
+.stations,
+.carriages {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 5px;
+}

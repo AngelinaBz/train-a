@@ -1,1 +1,22 @@
-<p>route-card works!</p>
+<mat-card class="route-card">
+  <mat-card-header>
+    <mat-card-title>Route {{ route.id }} </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content class="route-details">
+    <p>Stations:</p>
+    <div class="stations">
+      <div *ngFor="let station of stations; let i = index">
+        {{ station.city }}
+        <span *ngIf="i < stations.length - 1"> - </span>
+      </div>
+    </div>
+    <p>Carriage Classes:</p>
+    <div class="carriages">
+      <div *ngFor="let carriage of carriages; let i = index">
+        {{ carriage.name }}
+        <span *ngIf="i < carriages.length - 1"> - </span>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

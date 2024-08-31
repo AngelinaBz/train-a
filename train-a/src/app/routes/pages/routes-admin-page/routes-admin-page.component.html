@@ -1,5 +1,3 @@
-<mat-toolbar color="primary">
-  <span>Routes</span>
-</mat-toolbar>
-
-<app-route-card *ngFor="let route of routes$ | async" [route]="route"></app-route-card>
+<div class="routes-container">
+  <app-route-card *ngFor="let route of routes$ | async" [route]="route"></app-route-card>
+</div>
