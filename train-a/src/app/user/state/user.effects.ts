@@ -4,6 +4,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, of } from 'rxjs';
 
 import User from '../models/User.model';
+import UserWithId from '../models/UserWithId';
 import * as userActions from './user.actions';
 
 export const getUserProfile = createEffect(
@@ -53,6 +54,20 @@ export const updateUserPassword = createEffect(
             map(() => userActions.updateUserPasswordSuccess()),
             catchError((error: HttpErrorResponse) => of(userActions.updateUserPasswordFailure({ error: error.error }))),
           ),
+      ),
+    );
+  },
+  { functional: true },
+);
+export const getAllUsers = createEffect(
+  (actions$ = inject(Actions), http = inject(HttpClient)) => {
+    return actions$.pipe(
+      ofType(userActions.getAllUsers),
+      mergeMap(() =>
+        http.get<UserWithId[]>('/api/users').pipe(
+          map((response) => userActions.getAllUsersSuccess({ users: response })),
+          catchError((error: HttpErrorResponse) => of(userActions.getAllUsersFailure({ error: error.error }))),
+        ),
       ),
     );
   },
