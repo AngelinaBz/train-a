@@ -4,9 +4,7 @@ import { ApiError } from '../../shared/models/ApiError.model';
 import { Station, StationWithoutId } from '../models/station.model';
 
 export const loadStations = createAction('[Stations] Load Stations');
-
 export const loadStationsSuccess = createAction('[Stations] Load Stations Success', props<{ stations: Station[] }>());
-
 export const loadStationsFailure = createAction('[Stations] Load Stations Failure', props<{ error: ApiError }>());
 
 export const createStation = createAction('[Station] Create Station', props<{ station: StationWithoutId }>());

@@ -8,6 +8,8 @@ import { CarriageAdminPageComponent } from './carriages/pages/carriage-admin-pag
 import { OrdersComponent } from './orders/pages/orders.component';
 import { paths } from './shared/configs/paths';
 import { StationAdminPageComponent } from './stations/pages/station-admin-page/station-admin-page.component';
+import { roleGuard } from './user/guards/role/role.guard';
+import { Roles } from './user/models/Roles.model';
 import { ProfilePageComponent } from './user/pages/profile-page/profile-page.component';
 
 export const routes: Routes = [
@@ -44,6 +46,13 @@ export const routes: Routes = [
   {
     path: 'admin',
     component: AdminComponent,
+    canActivate: [
+      authGuard({ needAuth: true, redirectTo: paths.signin }),
+      roleGuard({
+        roles: [Roles.MANAGER],
+        redirectTo: paths.main,
+      }),
+    ],
     children: [
       { path: '', redirectTo: 'stations', pathMatch: 'full' },
       { path: 'stations', component: StationAdminPageComponent },
