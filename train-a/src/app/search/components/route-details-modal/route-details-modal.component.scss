@@ -1,0 +1,89 @@
+.route-wrapper {
+  .route {
+    display: grid;
+    min-width: 370px;
+    grid-template-columns: auto auto auto;
+
+    &__time {
+      display: flex;
+      flex-direction: column;
+      padding: 10px 10px 10px 0;
+    }
+
+    &__stop {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 10px;
+    }
+
+    &__stop-title {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    &__station-text {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      align-items: center;
+      padding-left: 15px;
+    }
+
+    &__station {
+      position: relative;
+
+      &::after {
+        position: absolute;
+        top: 35%;
+        left: -7px;
+        width: 11px;
+        height: 11px;
+        border: 2px darkblue solid;
+        border-radius: 100%;
+        background-color: white;
+        content: '';
+      }
+
+      &::before {
+        position: absolute;
+        left: 0;
+        width: 2px;
+        height: 100%;
+        background-color: darkblue;
+        content: '';
+      }
+
+      &--first {
+        &::after {
+          box-shadow: 0 0 0 6px rgb(126 128 129 / 70%);
+        }
+
+        &::before {
+          bottom: 0;
+          height: 50%;
+        }
+      }
+
+      &--last {
+        &::after {
+          border-color: darkblue;
+          background-color: darkblue;
+          box-shadow: 0 0 0 6px rgb(126 128 129 / 70%);
+        }
+
+        &::before {
+          top: 0;
+          height: 50%;
+        }
+      }
+    }
+  }
+
+  .spinner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

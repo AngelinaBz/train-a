@@ -30,6 +30,7 @@ export class SignupFormComponent implements OnInit {
   isSubmitted = false;
   authError$ = this.authFacade.authError$;
   isRegistered$ = this.authFacade.isRegistered$;
+  isLoading$ = this.authFacade.isLoading$;
 
   matcher: ErrorStateMatcher = {
     isErrorState: (control: FormControl | null): boolean => !!(control && control.invalid && (control.dirty || control.touched)),

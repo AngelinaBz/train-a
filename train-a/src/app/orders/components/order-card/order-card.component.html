@@ -1,0 +1,25 @@
+<mat-card class="order-card">
+  <mat-card-header>
+    <mat-card-title>{{ startStationName.toUpperCase() }} - {{ endStationName.toUpperCase() }} </mat-card-title>
+    <p class="order-details__price">{{ totalPrice }}cu</p>
+    <p *ngIf="status === 'canceled'">{{ status }}</p>
+    <button mat-mini-fab *ngIf="status === 'active'" (click)="cancelOrder()">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </mat-card-header>
+
+  <mat-card-content class="order-details">
+    <div class="order-details__time-carriage">
+      <div class="order-time">
+        <div class="start-time">{{ startTime | date: 'MMMM dd, HH:mm' }}</div>
+        <div class="duration">{{ duration }}</div>
+        <div class="end-time">{{ endTime | date: 'MMMM dd, HH:mm' }}</div>
+      </div>
+      <div class="order-carriage">
+        <div class="carriage-type">Carriage type: {{ carriageName }}</div>
+        <div class="carriage-number">Car: {{ carriageNumber }}</div>
+        <div class="seat">Seat: {{ seatNumber }}</div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
