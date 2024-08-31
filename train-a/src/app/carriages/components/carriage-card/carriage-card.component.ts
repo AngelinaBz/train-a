@@ -17,7 +17,6 @@ import { Carriage } from '../../state/carriage.model';
 export class CarriageCardComponent implements OnInit {
   @Input() carriage!: Carriage;
   @Output() editCarriage = new EventEmitter<Carriage>();
-  isEditing = false;
   @Output() deleteCarriage = new EventEmitter<Carriage>();
 
   carriagesData: {
@@ -31,7 +30,6 @@ export class CarriageCardComponent implements OnInit {
   } | null = null;
 
   ngOnInit(): void {
-    this.isEditing = true;
     if (this.carriage) {
       this.carriagesData = this.initializeRows(this.carriage);
     }
@@ -87,7 +85,6 @@ export class CarriageCardComponent implements OnInit {
   }
 
   onUpdate() {
-    this.isEditing = true;
     this.editCarriage.emit(this.carriage);
   }
 

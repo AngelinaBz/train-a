@@ -83,12 +83,10 @@ export class CarriageAdminPageComponent {
     this.selectedCarriage = null;
   }
 
-  onEditCarriage(carriage: Carriage, isEditing: boolean) {
-    if (isEditing) {
-      this.selectedCarriage = carriage;
-      this.carriageForm.patchValue(carriage);
-      this.isFormVisible = true;
-    }
+  onEditCarriage(carriage: Carriage) {
+    this.selectedCarriage = carriage;
+    this.carriageForm.patchValue(JSON.parse(JSON.stringify(carriage)));
+    this.isFormVisible = true;
   }
 
   onDeleteCarriage(carriage: Carriage) {

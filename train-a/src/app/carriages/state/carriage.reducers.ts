@@ -100,12 +100,7 @@ export const carriageReducer = createReducer(
       ...state,
       getCarriages: {
         ...state.getCarriages,
-        carriages: [...state.getCarriages.carriages, carriage],
-      },
-      createCarriage: {
-        carriage,
-        isLoading: false,
-        error: null,
+        carriages: [carriage, ...state.getCarriages.carriages],
       },
     }),
   ),

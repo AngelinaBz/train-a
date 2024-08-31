@@ -29,15 +29,11 @@
     </form>
   </div>
 
-  <div *ngIf="isFormVisible && carriageForm.valid" class="carriage-preview">
-    <app-carriage-card [carriage]="carriageForm.value"></app-carriage-card>
-  </div>
-
   <div class="carriages-list">
     <app-carriage-card
       *ngFor="let carriage of carriages$ | async"
       [carriage]="carriage"
-      (editCarriage)="onEditCarriage($event, true)"
+      (editCarriage)="onEditCarriage($event)"
       (deleteCarriage)="onDeleteCarriage($event)"
     >
     </app-carriage-card>
