@@ -2,11 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
-import { CarriageFacade } from '../../carriages/state/carriage.facade';
-import { StationFacade } from '../../stations/state/station.facade';
-import { OrderCardComponent } from '../components/order-card/order-card.component';
-import { OrderFacade } from '../state/order.facade';
-import { Order } from '../state/order.model';
+import { CarriageFacade } from '../../../carriages/state/carriage.facade';
+import { StationFacade } from '../../../stations/state/station.facade';
+import { OrderCardComponent } from '../../components/order-card/order-card.component';
+import { OrderFacade } from '../../state/order.facade';
+import { Order } from '../../state/order.model';
 
 @Component({
   selector: 'app-orders',
