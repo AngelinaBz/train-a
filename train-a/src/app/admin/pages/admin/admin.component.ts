@@ -2,13 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, Router, RouterLink, RouterModule } from '@angular/router';
 
-import { CarriagesComponent } from '../../components/carriages/carriages.component';
-import { StationsComponent } from '../../components/stations/stations.component';
-
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [RouterModule, RouterLink, StationsComponent, CarriagesComponent, MatTabsModule],
+  imports: [RouterModule, RouterLink, MatTabsModule],
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.scss',
 })

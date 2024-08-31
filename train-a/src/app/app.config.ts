@@ -6,8 +6,6 @@ import { provideEffects } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 
-import { StationEffects } from './admin/state/station.effects';
-import { stationReducer } from './admin/state/station.reducer';
 import { routes } from './app.routes';
 import authInterceptor from './auth/interceptors/auth.interceptor';
 import { AuthEffects } from './auth/state/auth.effects';
@@ -34,6 +32,9 @@ export const providers = [
     user: userReducer,
     auth: authReducer,
     station: stationReducer,
+    order: orderReducer,
+    carriage: carriageReducer,
+    details: detailsReducer,
   }),
   provideEffects(userEffects, AuthEffects, OrderEffects, StationEffects, CarriageEffects, detailsEffects),
   provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),

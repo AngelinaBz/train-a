@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { providers } from '../../../../app.config';
+import { providers } from '../../../app.config';
 import { StationCardComponent } from './station-card.component';
 
 describe('StationCardComponent', () => {
