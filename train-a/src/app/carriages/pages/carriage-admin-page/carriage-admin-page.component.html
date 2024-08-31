@@ -1,1 +1,3 @@
-<p>carriage-admin-page works!</p>
+<div class="carriages-container">
+  <app-carriage-card *ngFor="let carriage of carriages$ | async" [carriage]="carriage"></app-carriage-card>
+</div>
