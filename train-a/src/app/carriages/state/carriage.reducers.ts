@@ -167,4 +167,15 @@ export const carriageReducer = createReducer(
       },
     }),
   ),
+  on(
+    CarriageActions.deleteCarriageFailure,
+    (state, { error }): CarriageState => ({
+      ...state,
+      deleteCarriage: {
+        ...state.deleteCarriage,
+        error,
+        isLoading: false,
+      },
+    }),
+  ),
 );

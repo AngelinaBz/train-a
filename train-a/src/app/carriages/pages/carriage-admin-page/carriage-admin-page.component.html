@@ -5,6 +5,7 @@
       <mat-form-field appearance="fill">
         <mat-label>Name</mat-label>
         <input matInput formControlName="name" required />
+        <mat-error *ngIf="carriageForm.get('name')?.hasError('uniqueName')"> This name is already taken. </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="fill">
@@ -28,7 +29,9 @@
       </div>
     </form>
   </div>
-
+  <mat-error *ngIf="deleteError$ | async as deleteError">
+    {{ deleteError.message }}
+  </mat-error>
   <div class="carriages-list">
     <app-carriage-card
       *ngFor="let carriage of carriages$ | async"

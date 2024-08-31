@@ -39,7 +39,7 @@ export class CarriageEffects {
             };
             return carriageActions.createCarriageSuccess({ carriage: createdCarriage });
           }),
-          catchError((error) => of(carriageActions.createCarriageFailure({ error }))),
+          catchError((error: HttpErrorResponse) => of(carriageActions.createCarriageFailure({ error: error.error }))),
         ),
       ),
     );
@@ -69,7 +69,7 @@ export class CarriageEffects {
       mergeMap(({ code }) =>
         this.http.delete<void>(`${this.apiUrl}/${code}`).pipe(
           map(() => carriageActions.deleteCarriageSuccess({ code })),
-          catchError((error) => of(carriageActions.deleteCarriageFailure({ error }))),
+          catchError((error: HttpErrorResponse) => of(carriageActions.deleteCarriageFailure({ error: error.error }))),
         ),
       ),
     );

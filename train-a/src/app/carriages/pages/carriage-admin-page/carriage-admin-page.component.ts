@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 
+import { uniqueNameValidator } from '../../../shared/validators/carriage-name.validator';
 import { CarriageCardComponent } from '../../components/carriage-card/carriage-card.component';
 import { CarriageFacade } from '../../state/carriage.facade';
 import { Carriage } from '../../state/carriage.model';
@@ -27,21 +28,24 @@ import { Carriage } from '../../state/carriage.model';
   templateUrl: './carriage-admin-page.component.html',
   styleUrl: './carriage-admin-page.component.scss',
 })
-export class CarriageAdminPageComponent {
+export class CarriageAdminPageComponent implements OnInit {
   carriages$ = this.carriageFacade.carriages$;
   isLoading$ = this.carriageFacade.isLoading$;
+  deleteError$ = this.carriageFacade.deleteError$;
   isFormVisible = false;
-  carriageForm: FormGroup;
+  carriageForm!: FormGroup;
   selectedCarriage: Carriage | null = null;
 
   constructor(
     private carriageFacade: CarriageFacade,
     private fb: FormBuilder,
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     this.carriageFacade.loadCarriages();
 
     this.carriageForm = this.fb.group({
-      name: ['', Validators.required],
+      name: ['', [Validators.required], [uniqueNameValidator(this.carriageFacade)]],
       rows: [0, [Validators.required, Validators.min(1)]],
       leftSeats: [0, [Validators.required, Validators.min(1)]],
       rightSeats: [0, [Validators.required, Validators.min(1)]],
