@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { GoogleMapsModule } from '@angular/google-maps';
 
-import { Marker } from '../../../models/map.model';
-import { MapService } from '../../../services/map/map.service';
+import { Marker } from '../../../shared/models/map.model';
+import { MapService } from '../../../shared/services/map/map.service';
 
 @Component({
   selector: 'app-map',

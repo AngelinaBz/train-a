@@ -4,8 +4,16 @@ import { StationState } from './station.reducers';
 
 export const selectStationState = createFeatureSelector<StationState>('station');
 
-export const selectIsLoading = createSelector(selectStationState, (state: StationState) => state.isLoading);
+export const selectGetStationsIsLoading = createSelector(
+  selectStationState,
+  (state: StationState) => state.getStations.isLoading,
+);
 
-export const selectError = createSelector(selectStationState, (state: StationState) => state.error);
+export const selectGetStationsError = createSelector(selectStationState, (state: StationState) => state.getStations.error);
 
-export const selectStations = createSelector(selectStationState, (state: StationState) => state.stations);
+export const selectStations = createSelector(selectStationState, (state: StationState) => state.getStations.stations);
+
+export const selectDeleteStationIsLoading = createSelector(
+  selectStationState,
+  (state: StationState) => state.deleteStation.isLoading,
+);

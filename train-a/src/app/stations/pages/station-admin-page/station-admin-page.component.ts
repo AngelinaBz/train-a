@@ -9,12 +9,12 @@ import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { Subject, takeUntil } from 'rxjs';
 
+import { MapService } from '../../../shared/services/map/map.service';
 import { cityNameValidator, latitudeValidator, longitudeValidator } from '../../../shared/validators/station-validation';
-import { Station, StationResponse } from '../../models/map.model';
-import { MapService } from '../../services/map/map.service';
+import { MapComponent } from '../../components/map/map.component';
+import { StationCardComponent } from '../../components/station-card/station-card.component';
+import { Station, StationWithoutId } from '../../models/station.model';
 import { StationFacade } from '../../state/station.facade';
-import { MapComponent } from './map/map.component';
-import { StationCardComponent } from './station-card/station-card.component';
 
 @Component({
   selector: 'app-stations',
@@ -32,15 +32,15 @@ import { StationCardComponent } from './station-card/station-card.component';
     MatListModule,
     MatDividerModule,
   ],
-  templateUrl: './stations.component.html',
-  styleUrl: './stations.component.scss',
+  templateUrl: './station-admin-page.component.html',
+  styleUrl: './station-admin-page.component.scss',
 })
-export class StationsComponent implements OnInit, OnDestroy {
+export class StationAdminPageComponent implements OnInit, OnDestroy {
   stationForm!: FormGroup;
   errorMessage!: string | null;
   successMessage!: string | null;
-  loading$ = this.stationFacade.loading$;
-  allStations$ = this.stationFacade.allStations$;
+  loading$ = this.stationFacade.isLoading$;
+  allStations$ = this.stationFacade.stations$;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -119,9 +119,9 @@ export class StationsComponent implements OnInit, OnDestroy {
   saveConnection(): void {
     if (this.stationForm.valid) {
       const selectedCities = this.stationForm.value.connections.map(
-        (connection: { stationName: StationResponse }) => connection.stationName,
+        (connection: { stationName: Station }) => connection.stationName,
       );
-      const selectedCitiesIds = selectedCities.map((conn: StationResponse) => conn.city);
+      const selectedCitiesIds = selectedCities.map((conn: Station) => conn.city);
       const hasDuplicates = selectedCitiesIds.some((city: string, index: number) => selectedCitiesIds.indexOf(city) !== index);
 
       if (hasDuplicates) {
@@ -129,14 +129,15 @@ export class StationsComponent implements OnInit, OnDestroy {
         return;
       }
 
-      const stationData: Station = {
+      const stationData: StationWithoutId = {
         city: this.stationForm.value.cityName,
         latitude: this.stationForm.value.latitude,
         longitude: this.stationForm.value.longitude,
-        relations: this.stationForm.value.connections.map((conn: { stationName: StationResponse }) => conn.stationName.id),
+        relations: this.stationForm.value.connections.map((conn: { stationName: Station }) => conn.stationName.id),
+        connectedTo: selectedCities,
       };
 
-      this.stationFacade.createStation(stationData, selectedCities);
+      this.stationFacade.createStation(stationData);
 
       this.successMessage = 'Station connection successfully created';
       this.resetForm();
