@@ -1,26 +1,48 @@
-<div class="stations-container">
+<div class="stations-page-container">
   <div class="map-data-container">
     <div class="map-wrapper">
       <app-map></app-map>
     </div>
-
-    <div class="station-inputs-container">
+    <div class="station-inputs-container" [formGroup]="stationForm">
       <mat-form-field appearance="fill" class="input">
         <mat-label>City name</mat-label>
-        <input matInput placeholder="Enter city name" [(ngModel)]="city" />
+        <input #cityNameInput matInput placeholder="Enter city name" formControlName="cityName" />
       </mat-form-field>
 
       <mat-form-field appearance="fill" class="input">
         <mat-label>Latitude</mat-label>
-        <input matInput type="number" placeholder="Enter latitude" step="1" [(ngModel)]="latitude" />
+        <input matInput type="number" placeholder="Enter latitude" step="1" formControlName="latitude" />
       </mat-form-field>
 
       <mat-form-field appearance="fill" class="input">
         <mat-label>Longitude</mat-label>
-        <input matInput type="number" placeholder="Enter longitude" step="1" [(ngModel)]="longitude" />
+        <input matInput type="number" placeholder="Enter longitude" step="1" formControlName="longitude" />
       </mat-form-field>
 
-      <button mat-raised-button (click)="addMarker()">Save</button>
+      <div formArrayName="connections">
+        Connected Stations
+        <div *ngFor="let connection of connections.controls; let i = index" [formGroupName]="i" class="connection-item">
+          <mat-form-field appearance="fill" class="input">
+            <mat-label>Choose station</mat-label>
+            <mat-select formControlName="stationName" (selectionChange)="onConnectionSelect(i)">
+              <mat-option *ngFor="let station of allStations$ | async" [value]="station">
+                {{ station.city }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <button *ngIf="connections.length > 1" mat-icon-button class="remove-button" (click)="removeConnection(i)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+        <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+      </div>
+      <button mat-raised-button class="save-button" (click)="saveConnection()">Save</button>
+      <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
     </div>
+  </div>
+  <div *ngIf="(loading$ | async) === true">Loading...</div>
+  <div *ngIf="(loading$ | async) === false" class="stations-list-container">
+    <app-station-card *ngFor="let station of allStations$ | async" [station]="station"></app-station-card>
   </div>
 </div>

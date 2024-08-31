@@ -1,11 +1,12 @@
 @import '../../../../styles';
 
-.stations-container {
+.stations-page-container {
   display: flex;
   width: 100%;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin: 25px 0;
   gap: 30px;
 
   .map-data-container {
@@ -23,8 +24,50 @@
       gap: 20px;
 
       .input {
+        width: 100%;
         min-width: 100px;
+      }
+
+      .connection-item {
+        display: flex;
+        width: 100%;
+        align-items: center;
+
+        .remove-button {
+          padding: 0;
+          border: none;
+          background-color: transparent;
+
+          mat-icon {
+            color: #f44336;
+            font-size: 20px;
+          }
+        }
       }
     }
   }
+
+  .stations-list-container {
+    display: flex;
+    width: 100%;
+    max-width: 800px;
+    max-height: 400px;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 10px;
+    overflow-y: scroll;
+  }
+}
+
+.error-message {
+  margin-top: -10px;
+  color: $error-color;
+  font-size: 0.7rem;
+}
+
+.success-message {
+  margin-top: -10px;
+  color: $success-color;
+  font-size: 0.7rem;
+  font-weight: 600;
 }

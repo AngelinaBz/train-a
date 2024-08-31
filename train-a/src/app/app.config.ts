@@ -6,6 +6,8 @@ import { provideEffects } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 
+import { StationEffects } from './admin/state/station.effects';
+import { stationReducer } from './admin/state/station.reducer';
 import { routes } from './app.routes';
 import authInterceptor from './auth/interceptors/auth.interceptor';
 import { AuthEffects } from './auth/state/auth.effects';
@@ -23,6 +25,7 @@ import { userReducer } from './user/state/user.reducers';
 
 export const providers = [
   importProvidersFrom(HttpClientModule),
+  provideHttpClient(withInterceptors([authInterceptor])),
   provideZoneChangeDetection({ eventCoalescing: true }),
   provideRouter(routes),
   provideAnimationsAsync(),
@@ -30,10 +33,7 @@ export const providers = [
   provideStore({
     user: userReducer,
     auth: authReducer,
-    order: orderReducer,
     station: stationReducer,
-    carriage: carriageReducer,
-    details: detailsReducer,
   }),
   provideEffects(userEffects, AuthEffects, OrderEffects, StationEffects, CarriageEffects, detailsEffects),
   provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
