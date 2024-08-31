@@ -26,4 +26,8 @@ export class CarriageFacade {
   updateCarriage(carriage: Carriage): void {
     this.store.dispatch(CarriageActions.updateCarriage({ carriage }));
   }
+
+  deleteCarriage(code: string): void {
+    this.store.dispatch(CarriageActions.deleteCarriage({ code }));
+  }
 }

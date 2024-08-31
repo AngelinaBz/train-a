@@ -62,4 +62,16 @@ export class CarriageEffects {
       ),
     );
   });
+
+  deleteCarriage$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(carriageActions.deleteCarriage),
+      mergeMap(({ code }) =>
+        this.http.delete<void>(`${this.apiUrl}/${code}`).pipe(
+          map(() => carriageActions.deleteCarriageSuccess({ code })),
+          catchError((error) => of(carriageActions.deleteCarriageFailure({ error }))),
+        ),
+      ),
+    );
+  });
 }

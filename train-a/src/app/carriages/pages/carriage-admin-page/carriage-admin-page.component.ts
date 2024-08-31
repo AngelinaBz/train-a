@@ -92,7 +92,6 @@ export class CarriageAdminPageComponent {
   }
 
   onDeleteCarriage(carriage: Carriage) {
-    console.log('carriage delited', carriage.code);
-    // this.carriageFacade.deleteCarriage(carriage);
+    this.carriageFacade.deleteCarriage(carriage.code);
   }
 }

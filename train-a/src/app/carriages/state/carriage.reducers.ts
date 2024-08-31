@@ -20,6 +20,10 @@ export interface CarriageState {
     isLoading: boolean;
     error: ApiError | null;
   };
+  deleteCarriage: {
+    isLoading: boolean;
+    error: ApiError | null;
+  };
 }
 
 export const initialState: CarriageState = {
@@ -35,6 +39,10 @@ export const initialState: CarriageState = {
   },
   updateCarriage: {
     carriage: null,
+    isLoading: false,
+    error: null,
+  },
+  deleteCarriage: {
     isLoading: false,
     error: null,
   },
@@ -112,8 +120,6 @@ export const carriageReducer = createReducer(
       },
     }),
   ),
-
-  // Update Carriage
   on(
     CarriageActions.updateCarriage,
     (state): CarriageState => ({
@@ -147,6 +153,22 @@ export const carriageReducer = createReducer(
         ...state.updateCarriage,
         error,
         isLoading: false,
+      },
+    }),
+  ),
+  on(
+    CarriageActions.deleteCarriage,
+    (state): CarriageState => ({
+      ...state,
+    }),
+  ),
+  on(
+    CarriageActions.deleteCarriageSuccess,
+    (state, { code }): CarriageState => ({
+      ...state,
+      getCarriages: {
+        ...state.getCarriages,
+        carriages: state.getCarriages.carriages.filter((c) => c.code !== code),
       },
     }),
   ),

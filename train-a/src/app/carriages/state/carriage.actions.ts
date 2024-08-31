@@ -14,3 +14,7 @@ export const createCarriageFailure = createAction('[Carriages] Create Carriage F
 export const updateCarriage = createAction('[Carriages] Update Carriage', props<{ carriage: Carriage }>());
 export const updateCarriageSuccess = createAction('[Carriages] Update Carriage Success', props<{ carriage: Carriage }>());
 export const updateCarriageFailure = createAction('[Carriages] Update Carriage Failure', props<{ error: ApiError }>());
+
+export const deleteCarriage = createAction('[Carriages] Delete Carriage', props<{ code: string }>());
+export const deleteCarriageSuccess = createAction('[Carriages] Delete Carriage Success', props<{ code: string }>());
+export const deleteCarriageFailure = createAction('[Carriages] Delete Carriage Failure', props<{ error: ApiError }>());
