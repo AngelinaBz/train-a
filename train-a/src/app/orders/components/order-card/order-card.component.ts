@@ -10,6 +10,10 @@ import { map } from 'rxjs';
 import { CarriageFacade } from '../../../carriages/state/carriage.facade';
 import { Carriage } from '../../../carriages/state/carriage.model';
 import { StationFacade } from '../../../stations/state/station.facade';
+import { Roles } from '../../../user/models/Roles.model';
+import User from '../../../user/models/User.model';
+import UserWithId from '../../../user/models/UserWithId';
+import { UserFacade } from '../../../user/state/user.facade';
 import { OrderFacade } from '../../state/order.facade';
 import { Order } from '../../state/order.model';
 import { CancelDialogComponent } from '../cancel-dialog/cancel-dialog.component';
@@ -24,8 +28,12 @@ import { CancelDialogComponent } from '../cancel-dialog/cancel-dialog.component'
 export class OrderCardComponent implements OnInit {
   @Input() order!: Order;
 
+  user?: User;
+  orderUser?: UserWithId;
+
   stations$ = this.stationFacade.stations$;
   carriages$ = this.carriageFacade.carriages$;
+
   status: string = '';
   startStationName: string = '';
   startIndex: number = 0;
@@ -43,6 +51,7 @@ export class OrderCardComponent implements OnInit {
     private orderFacade: OrderFacade,
     private stationFacade: StationFacade,
     private carriageFacade: CarriageFacade,
+    private userFacade: UserFacade,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
   ) {}
@@ -54,6 +63,16 @@ export class OrderCardComponent implements OnInit {
       this.loadCarriageData();
       this.initializeTimes();
     }
+    this.userFacade.user$.subscribe((user) => {
+      if (user) {
+        this.user = user;
+      }
+    });
+    this.userFacade.users$.subscribe((users) => {
+      if (users) {
+        this.orderUser = users.find((user) => user.id === this.order.userId);
+      }
+    });
   }
 
   loadStationsData() {
@@ -129,7 +148,13 @@ export class OrderCardComponent implements OnInit {
   }
 
   cancelOrder() {
-    const dialogRef = this.dialog.open(CancelDialogComponent);
+    const dialogData =
+      this.user?.role === Roles.MANAGER
+        ? { orderId: this.order.id, userEmail: this.orderUser?.email, userName: this.orderUser?.name }
+        : {};
+    const dialogRef = this.dialog.open(CancelDialogComponent, {
+      data: dialogData,
+    });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.orderFacade.cancelOrder(this.order.id);
@@ -138,7 +163,7 @@ export class OrderCardComponent implements OnInit {
             this.snackBar.open('The order has been successfully cancelled', 'Close', {
               duration: 3000,
             });
-            this.orderFacade.loadOrders();
+            this.orderFacade.loadOrders(this.user?.role === Roles.MANAGER);
           }
         });
         this.orderFacade.orderError$.subscribe((error) => {

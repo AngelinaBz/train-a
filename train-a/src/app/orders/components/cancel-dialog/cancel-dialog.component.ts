@@ -1,12 +1,19 @@
-import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-cancel-dialog',
   standalone: true,
-  imports: [MatButtonModule, MatDialogModule],
+  imports: [CommonModule, MatButtonModule, MatDialogModule],
   templateUrl: './cancel-dialog.component.html',
   styleUrl: './cancel-dialog.component.scss',
 })
-export class CancelDialogComponent {}
+export class CancelDialogComponent {
+  dialogData: {
+    orderId: number;
+    userEmail: string;
+    userName: string;
+  } = inject(MAT_DIALOG_DATA);
+}
