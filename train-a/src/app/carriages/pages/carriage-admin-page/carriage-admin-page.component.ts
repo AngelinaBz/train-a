@@ -8,6 +8,7 @@ import { MatSelectModule } from '@angular/material/select';
 
 import { CarriageCardComponent } from '../../components/carriage-card/carriage-card.component';
 import { CarriageFacade } from '../../state/carriage.facade';
+import { Carriage } from '../../state/carriage.model';
 
 @Component({
   selector: 'app-carriage-admin-page',
@@ -31,6 +32,7 @@ export class CarriageAdminPageComponent {
   isLoading$ = this.carriageFacade.isLoading$;
   isFormVisible = false;
   carriageForm: FormGroup;
+  selectedCarriage: Carriage | null = null;
 
   constructor(
     private carriageFacade: CarriageFacade,
@@ -48,14 +50,25 @@ export class CarriageAdminPageComponent {
 
   toggleForm() {
     this.isFormVisible = !this.isFormVisible;
+    if (!this.isFormVisible) {
+      this.onCancel();
+    }
   }
 
-  onSubmit() {
+  onSave() {
     if (this.carriageForm.valid) {
-      const newCarriage = this.carriageForm.value;
-      this.carriageFacade.createarriage(newCarriage);
-      console.log('newCarriage', newCarriage);
-      this.isFormVisible = false;
+      if (this.selectedCarriage) {
+        const updatedCarriage: Carriage = {
+          ...this.selectedCarriage,
+          ...this.carriageForm.value,
+        };
+        this.carriageFacade.updateCarriage(updatedCarriage);
+      } else {
+        const newCarriage = this.carriageForm.value;
+        this.carriageFacade.createCarriage(newCarriage);
+      }
+      console.log('Submitted Carriage:', this.carriageForm.value);
+      this.onCancel();
     }
   }
 
@@ -67,5 +80,19 @@ export class CarriageAdminPageComponent {
       rightSeats: 0,
     });
     this.isFormVisible = false;
+    this.selectedCarriage = null;
+  }
+
+  onEditCarriage(carriage: Carriage, isEditing: boolean) {
+    if (isEditing) {
+      this.selectedCarriage = carriage;
+      this.carriageForm.patchValue(carriage);
+      this.isFormVisible = true;
+    }
+  }
+
+  onDeleteCarriage(carriage: Carriage) {
+    console.log('carriage delited', carriage.code);
+    // this.carriageFacade.deleteCarriage(carriage);
   }
 }

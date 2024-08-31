@@ -20,6 +20,22 @@
       color: $text-color;
       font-weight: bold;
     }
+
+    .settings-button {
+      transition: transform 0.3s ease;
+
+      &:hover {
+        transform: rotate(90deg);
+      }
+    }
+
+    mat-menu {
+      button {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+    }
   }
 
   .seats {

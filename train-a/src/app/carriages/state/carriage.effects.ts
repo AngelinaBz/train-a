@@ -48,12 +48,18 @@ export class CarriageEffects {
   updateCarriage$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(carriageActions.updateCarriage),
-      mergeMap((actions) => {
-        return this.http.get<Carriage>(`${this.apiUrl}/${actions.carriage.code}`).pipe(
-          map((carriage) => carriageActions.updateCarriageSuccess({ carriage })),
+      mergeMap(({ carriage }) =>
+        this.http.put<{ code: string }>(`${this.apiUrl}/${carriage.code}`, carriage).pipe(
+          map((response) => {
+            const updatedCarriage = {
+              ...carriage,
+              code: response.code,
+            };
+            return carriageActions.updateCarriageSuccess({ carriage: updatedCarriage });
+          }),
           catchError((error) => of(carriageActions.updateCarriageFailure({ error }))),
-        );
-      }),
+        ),
+      ),
     );
   });
 }

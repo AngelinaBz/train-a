@@ -1,8 +1,7 @@
 <div class="carriages-container">
   <div class="create-form-container">
     <button mat-raised-button color="primary" (click)="toggleForm()" class="create-button" *ngIf="!isFormVisible">Create</button>
-
-    <form *ngIf="isFormVisible" [formGroup]="carriageForm" class="carriage-form" (ngSubmit)="onSubmit()">
+    <form *ngIf="isFormVisible" [formGroup]="carriageForm" class="carriage-form" (ngSubmit)="onSave()">
       <mat-form-field appearance="fill">
         <mat-label>Name</mat-label>
         <input matInput formControlName="name" required />
@@ -35,6 +34,12 @@
   </div>
 
   <div class="carriages-list">
-    <app-carriage-card *ngFor="let carriage of carriages$ | async" [carriage]="carriage"></app-carriage-card>
+    <app-carriage-card
+      *ngFor="let carriage of carriages$ | async"
+      [carriage]="carriage"
+      (editCarriage)="onEditCarriage($event, true)"
+      (deleteCarriage)="onDeleteCarriage($event)"
+    >
+    </app-carriage-card>
   </div>
 </div>

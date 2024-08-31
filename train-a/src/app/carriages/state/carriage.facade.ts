@@ -19,7 +19,11 @@ export class CarriageFacade {
     this.store.dispatch(CarriageActions.loadCarriages());
   }
 
-  createarriage(carriage: Carriage): void {
+  createCarriage(carriage: Carriage): void {
     this.store.dispatch(CarriageActions.createCarriage({ carriage }));
+  }
+
+  updateCarriage(carriage: Carriage): void {
+    this.store.dispatch(CarriageActions.updateCarriage({ carriage }));
   }
 }

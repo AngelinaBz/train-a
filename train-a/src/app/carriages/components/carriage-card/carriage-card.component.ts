@@ -1,20 +1,24 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 
 import { Carriage } from '../../state/carriage.model';
 
 @Component({
   selector: 'app-carriage-card',
   standalone: true,
-  imports: [MatCardModule, CommonModule, MatButtonModule, MatIconModule],
+  imports: [MatCardModule, CommonModule, MatButtonModule, MatIconModule, MatMenuModule],
   templateUrl: './carriage-card.component.html',
   styleUrl: './carriage-card.component.scss',
 })
 export class CarriageCardComponent implements OnInit {
   @Input() carriage!: Carriage;
+  @Output() editCarriage = new EventEmitter<Carriage>();
+  isEditing = false;
+  @Output() deleteCarriage = new EventEmitter<Carriage>();
 
   carriagesData: {
     name: string;
@@ -27,12 +31,13 @@ export class CarriageCardComponent implements OnInit {
   } | null = null;
 
   ngOnInit(): void {
+    this.isEditing = true;
     if (this.carriage) {
       this.carriagesData = this.initializeRows(this.carriage);
     }
   }
 
-  private initializeRows(carriage: Carriage): {
+  initializeRows(carriage: Carriage): {
     name: string;
     leftSeats: number;
     rightSeats: number;
@@ -79,5 +84,14 @@ export class CarriageCardComponent implements OnInit {
       leftRows,
       name: carriage.name,
     };
+  }
+
+  onUpdate() {
+    this.isEditing = true;
+    this.editCarriage.emit(this.carriage);
+  }
+
+  onDelete() {
+    this.deleteCarriage.emit(this.carriage);
   }
 }
