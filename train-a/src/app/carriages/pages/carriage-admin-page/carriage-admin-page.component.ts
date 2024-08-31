@@ -53,6 +53,7 @@ export class CarriageAdminPageComponent {
   onSubmit() {
     if (this.carriageForm.valid) {
       const newCarriage = this.carriageForm.value;
+      this.carriageFacade.createarriage(newCarriage);
       console.log('newCarriage', newCarriage);
       this.isFormVisible = false;
     }

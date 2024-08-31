@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import * as CarriageActions from './carriage.actions';
+import { Carriage } from './carriage.model';
 import * as CarriageSelectors from './carriage.selectors';
 
 @Injectable({
@@ -16,5 +17,9 @@ export class CarriageFacade {
 
   loadCarriages(): void {
     this.store.dispatch(CarriageActions.loadCarriages());
+  }
+
+  createarriage(carriage: Carriage): void {
+    this.store.dispatch(CarriageActions.createCarriage({ carriage }));
   }
 }

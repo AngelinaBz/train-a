@@ -6,3 +6,11 @@ import { Carriage } from './carriage.model';
 export const loadCarriages = createAction('[Carriages] Load Carriages');
 export const loadCarriagesSuccess = createAction('[Carriages] Load Carriages Success', props<{ carriages: Carriage[] }>());
 export const loadCarriagesFailure = createAction('[Carriages] Load Carriages Failure', props<{ error: ApiError }>());
+
+export const createCarriage = createAction('[Carriages] Create Carriage', props<{ carriage: Carriage }>());
+export const createCarriageSuccess = createAction('[Carriages] Create Carriage Success', props<{ carriage: Carriage }>());
+export const createCarriageFailure = createAction('[Carriages] Create Carriage Failure', props<{ error: ApiError }>());
+
+export const updateCarriage = createAction('[Carriages] Update Carriage', props<{ carriage: Carriage }>());
+export const updateCarriageSuccess = createAction('[Carriages] Update Carriage Success', props<{ carriage: Carriage }>());
+export const updateCarriageFailure = createAction('[Carriages] Update Carriage Failure', props<{ error: ApiError }>());
