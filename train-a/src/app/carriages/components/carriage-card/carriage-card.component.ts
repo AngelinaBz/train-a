@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -15,13 +15,13 @@ import { Carriage } from '../../state/carriage.model';
   styleUrl: './carriage-card.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CarriageCardComponent implements OnInit {
+export class CarriageCardComponent implements OnChanges {
   @Input() carriage!: Carriage;
   @Input() editable: boolean = false;
   @Input() selectable: boolean = false;
   @Output() editCarriage = new EventEmitter<Carriage>();
   @Output() deleteCarriage = new EventEmitter<Carriage>();
-  selectedSeats: number[] = [];
+  selectedSeat!: number;
 
   carriagesData: {
     name: string;
@@ -33,8 +33,8 @@ export class CarriageCardComponent implements OnInit {
     leftRows: number[][];
   } | null = null;
 
-  ngOnInit(): void {
-    if (this.carriage) {
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['carriage'] && changes['carriage'].currentValue) {
       this.carriagesData = this.initializeRows(this.carriage);
     }
   }
@@ -99,21 +99,15 @@ export class CarriageCardComponent implements OnInit {
   }
 
   onSeatSelect(seat: number): void {
-    if (this.isSelected(seat)) {
-      this.selectedSeats = this.selectedSeats.filter((s) => s !== seat);
-    } else {
-      this.selectedSeats.push(seat);
-    }
-
-    const selectedSeatsData = {
+    this.selectedSeat = seat;
+    const selectedSeatData = {
       code: this.carriage.code,
-      seats: this.selectedSeats,
+      seats: this.selectedSeat,
     };
-
-    console.log('Selected seats:', selectedSeatsData);
+    console.log('Selected seats:', selectedSeatData);
   }
 
   isSelected(seat: number): boolean {
-    return this.selectedSeats?.includes(seat);
+    return this.selectedSeat === seat;
   }
 }

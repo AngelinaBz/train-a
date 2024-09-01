@@ -35,6 +35,7 @@ export class CarriageAdminPageComponent implements OnInit {
   carriageForm!: FormGroup;
   selectedCarriage: Carriage | null = null;
   isFormVisible = false;
+  isEditing = false;
 
   constructor(
     private carriageFacade: CarriageFacade,
@@ -45,11 +46,19 @@ export class CarriageAdminPageComponent implements OnInit {
     this.carriageFacade.loadCarriages();
 
     this.carriageForm = this.fb.group({
-      name: ['', [Validators.required], [uniqueNameValidator(this.carriageFacade)]],
-      rows: [0, [Validators.required, Validators.min(1)]],
-      leftSeats: [0, [Validators.required, Validators.min(1)]],
-      rightSeats: [0, [Validators.required, Validators.min(1)]],
+      name: ['name', [Validators.required], [uniqueNameValidator(this.carriageFacade)]],
+      rows: [1, [Validators.required, Validators.min(1)]],
+      leftSeats: [1, [Validators.required, Validators.min(1)]],
+      rightSeats: [1, [Validators.required, Validators.min(1)]],
     });
+    this.updateValidators();
+  }
+
+  private updateValidators(): void {
+    const nameControl = this.carriageForm.get('name');
+    nameControl?.setValidators(this.isEditing ? null : [Validators.required]);
+    nameControl?.setAsyncValidators(this.isEditing ? null : uniqueNameValidator(this.carriageFacade));
+    nameControl?.updateValueAndValidity();
   }
 
   toggleForm() {
@@ -59,19 +68,14 @@ export class CarriageAdminPageComponent implements OnInit {
     }
   }
 
-  onSave() {
+  onSave(): void {
     if (this.carriageForm.valid) {
-      if (this.selectedCarriage) {
-        const updatedCarriage: Carriage = {
-          ...this.selectedCarriage,
-          ...this.carriageForm.value,
-        };
+      const formValue = this.carriageForm.value;
+      if (this.isEditing && this.selectedCarriage) {
+        const updatedCarriage: Carriage = { ...this.selectedCarriage, ...formValue };
         this.carriageFacade.updateCarriage(updatedCarriage);
       } else {
-        this.carriageForm.get('name')?.setAsyncValidators(uniqueNameValidator(this.carriageFacade));
-        this.carriageForm.get('name')?.updateValueAndValidity();
-        const newCarriage = this.carriageForm.value;
-        this.carriageFacade.createCarriage(newCarriage);
+        this.carriageFacade.createCarriage(formValue);
       }
       this.onCancel();
     }
@@ -84,18 +88,17 @@ export class CarriageAdminPageComponent implements OnInit {
       leftSeats: 0,
       rightSeats: 0,
     });
-    this.carriageForm.get('name')?.setAsyncValidators(uniqueNameValidator(this.carriageFacade));
-    this.carriageForm.get('name')?.updateValueAndValidity();
     this.isFormVisible = false;
     this.selectedCarriage = null;
+    this.isEditing = false;
   }
 
   onUpdateCarriage(carriage: Carriage) {
     this.selectedCarriage = carriage;
     this.carriageForm.patchValue(JSON.parse(JSON.stringify(carriage)));
-    this.carriageForm.get('name')?.clearAsyncValidators();
-    this.carriageForm.get('name')?.updateValueAndValidity();
     this.isFormVisible = true;
+    this.isEditing = true;
+    this.updateValidators();
   }
 
   onDeleteCarriage(carriage: Carriage) {
