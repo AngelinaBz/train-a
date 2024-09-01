@@ -11,4 +11,10 @@ export const deleteRoute = createAction('[Routes] Delete Route', props<{ routeId
 export const deleteRouteSuccess = createAction('[Routes] Delete Route Success');
 export const deleteRouteFailure = createAction('[Routes] Delete Route Failure', props<{ error: ApiError }>());
 
-export const updateRoutes = createAction('[Routes] Update Routes', props<{ routes: Route[] }>());
+export const createRoute = createAction('[Route] Create Route', props<{ path: number[]; carriages: string[] }>());
+export const createRouteSuccess = createAction('[Route] Create Route Success');
+export const createRouteFailure = createAction('[Route] Create Route Failure', props<{ error: ApiError }>());
+
+export const updateRoute = createAction('[Route] Update Route', props<{ id: number; path: number[]; carriages: string[] }>());
+export const updateRouteSuccess = createAction('[Route] Update Route Success');
+export const updateRouteFailure = createAction('[Route] Update Route Failure', props<{ error: ApiError }>());

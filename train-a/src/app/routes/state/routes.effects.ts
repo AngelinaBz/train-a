@@ -42,4 +42,28 @@ export class Routesffects {
       }),
     );
   });
+
+  createRoute$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(routesActions.createRoute),
+      mergeMap((action) => {
+        return this.http.post(this.apiUrl, { path: action.path, carriages: action.carriages }).pipe(
+          map(() => routesActions.createRouteSuccess()),
+          catchError((error: HttpErrorResponse) => of(routesActions.createRouteFailure({ error: error.error }))),
+        );
+      }),
+    );
+  });
+
+  updateRoute$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(routesActions.updateRoute),
+      mergeMap((action) => {
+        return this.http.put(`${this.apiUrl}/${action.id}`, { path: action.path, carriages: action.carriages }).pipe(
+          map(() => routesActions.updateRouteSuccess()),
+          catchError((error: HttpErrorResponse) => of(routesActions.updateRouteFailure({ error: error.error }))),
+        );
+      }),
+    );
+  });
 }

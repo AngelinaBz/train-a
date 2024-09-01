@@ -22,4 +22,12 @@ export class RoutesFacade {
   deleteRoute(routeId: number): void {
     this.store.dispatch(RoutesActions.deleteRoute({ routeId }));
   }
+
+  createRoute(path: number[], carriages: string[]): void {
+    this.store.dispatch(RoutesActions.createRoute({ path, carriages }));
+  }
+
+  updateRoute(id: number, path: number[], carriages: string[]): void {
+    this.store.dispatch(RoutesActions.updateRoute({ id, path, carriages }));
+  }
 }

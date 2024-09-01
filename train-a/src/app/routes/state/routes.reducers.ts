@@ -29,13 +29,19 @@ export const routesReducer = createReducer(
     (state): RoutesState => ({ ...state, isLoading: false, error: null, isDeleteSuccess: true }),
   ),
   on(RoutesActions.deleteRouteFailure, (state, { error }): RoutesState => ({ ...state, isLoading: false, error })),
+
+  on(RoutesActions.createRoute, (state): RoutesState => ({ ...state, isLoading: true, error: null })),
+  on(RoutesActions.createRouteSuccess, (state): RoutesState => ({ ...state, isLoading: false, error: null })),
+  on(RoutesActions.createRouteFailure, (state, { error }): RoutesState => ({ ...state, isLoading: false, error })),
+
+  on(RoutesActions.updateRoute, (state): RoutesState => ({ ...state, isLoading: true, error: null })),
   on(
-    RoutesActions.updateRoutes,
-    (state, { routes }): RoutesState => ({
+    RoutesActions.updateRouteSuccess,
+    (state): RoutesState => ({
       ...state,
-      routes,
       isLoading: false,
       error: null,
     }),
   ),
+  on(RoutesActions.updateRouteFailure, (state, { error }): RoutesState => ({ ...state, isLoading: false, error })),
 );

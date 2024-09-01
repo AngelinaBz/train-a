@@ -138,8 +138,9 @@ export class RoutesAdminPageComponent implements OnInit {
   }
 
   saveRoute() {
-    console.log(this.selectedCarriages);
-    console.log(this.selectedStations);
+    const path = this.selectedStations.map((station) => station.id).filter((id) => id !== undefined);
+    const carriages = this.selectedCarriages.map((carriage) => carriage.code).filter((code) => code !== undefined);
+    this.routesFacade.createRoute(path, carriages);
     this.isCreatingRoute = false;
     this.selectedStations = [];
     this.connectedStations = [];

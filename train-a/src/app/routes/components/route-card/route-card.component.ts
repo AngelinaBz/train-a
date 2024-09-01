@@ -42,13 +42,17 @@ export class RouteCardComponent implements OnInit {
 
   loadStations() {
     this.stationFacade.stations$.subscribe((stations) => {
-      this.stations = stations.filter((station) => this.route.path.includes(station.id));
+      this.stations = this.route.path
+        .map((stationId) => stations.find((station) => station.id === stationId))
+        .filter((station) => station !== undefined) as Station[];
     });
   }
 
   loadCarriages() {
     this.carriageFacade.carriages$.subscribe((carriages) => {
-      this.carriages = carriages.filter((carriage) => this.route.carriages.includes(carriage.code));
+      this.carriages = this.route.carriages
+        .map((carriageCode) => carriages.find((carriage) => carriage.code === carriageCode))
+        .filter((carriage) => carriage !== undefined) as Carriage[];
     });
   }
 
