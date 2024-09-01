@@ -1,7 +1,8 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, concatMap, map, mergeMap, of } from 'rxjs';
+import { catchError, map, mergeMap, of } from 'rxjs';
 
 import { Route } from '../models/route.model';
 import * as routesActions from './routes.actions';
@@ -13,6 +14,7 @@ export class Routesffects {
   constructor(
     private actions$: Actions,
     private http: HttpClient,
+    private snackBar: MatSnackBar,
   ) {}
 
   loadRoutes$ = createEffect(() => {
@@ -52,7 +54,6 @@ export class Routesffects {
           catchError((error: HttpErrorResponse) => of(routesActions.createRouteFailure({ error: error.error }))),
         );
       }),
-      concatMap(() => of(routesActions.loadRoutes())),
     );
   });
 
@@ -65,7 +66,6 @@ export class Routesffects {
           catchError((error: HttpErrorResponse) => of(routesActions.updateRouteFailure({ error: error.error }))),
         );
       }),
-      concatMap(() => of(routesActions.loadRoutes())),
     );
   });
 }

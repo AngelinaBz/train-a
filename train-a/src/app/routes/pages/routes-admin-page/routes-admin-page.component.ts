@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormField } from '@angular/material/form-field';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { CarriageFacade } from '../../../carriages/state/carriage.facade';
 import { Carriage } from '../../../carriages/state/carriage.model';
@@ -47,13 +48,24 @@ export class RoutesAdminPageComponent implements OnInit {
     private routesFacade: RoutesFacade,
     private stationFacade: StationFacade,
     private carriageFacade: CarriageFacade,
+    private snackBar: MatSnackBar,
   ) {}
 
   ngOnInit() {
     this.routesFacade.loadRoutes();
-    this.routes$.subscribe((routes) => {
-      if (routes) {
-        console.log(routes);
+    this.routesFacade.routesError$.subscribe((error) => {
+      if (error) {
+        this.snackBar.open(`Error: ${error.message}`, 'Close', {
+          duration: 3000,
+        });
+      }
+    });
+    this.routesFacade.successMessage$.subscribe((message) => {
+      if (message) {
+        this.snackBar.open(message, 'Close', {
+          duration: 3000,
+        });
+        this.routesFacade.loadRoutes();
       }
     });
     this.loadStations();

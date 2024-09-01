@@ -11,7 +11,7 @@ export class RoutesFacade {
   routes$ = this.store.select(RoutesSelectors.selectRoutes);
   routesError$ = this.store.select(RoutesSelectors.selectError);
   isLoading$ = this.store.select(RoutesSelectors.selectIsLoading);
-  isDeleteSuccess$ = this.store.select(RoutesSelectors.selectIsDeleteSuccess);
+  successMessage$ = this.store.select(RoutesSelectors.selectSuccessMessage);
 
   constructor(private store: Store) {}
 

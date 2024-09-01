@@ -4,7 +4,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIcon } from '@angular/material/icon';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { CarriageFacade } from '../../../carriages/state/carriage.facade';
 import { Carriage } from '../../../carriages/state/carriage.model';
@@ -34,7 +33,6 @@ export class RouteCardComponent implements OnInit {
     private stationFacade: StationFacade,
     private carriageFacade: CarriageFacade,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar,
   ) {}
 
   ngOnInit() {
@@ -66,21 +64,6 @@ export class RouteCardComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.routesFacade.deleteRoute(this.route.id);
-        this.routesFacade.isDeleteSuccess$.subscribe((success) => {
-          if (success) {
-            this.snackBar.open('The route has been successfully deleted', 'Close', {
-              duration: 3000,
-            });
-            this.routesFacade.loadRoutes();
-          }
-        });
-        this.routesFacade.routesError$.subscribe((error) => {
-          if (error) {
-            this.snackBar.open(`Error: ${error.message}`, 'Close', {
-              duration: 3000,
-            });
-          }
-        });
       }
     });
   }
