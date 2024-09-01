@@ -1,4 +1,34 @@
 <div class="routes-container">
+  <button mat-raised-button class="create" *ngIf="!isCreatingRoute" (click)="showCreateRouteForm()">Create</button>
+  <div *ngIf="isCreatingRoute">
+    <form (ngSubmit)="saveRoute()">
+      <div>
+        <h3>Stations</h3>
+        <ng-container *ngFor="let station of selectedStations; let i = index">
+          <mat-form-field appearance="fill">
+            <mat-label>Select Station</mat-label>
+            <mat-select [value]="station" (selectionChange)="onStationChange($event, i)">
+              <mat-option value="">-</mat-option>
+              <mat-option *ngFor="let s of stations" [value]="s">{{ s.city }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </ng-container>
+      </div>
+      <div>
+        <h3>Carriages</h3>
+        <ng-container *ngFor="let carriage of selectedCarriages; let i = index">
+          <mat-form-field appearance="fill">
+            <mat-label>Select Carriage</mat-label>
+            <mat-select [value]="carriage" (selectionChange)="onCarriageChange($event, i)">
+              <mat-option value="">-</mat-option>
+              <mat-option *ngFor="let c of carriages" [value]="c">{{ c.name }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </ng-container>
+      </div>
+      <button mat-raised-button color="primary" type="submit" [disabled]="!isValidForm()">Save</button>
+    </form>
+  </div>
   <app-route-card *ngFor="let route of routes$ | async" [route]="route"></app-route-card>
 </div>
 <div class="spinner" *ngIf="isLoading$ | async">
