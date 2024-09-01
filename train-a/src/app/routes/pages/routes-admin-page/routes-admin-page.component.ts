@@ -37,6 +37,7 @@ export class RoutesAdminPageComponent implements OnInit {
 
   selectedStations: Station[] = [];
   selectedCarriages: Carriage[] = [];
+  connectedStations: Station[][] = [];
 
   isCreatingRoute = false;
 
@@ -79,18 +80,42 @@ export class RoutesAdminPageComponent implements OnInit {
 
   addStation() {
     this.selectedStations.push({ city: '' } as Station);
+    this.updateConnectedStations();
+  }
+
+  updateConnectedStations() {
+    this.connectedStations = this.selectedStations.map((station, index) => {
+      if (index === 0) {
+        return this.stations;
+      }
+
+      const prevStation = this.selectedStations[index - 1];
+      if (prevStation && prevStation.connectedTo) {
+        return prevStation.connectedTo
+          .map((ct) => this.stations.find((s) => s.id === ct.id))
+          .filter((s): s is Station => s !== undefined)
+          .filter((s) => !this.selectedStations.slice(0, index).some((selected) => selected.id === s.id));
+      }
+
+      return [];
+    });
   }
 
   addCarriage() {
     this.selectedCarriages.push({ name: '' } as Carriage);
   }
 
+  getConnectesStations(index: number): Station[] {
+    return this.connectedStations[index] || [];
+  }
+
   onStationChange(event: MatSelectChange, index: number) {
     this.selectedStations[index] = event.value;
+    this.selectedStations = this.selectedStations.slice(0, index + 1);
 
-    if (event.value === '' && index < this.selectedStations.length - 1) {
-      this.selectedStations.splice(index + 1);
-    } else if (event.value !== '' && index === this.selectedStations.length - 1) {
+    this.updateConnectedStations();
+
+    if (index === this.selectedStations.length - 1 && event.value) {
       this.addStation();
     }
   }
@@ -113,8 +138,11 @@ export class RoutesAdminPageComponent implements OnInit {
   }
 
   saveRoute() {
+    console.log(this.selectedCarriages);
+    console.log(this.selectedStations);
     this.isCreatingRoute = false;
     this.selectedStations = [];
+    this.connectedStations = [];
     this.selectedCarriages = [];
   }
 }

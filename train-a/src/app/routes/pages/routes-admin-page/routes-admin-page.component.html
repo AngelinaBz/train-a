@@ -1,7 +1,7 @@
 <div class="routes-container">
   <button mat-raised-button class="create" *ngIf="!isCreatingRoute" (click)="showCreateRouteForm()">Create</button>
   <div *ngIf="isCreatingRoute">
-    <form (ngSubmit)="saveRoute()">
+    <form>
       <div>
         <h3>Stations</h3>
         <ng-container *ngFor="let station of selectedStations; let i = index">
@@ -9,7 +9,7 @@
             <mat-label>Select Station</mat-label>
             <mat-select [value]="station" (selectionChange)="onStationChange($event, i)">
               <mat-option value="">-</mat-option>
-              <mat-option *ngFor="let s of stations" [value]="s">{{ s.city }}</mat-option>
+              <mat-option *ngFor="let s of getConnectesStations(i)" [value]="s">{{ s.city }}</mat-option>
             </mat-select>
           </mat-form-field>
         </ng-container>
@@ -26,7 +26,7 @@
           </mat-form-field>
         </ng-container>
       </div>
-      <button mat-raised-button color="primary" type="submit" [disabled]="!isValidForm()">Save</button>
+      <button mat-raised-button color="primary" type="button" [disabled]="!isValidForm()" (click)="saveRoute()">Save</button>
     </form>
   </div>
   <app-route-card *ngFor="let route of routes$ | async" [route]="route"></app-route-card>
