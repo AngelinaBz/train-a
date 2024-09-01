@@ -11,7 +11,9 @@
                 <mat-label>Select Station</mat-label>
                 <mat-select [value]="station" (selectionChange)="onStationChange($event, i)">
                   <mat-option value="">-</mat-option>
-                  <mat-option *ngFor="let s of getConnectesStations(i)" [value]="s">{{ s.city }}</mat-option>
+                  <mat-option *ngFor="let connectesStation of getConnectesStations(i)" [value]="connectesStation">{{
+                    connectesStation.city
+                  }}</mat-option>
                 </mat-select>
               </mat-form-field>
             </ng-container>
@@ -20,12 +22,12 @@
         <div class="carriages">
           <h3>Carriages</h3>
           <div class="carriages-cards">
-            <ng-container *ngFor="let carriage of selectedCarriages; let i = index">
+            <ng-container *ngFor="let carriage of selectedCarriages; let i = index; trackBy: trackByIndex">
               <mat-form-field appearance="fill">
                 <mat-label>Select Carriage</mat-label>
                 <mat-select [value]="carriage" (selectionChange)="onCarriageChange($event, i)">
                   <mat-option value="">-</mat-option>
-                  <mat-option *ngFor="let c of carriages" [value]="c">{{ c.name }}</mat-option>
+                  <mat-option *ngFor="let carriage of carriages" [value]="carriage">{{ carriage.name }}</mat-option>
                 </mat-select>
               </mat-form-field>
             </ng-container>

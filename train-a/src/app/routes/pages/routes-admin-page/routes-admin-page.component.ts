@@ -148,8 +148,8 @@ export class RoutesAdminPageComponent implements OnInit {
 
   isValidForm() {
     return (
-      this.selectedStations.filter((s) => s && s.city).length >= 3 &&
-      this.selectedCarriages.filter((c) => c && c.name).length >= 3
+      this.selectedStations.filter((station) => station && station.city).length >= 3 &&
+      this.selectedCarriages.filter((carriage) => carriage && carriage.name).length >= 3
     );
   }
 
@@ -185,5 +185,9 @@ export class RoutesAdminPageComponent implements OnInit {
     this.selectedCarriages.push({ name: '' } as Carriage);
 
     this.updateConnectedStations();
+  }
+
+  trackByIndex(index: number): number {
+    return index;
   }
 }
