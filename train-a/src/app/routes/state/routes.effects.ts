@@ -1,6 +1,5 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, of } from 'rxjs';
 
@@ -14,7 +13,6 @@ export class Routesffects {
   constructor(
     private actions$: Actions,
     private http: HttpClient,
-    private snackBar: MatSnackBar,
   ) {}
 
   loadRoutes$ = createEffect(() => {
@@ -49,7 +47,7 @@ export class Routesffects {
     return this.actions$.pipe(
       ofType(routesActions.createRoute),
       mergeMap((action) => {
-        return this.http.post(this.apiUrl, { path: action.path, carriages: action.carriages }).pipe(
+        return this.http.post(this.apiUrl, action.route).pipe(
           map(() => routesActions.createRouteSuccess()),
           catchError((error: HttpErrorResponse) => of(routesActions.createRouteFailure({ error: error.error }))),
         );
@@ -61,7 +59,7 @@ export class Routesffects {
     return this.actions$.pipe(
       ofType(routesActions.updateRoute),
       mergeMap((action) => {
-        return this.http.put(`${this.apiUrl}/${action.id}`, { path: action.path, carriages: action.carriages }).pipe(
+        return this.http.put(`${this.apiUrl}/${action.routeId}`, action.route).pipe(
           map(() => routesActions.updateRouteSuccess()),
           catchError((error: HttpErrorResponse) => of(routesActions.updateRouteFailure({ error: error.error }))),
         );

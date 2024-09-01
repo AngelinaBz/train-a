@@ -163,11 +163,11 @@ export class RoutesAdminPageComponent implements OnInit {
   saveRoute() {
     const path = this.selectedStations.map((station) => station.id).filter((id) => id !== undefined);
     const carriages = this.selectedCarriages.map((carriage) => carriage.code).filter((code) => code !== undefined);
-
+    const routeData = { path, carriages };
     if (this.editingRoute) {
-      this.routesFacade.updateRoute(this.editingRoute.id, path, carriages);
+      this.routesFacade.updateRoute(this.editingRoute.id, routeData);
     } else {
-      this.routesFacade.createRoute(path, carriages);
+      this.routesFacade.createRoute(routeData);
     }
     this.resetForm();
   }

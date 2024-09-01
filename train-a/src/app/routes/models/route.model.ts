@@ -3,3 +3,5 @@ export interface Route {
   path: number[];
   carriages: string[];
 }
+
+export type RouteWithoutId = Omit<Route, 'id'>;

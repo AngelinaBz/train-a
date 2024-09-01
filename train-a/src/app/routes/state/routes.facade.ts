@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 
+import { RouteWithoutId } from '../models/route.model';
 import * as RoutesActions from './routes.actions';
 import * as RoutesSelectors from './routes.selectors';
 
@@ -15,19 +16,19 @@ export class RoutesFacade {
 
   constructor(private store: Store) {}
 
-  loadRoutes(): void {
+  loadRoutes() {
     this.store.dispatch(RoutesActions.loadRoutes());
   }
 
-  deleteRoute(routeId: number): void {
+  deleteRoute(routeId: number) {
     this.store.dispatch(RoutesActions.deleteRoute({ routeId }));
   }
 
-  createRoute(path: number[], carriages: string[]): void {
-    this.store.dispatch(RoutesActions.createRoute({ path, carriages }));
+  createRoute(routeData: RouteWithoutId) {
+    this.store.dispatch(RoutesActions.createRoute({ route: routeData }));
   }
 
-  updateRoute(id: number, path: number[], carriages: string[]): void {
-    this.store.dispatch(RoutesActions.updateRoute({ id, path, carriages }));
+  updateRoute(id: number, routeData: RouteWithoutId) {
+    this.store.dispatch(RoutesActions.updateRoute({ routeId: id, route: routeData }));
   }
 }
