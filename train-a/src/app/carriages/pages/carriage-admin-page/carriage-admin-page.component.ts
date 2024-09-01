@@ -83,10 +83,10 @@ export class CarriageAdminPageComponent implements OnInit {
 
   onCancel() {
     this.carriageForm.reset({
-      name: '',
-      rows: 0,
-      leftSeats: 0,
-      rightSeats: 0,
+      name: 'name',
+      rows: 1,
+      leftSeats: 1,
+      rightSeats: 1,
     });
     this.isFormVisible = false;
     this.selectedCarriage = null;
