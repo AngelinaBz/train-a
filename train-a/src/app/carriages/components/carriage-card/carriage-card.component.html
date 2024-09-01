@@ -19,7 +19,14 @@
   <div class="seats">
     <div class="rows-wrapper">
       <div class="row" *ngFor="let row of carriagesData.rightRows; let rowIndex = index">
-        <div class="seat right" *ngFor="let seat of row" (click)="onSeatSelect(seat)" [class.selected]="isSelected(seat)">
+        <div
+          class="seat right"
+          *ngFor="let seat of row"
+          tabindex="0"
+          (click)="onSeatSelect(seat)"
+          (keyup.enter)="onSeatSelect(seat)"
+          [class.selected]="isSelected(seat)"
+        >
           {{ seat }}
         </div>
       </div>
@@ -27,7 +34,14 @@
 
     <div class="rows-wrapper">
       <div class="row" *ngFor="let row of carriagesData.leftRows; let rowIndex = index">
-        <div class="seat left" *ngFor="let seat of row" (click)="onSeatSelect(seat)" [class.selected]="isSelected(seat)">
+        <div
+          class="seat left"
+          *ngFor="let seat of row"
+          tabindex="0"
+          (click)="onSeatSelect(seat)"
+          (keyup.enter)="onSeatSelect(seat)"
+          [class.selected]="isSelected(seat)"
+        >
           {{ seat }}
         </div>
       </div>

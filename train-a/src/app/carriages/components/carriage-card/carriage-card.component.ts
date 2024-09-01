@@ -104,7 +104,13 @@ export class CarriageCardComponent implements OnInit {
     } else {
       this.selectedSeats.push(seat);
     }
-    console.log('Selected seats:', this.selectedSeats);
+
+    const selectedSeatsData = {
+      code: this.carriage.code,
+      seats: this.selectedSeats,
+    };
+
+    console.log('Selected seats:', selectedSeatsData);
   }
 
   isSelected(seat: number): boolean {
