@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIcon } from '@angular/material/icon';
+import { Router } from '@angular/router';
 
 import { CarriageFacade } from '../../../carriages/state/carriage.facade';
 import { Carriage } from '../../../carriages/state/carriage.model';
@@ -33,6 +34,7 @@ export class RouteCardComponent implements OnInit {
     private stationFacade: StationFacade,
     private carriageFacade: CarriageFacade,
     private dialog: MatDialog,
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -70,5 +72,9 @@ export class RouteCardComponent implements OnInit {
 
   editRouteEvent() {
     this.editRoute.emit(this.route);
+  }
+
+  assignRide() {
+    this.router.navigate([`/admin/routes/${this.route.id}`]);
   }
 }

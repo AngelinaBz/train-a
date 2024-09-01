@@ -2,7 +2,7 @@
   <mat-card-header>
     <mat-card-title>Route {{ routeId }} </mat-card-title>
     <div class="buttons-container">
-      <button mat-icon-button matSuffix>
+      <button mat-icon-button matSuffix (click)="assignRide()">
         <mat-icon>train</mat-icon>
       </button>
       <button mat-icon-button matSuffix (click)="editRouteEvent()">
