@@ -1,6 +1,6 @@
 <h2 mat-dialog-title>Route {{ dialogData.detailsId }}</h2>
 <mat-dialog-content class="route-wrapper">
-  <div class="route" *ngIf="data() && !isLoading()">
+  <div class="route" *ngIf="data() && !isLoading() && !stationsIsLoading()">
     <span>Time</span>
     <span>Station</span>
     <div class="route__stop-title">
@@ -33,10 +33,11 @@
       </div>
     }
   </div>
-  <div class="spinner" *ngIf="isLoading()">
+  <div class="spinner" *ngIf="isLoading() && stationsIsLoading()">
     <mat-spinner strokeWidth="3"> </mat-spinner>
   </div>
   <mat-error *ngIf="error()"> {{ error()?.message }} </mat-error>
+  <mat-error *ngIf="stationsError()"> {{ stationsError()?.message }} </mat-error>
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button mat-dialog-close>Close</button>
