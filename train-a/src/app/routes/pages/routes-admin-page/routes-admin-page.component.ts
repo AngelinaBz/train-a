@@ -108,7 +108,7 @@ export class RoutesAdminPageComponent implements OnInit {
       const prevStation = this.selectedStations[index - 1];
       if (prevStation && prevStation.connectedTo) {
         return prevStation.connectedTo
-          .map((ct) => this.stations.find((s) => s.id === ct.id))
+          .map((connectedStation) => this.stations.find((s) => s.id === connectedStation.id))
           .filter((s): s is Station => s !== undefined)
           .filter((s) => !this.selectedStations.slice(0, index).some((selected) => selected.id === s.id));
       }
