@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { providers } from '../../../app.config';
 import { RoutesAdminPageComponent } from './routes-admin-page.component';
 
 describe('RoutesAdminPageComponent', () => {
@@ -9,6 +10,7 @@ describe('RoutesAdminPageComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RoutesAdminPageComponent],
+      providers,
     }).compileComponents();
 
     fixture = TestBed.createComponent(RoutesAdminPageComponent);

@@ -26,6 +26,7 @@ export class RouteCardComponent implements OnInit {
 
   stations: Station[] = [];
   carriages: Carriage[] = [];
+  routeId?: number;
 
   constructor(
     private routesFacade: RoutesFacade,
@@ -36,8 +37,11 @@ export class RouteCardComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.loadStations();
-    this.loadCarriages();
+    if (this.route) {
+      this.routeId = this.route.id;
+      this.loadStations();
+      this.loadCarriages();
+    }
   }
 
   loadStations() {
