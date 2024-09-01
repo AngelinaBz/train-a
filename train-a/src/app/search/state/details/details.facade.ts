@@ -14,8 +14,8 @@ export class DetailsFacade {
     this.store.dispatch(DetailsActions.loadDetails({ id: rideId }));
   }
 
-  getRideDetails(rideId: number) {
-    return this.store.select(DetailsSelectors.selectRideDetails(rideId));
+  getRideDetails(args: Parameters<typeof DetailsSelectors.selectRideDetails>[0]) {
+    return this.store.select(DetailsSelectors.selectRideDetails(args));
   }
 
   getRideDetailsLoading(rideId: number) {

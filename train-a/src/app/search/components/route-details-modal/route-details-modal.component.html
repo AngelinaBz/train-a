@@ -18,8 +18,10 @@
       <div
         class="route__station"
         [ngClass]="{
-          'route__station--first': dialogData.from ? row.station.id === dialogData.from : $index === 0,
-          'route__station--last': dialogData.to ? row.station.id === dialogData.to : $index === tableData.length - 1,
+          'route__station--selected':
+            row.station.id === (dialogData.from ?? 0) || row.station.id === (dialogData.to ?? tableData.length - 1),
+          'route__station--first': $index === 0,
+          'route__station--last': $index === tableData.length - 1,
         }"
       >
         <div class="route__station-text">
@@ -33,7 +35,7 @@
       </div>
     }
   </div>
-  <div class="spinner" *ngIf="isLoading() && stationsIsLoading()">
+  <div class="spinner" *ngIf="isLoading() || stationsIsLoading()">
     <mat-spinner strokeWidth="3"> </mat-spinner>
   </div>
   <mat-error *ngIf="error()"> {{ error()?.message }} </mat-error>

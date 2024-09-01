@@ -75,7 +75,9 @@ export class RouteDetailsModalComponent {
     this.detailsFacade.loadDetails(id);
     this.stationFacade.loadStations();
 
-    this.data$ = this.detailsFacade.getRideDetails(id);
+    this.data$ = this.detailsFacade.getRideDetails({
+      rideId: id,
+    });
 
     this.data = toSignal(this.data$);
     this.isLoading = toSignal(this.detailsFacade.getRideDetailsLoading(id));
@@ -83,6 +85,8 @@ export class RouteDetailsModalComponent {
 
     effect(() => {
       const data = this.data();
+
+      console.log(data);
 
       if (data) {
         this.tableData = this.makeTable(data);

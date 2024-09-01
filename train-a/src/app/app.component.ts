@@ -21,10 +21,10 @@ export class AppComponent {
     const token = localStorage.getItem('auth_token');
     if (token) {
       const order = {
-        rideId: 2,
-        seat: 11,
-        stationStart: 54,
-        stationEnd: 75,
+        rideId: 1,
+        seat: 160,
+        stationStart: 21,
+        stationEnd: 69,
       };
       this.apiService.createOrder(token, order).subscribe((orders) => {
         console.log(orders);
