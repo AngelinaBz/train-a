@@ -6,6 +6,7 @@ import { SigninComponent } from './auth/pages/signin/signin.component';
 import { SignupComponent } from './auth/pages/signup/signup.component';
 import { CarriageAdminPageComponent } from './carriages/pages/carriage-admin-page/carriage-admin-page.component';
 import { OrdersComponent } from './orders/pages/orders.component';
+import { DetailsPageComponent } from './search/pages/details-page/details-page.component';
 import { paths } from './shared/configs/paths';
 import { StationAdminPageComponent } from './stations/pages/station-admin-page/station-admin-page.component';
 import { roleGuard } from './user/guards/role/role.guard';
@@ -42,6 +43,10 @@ export const routes: Routes = [
         redirectTo: paths.main,
       }),
     ],
+  },
+  {
+    path: `${paths.trip}/:rideId`,
+    component: DetailsPageComponent,
   },
   {
     path: 'admin',
