@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
@@ -23,6 +23,7 @@ import { DeleteRouteComponent } from '../delete-route/delete-route.component';
 })
 export class RouteCardComponent implements OnInit {
   @Input() route!: Route;
+  @Output() editRoute = new EventEmitter<Route>();
 
   stations: Station[] = [];
   carriages: Carriage[] = [];
@@ -82,5 +83,9 @@ export class RouteCardComponent implements OnInit {
         });
       }
     });
+  }
+
+  editRouteEvent() {
+    this.editRoute.emit(this.route);
   }
 }

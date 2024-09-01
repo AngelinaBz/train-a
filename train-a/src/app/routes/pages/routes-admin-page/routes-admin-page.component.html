@@ -29,7 +29,7 @@
       <button mat-raised-button color="primary" type="button" [disabled]="!isValidForm()" (click)="saveRoute()">Save</button>
     </form>
   </div>
-  <app-route-card *ngFor="let route of routes$ | async" [route]="route"></app-route-card>
+  <app-route-card *ngFor="let route of routes$ | async" [route]="route" (editRoute)="editRoute($event)"></app-route-card>
 </div>
 <div class="spinner" *ngIf="isLoading$ | async">
   <mat-spinner strokeWidth="3"></mat-spinner>

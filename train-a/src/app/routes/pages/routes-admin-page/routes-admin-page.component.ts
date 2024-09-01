@@ -5,13 +5,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormField } from '@angular/material/form-field';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { CarriageFacade } from '../../../carriages/state/carriage.facade';
 import { Carriage } from '../../../carriages/state/carriage.model';
 import { Station } from '../../../stations/models/station.model';
 import { StationFacade } from '../../../stations/state/station.facade';
 import { RouteCardComponent } from '../../components/route-card/route-card.component';
+import { Route } from '../../models/route.model';
 import { RoutesFacade } from '../../state/routes.facade';
 
 @Component({
@@ -41,12 +41,12 @@ export class RoutesAdminPageComponent implements OnInit {
   connectedStations: Station[][] = [];
 
   isCreatingRoute = false;
+  editingRoute?: Route;
 
   constructor(
     private routesFacade: RoutesFacade,
     private stationFacade: StationFacade,
     private carriageFacade: CarriageFacade,
-    private snackBar: MatSnackBar,
   ) {}
 
   ngOnInit() {
@@ -76,8 +76,10 @@ export class RoutesAdminPageComponent implements OnInit {
 
   showCreateRouteForm() {
     this.isCreatingRoute = true;
-    this.addStation();
-    this.addCarriage();
+    this.editingRoute = undefined;
+    this.selectedStations = [{ city: '' } as Station];
+    this.selectedCarriages = [{ name: '' } as Carriage];
+    this.updateConnectedStations();
   }
 
   addStation() {
@@ -149,7 +151,27 @@ export class RoutesAdminPageComponent implements OnInit {
   saveRoute() {
     const path = this.selectedStations.map((station) => station.id).filter((id) => id !== undefined);
     const carriages = this.selectedCarriages.map((carriage) => carriage.code).filter((code) => code !== undefined);
-    this.routesFacade.createRoute(path, carriages);
+
+    if (this.editingRoute) {
+      this.routesFacade.updateRoute(this.editingRoute.id, path, carriages);
+    } else {
+      this.routesFacade.createRoute(path, carriages);
+    }
     this.resetForm();
+  }
+
+  editRoute(route: Route) {
+    this.editingRoute = route;
+    this.isCreatingRoute = true;
+
+    this.selectedStations = route.path.map((stationId) => this.stations.find((station) => station.id === stationId) as Station);
+    this.selectedCarriages = route.carriages.map(
+      (carriageCode) => this.carriages.find((carriage) => carriage.code === carriageCode) as Carriage,
+    );
+
+    this.selectedStations.push({ city: '' } as Station);
+    this.selectedCarriages.push({ name: '' } as Carriage);
+
+    this.updateConnectedStations();
   }
 }
