@@ -65,4 +65,6 @@ export const routes: Routes = [
       // { path: 'routes', component: RoutesComponent }
     ],
   },
+
+  { path: '**', redirectTo: paths.main },
 ];

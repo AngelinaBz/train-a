@@ -1,5 +1,5 @@
 import { AsyncPipe, DatePipe, JsonPipe, NgClass, NgIf } from '@angular/common';
-import { Component, inject, Signal } from '@angular/core';
+import { Component, effect, inject, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButton } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle } from '@angular/material/dialog';
@@ -7,6 +7,7 @@ import { MatError } from '@angular/material/form-field';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 import { ApiError } from '../../../shared/models/ApiError.model';
+import { StationFacade } from '../../../stations/state/station.facade';
 import RideDetails from '../../models/RideDetails.model';
 import { DetailsFacade } from '../../state/details/details.facade';
 
@@ -15,7 +16,10 @@ type TableRow = {
     start?: number;
     end?: number;
   };
-  station: string;
+  station: {
+    name: string;
+    id: number;
+  };
   stop: number | string;
 };
 
@@ -42,6 +46,8 @@ type TableRow = {
 export class RouteDetailsModalComponent {
   dialogData: {
     detailsId: number;
+    from?: number;
+    to?: number;
   } = inject(MAT_DIALOG_DATA);
 
   data$: ReturnType<typeof this.detailsFacade.getRideDetails>;
@@ -51,7 +57,15 @@ export class RouteDetailsModalComponent {
   isLoading: Signal<boolean | undefined>;
   error: Signal<ApiError | null | undefined>;
 
-  constructor(private detailsFacade: DetailsFacade) {
+  stations$ = this.stationFacade.stations$;
+  stations = toSignal(this.stations$);
+  stationsIsLoading = toSignal(this.stationFacade.isLoading$);
+  stationsError = toSignal(this.stationFacade.stationError$);
+
+  constructor(
+    private detailsFacade: DetailsFacade,
+    private stationFacade: StationFacade,
+  ) {
     const id = this.dialogData.detailsId!;
 
     if (!id) {
@@ -59,22 +73,33 @@ export class RouteDetailsModalComponent {
     }
 
     this.detailsFacade.loadDetails(id);
-    this.data$ = this.detailsFacade.getRideDetails(id);
+    this.stationFacade.loadStations();
 
-    this.data$.subscribe((data) => {
-      if (data) {
-        this.tableData = this.makeTable(data);
-      }
-    });
+    this.data$ = this.detailsFacade.getRideDetails(id);
 
     this.data = toSignal(this.data$);
     this.isLoading = toSignal(this.detailsFacade.getRideDetailsLoading(id));
     this.error = toSignal(this.detailsFacade.getRideDetailsError(id));
+
+    effect(() => {
+      const data = this.data();
+
+      if (data) {
+        this.tableData = this.makeTable(data);
+      }
+    });
   }
 
   makeTable(data: RideDetails) {
     return data.path.reduce((acc: Array<TableRow>, curr, index, arr) => {
-      const row: TableRow = { time: {}, station: '', stop: '' };
+      const row: TableRow = {
+        time: {},
+        station: {
+          name: '',
+          id: curr,
+        },
+        stop: '',
+      };
 
       if (index === 0) {
         row.time.start = Date.parse(data.schedule.segments[index].time[0]);
@@ -88,7 +113,10 @@ export class RouteDetailsModalComponent {
         row.stop = `${(row.time.end - row.time.start) / 1000 / 60} min`;
       }
 
-      row.station = `Station ${curr}`;
+      row.station = {
+        name: this.stations()?.find((station) => station.id === curr)?.city || `Station ${curr}`,
+        id: curr,
+      };
 
       acc.push(row);
 

@@ -27,9 +27,8 @@ export const detailsReducer = createReducer(
       details: {
         ...state.details,
         [id]: {
+          ...state.details[id],
           isLoading: true,
-          data: null,
-          error: null,
         },
       },
     }),

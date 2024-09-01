@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
 
+import { paths } from './shared/configs/paths';
 import { ApiService } from './shared/services/api.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, RouterLink],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
@@ -30,4 +31,6 @@ export class AppComponent {
       });
     }
   }
+
+  protected readonly paths = paths;
 }

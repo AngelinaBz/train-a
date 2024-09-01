@@ -1,2 +1,5 @@
 <router-outlet />
-<button (click)="makeOrder()">Do order</button>
+<div>
+  <button (click)="makeOrder()">Do order</button>
+  <button [routerLink]="[paths.trip, '1']" [queryParams]="{ from: '67', to: '7' }">Go trip</button>
+</div>

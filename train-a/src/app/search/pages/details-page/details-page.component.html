@@ -1,1 +1,20 @@
-<p>details-page works!</p>
+<mat-toolbar-row class="details-head">
+  <button mat-button [routerLink]="[paths.main]">
+    <mat-icon>arrow_back_ios_new</mat-icon>
+  </button>
+  <div class="details-head__info">
+    <div class="details-head__info-from-to">
+      <span> {{ getStationName(from)?.city }}</span>
+      <mat-icon>arrow_forward</mat-icon>
+      <span> {{ getStationName(to)?.city }}</span>
+      <span>{{ details()?.schedule?.segments?.[0]?.time?.[0] | date: 'MMMM dd, HH:mm' }}</span>
+    </div>
+    <div class="details-head__info-ride">
+      <span>Ride {{ details()?.rideId }}</span>
+      <button (click)="openModal()" mat-button>
+        Route
+        <mat-icon>arrow_drop_down</mat-icon>
+      </button>
+    </div>
+  </div>
+</mat-toolbar-row>

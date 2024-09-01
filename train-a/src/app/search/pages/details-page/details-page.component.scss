@@ -1,0 +1,17 @@
+.details-head {
+  display: flex;
+  margin: 10px;
+
+  &__info {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+  }
+
+  &__info-from-to {
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    gap: 10px;
+  }
+}
