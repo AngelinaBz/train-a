@@ -173,6 +173,7 @@ export class RoutesAdminPageComponent implements OnInit {
   }
 
   editRoute(route: Route) {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     this.editingRoute = route;
     this.isCreatingRoute = true;
 
