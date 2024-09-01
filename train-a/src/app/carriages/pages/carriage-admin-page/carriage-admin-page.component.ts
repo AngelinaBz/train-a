@@ -94,6 +94,7 @@ export class CarriageAdminPageComponent implements OnInit {
   }
 
   onUpdateCarriage(carriage: Carriage) {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     this.selectedCarriage = carriage;
     this.carriageForm.patchValue(JSON.parse(JSON.stringify(carriage)));
     this.isFormVisible = true;

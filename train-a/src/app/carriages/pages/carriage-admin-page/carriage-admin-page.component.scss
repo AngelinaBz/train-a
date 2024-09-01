@@ -1,5 +1,10 @@
+:host {
+  width: 100%;
+}
+
 .carriages-container {
   display: flex;
+  width: 100%;
   flex-direction: column;
   margin-top: 10px;
   gap: 30px;
@@ -11,6 +16,8 @@
 
     .create-button {
       width: 100%;
+      max-width: 800px;
+      align-self: center;
       transition: all 0.3s ease-in-out;
     }
 
@@ -21,11 +28,22 @@
       justify-content: center;
       animation: slide-down 0.3s ease-in-out forwards;
       gap: 10px;
-      transform-origin: top;
 
       mat-form-field {
         width: 100%;
         max-width: 125px;
+      }
+
+      @media screen and (width <= 600px) {
+        mat-label {
+          font-size: 0.8rem;
+        }
+      }
+
+      @media screen and (width <= 430px) {
+        mat-label {
+          font-size: 0.7rem;
+        }
       }
 
       mat-error {
