@@ -14,7 +14,8 @@
     flex-direction: column;
     gap: 10px;
 
-    .stations-cards {
+    .stations-cards,
+    .carriages-cards {
       display: flex;
       width: 100%;
       flex-flow: row wrap;

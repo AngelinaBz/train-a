@@ -19,15 +19,17 @@
         </div>
         <div class="carriages">
           <h3>Carriages</h3>
-          <ng-container *ngFor="let carriage of selectedCarriages; let i = index">
-            <mat-form-field appearance="fill">
-              <mat-label>Select Carriage</mat-label>
-              <mat-select [value]="carriage" (selectionChange)="onCarriageChange($event, i)">
-                <mat-option value="">-</mat-option>
-                <mat-option *ngFor="let c of carriages" [value]="c">{{ c.name }}</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </ng-container>
+          <div class="carriages-cards">
+            <ng-container *ngFor="let carriage of selectedCarriages; let i = index">
+              <mat-form-field appearance="fill">
+                <mat-label>Select Carriage</mat-label>
+                <mat-select [value]="carriage" (selectionChange)="onCarriageChange($event, i)">
+                  <mat-option value="">-</mat-option>
+                  <mat-option *ngFor="let c of carriages" [value]="c">{{ c.name }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </ng-container>
+          </div>
         </div>
       </div>
       <button mat-raised-button color="primary" type="button" [disabled]="!isValidForm()" (click)="saveRoute()">Save</button>
