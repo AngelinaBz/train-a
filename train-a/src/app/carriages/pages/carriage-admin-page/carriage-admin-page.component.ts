@@ -32,9 +32,9 @@ export class CarriageAdminPageComponent implements OnInit {
   carriages$ = this.carriageFacade.carriages$;
   isLoading$ = this.carriageFacade.isLoading$;
   deleteError$ = this.carriageFacade.deleteError$;
-  isFormVisible = false;
   carriageForm!: FormGroup;
   selectedCarriage: Carriage | null = null;
+  isFormVisible = false;
 
   constructor(
     private carriageFacade: CarriageFacade,
@@ -68,10 +68,11 @@ export class CarriageAdminPageComponent implements OnInit {
         };
         this.carriageFacade.updateCarriage(updatedCarriage);
       } else {
+        this.carriageForm.get('name')?.setAsyncValidators(uniqueNameValidator(this.carriageFacade));
+        this.carriageForm.get('name')?.updateValueAndValidity();
         const newCarriage = this.carriageForm.value;
         this.carriageFacade.createCarriage(newCarriage);
       }
-      console.log('Submitted Carriage:', this.carriageForm.value);
       this.onCancel();
     }
   }
@@ -83,13 +84,17 @@ export class CarriageAdminPageComponent implements OnInit {
       leftSeats: 0,
       rightSeats: 0,
     });
+    this.carriageForm.get('name')?.setAsyncValidators(uniqueNameValidator(this.carriageFacade));
+    this.carriageForm.get('name')?.updateValueAndValidity();
     this.isFormVisible = false;
     this.selectedCarriage = null;
   }
 
-  onEditCarriage(carriage: Carriage) {
+  onUpdateCarriage(carriage: Carriage) {
     this.selectedCarriage = carriage;
     this.carriageForm.patchValue(JSON.parse(JSON.stringify(carriage)));
+    this.carriageForm.get('name')?.clearAsyncValidators();
+    this.carriageForm.get('name')?.updateValueAndValidity();
     this.isFormVisible = true;
   }
 

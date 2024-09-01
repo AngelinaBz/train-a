@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -13,11 +13,15 @@ import { Carriage } from '../../state/carriage.model';
   imports: [MatCardModule, CommonModule, MatButtonModule, MatIconModule, MatMenuModule],
   templateUrl: './carriage-card.component.html',
   styleUrl: './carriage-card.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CarriageCardComponent implements OnInit {
   @Input() carriage!: Carriage;
+  @Input() editable: boolean = false;
+  @Input() selectable: boolean = false;
   @Output() editCarriage = new EventEmitter<Carriage>();
   @Output() deleteCarriage = new EventEmitter<Carriage>();
+  selectedSeats: number[] = [];
 
   carriagesData: {
     name: string;
@@ -85,10 +89,25 @@ export class CarriageCardComponent implements OnInit {
   }
 
   onUpdate() {
-    this.editCarriage.emit(this.carriage);
+    if (this.editable) {
+      this.editCarriage.emit(this.carriage);
+    }
   }
 
   onDelete() {
     this.deleteCarriage.emit(this.carriage);
+  }
+
+  onSeatSelect(seat: number): void {
+    if (this.isSelected(seat)) {
+      this.selectedSeats = this.selectedSeats.filter((s) => s !== seat);
+    } else {
+      this.selectedSeats.push(seat);
+    }
+    console.log('Selected seats:', this.selectedSeats);
+  }
+
+  isSelected(seat: number): boolean {
+    return this.selectedSeats?.includes(seat);
   }
 }

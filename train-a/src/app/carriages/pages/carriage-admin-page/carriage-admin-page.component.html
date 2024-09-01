@@ -36,7 +36,9 @@
     <app-carriage-card
       *ngFor="let carriage of carriages$ | async"
       [carriage]="carriage"
-      (editCarriage)="onEditCarriage($event)"
+      [editable]="true"
+      [selectable]="false"
+      (editCarriage)="onUpdateCarriage($event)"
       (deleteCarriage)="onDeleteCarriage($event)"
     >
     </app-carriage-card>

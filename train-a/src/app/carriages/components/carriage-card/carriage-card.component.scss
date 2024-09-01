@@ -9,6 +9,7 @@
   max-width: 800px;
   padding: 10px;
   margin: 0 auto;
+  gap: 15px;
 
   .carriage-info {
     display: flex;
@@ -19,6 +20,14 @@
       margin-bottom: 5px;
       color: $text-color;
       font-weight: bold;
+    }
+
+    .seats-count {
+      padding: 3px;
+      border: 1px solid $border-color;
+      border-radius: 14px;
+      color: $text-color;
+      font-size: 0.9rem;
     }
 
     .settings-button {
@@ -63,6 +72,7 @@
         border: 1px solid #aaa;
         margin: 2px;
         background-color: $border-color;
+        cursor: pointer;
 
         &.left {
           background-color: #d2dde8;
@@ -70,6 +80,15 @@
 
         &.right {
           background-color: #bdc9db;
+        }
+
+        &.selected {
+          background-color: $success-color;
+          color: $primary-color;
+        }
+
+        &:hover {
+          background-color: $hover-color;
         }
       }
     }
