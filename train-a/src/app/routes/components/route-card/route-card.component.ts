@@ -11,7 +11,7 @@ import { Station } from '../../../stations/models/station.model';
 import { StationFacade } from '../../../stations/state/station.facade';
 import { Route } from '../../models/route.model';
 import { RoutesFacade } from '../../state/routes.facade';
-import { DeleteRouteComponent } from '../delete-route/delete-route.component';
+import { DeleteRouteDialogComponent } from '../delete-route-dialog/delete-route-dialog.component';
 
 @Component({
   selector: 'app-route-card',
@@ -60,7 +60,7 @@ export class RouteCardComponent implements OnInit {
   }
 
   deleteRoute() {
-    const dialogRef = this.dialog.open(DeleteRouteComponent);
+    const dialogRef = this.dialog.open(DeleteRouteDialogComponent);
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.routesFacade.deleteRoute(this.route.id);
