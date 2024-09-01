@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormField } from '@angular/material/form-field';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { CarriageFacade } from '../../../carriages/state/carriage.facade';
 import { Carriage } from '../../../carriages/state/carriage.model';
@@ -45,6 +46,7 @@ export class RoutesAdminPageComponent implements OnInit {
     private routesFacade: RoutesFacade,
     private stationFacade: StationFacade,
     private carriageFacade: CarriageFacade,
+    private snackBar: MatSnackBar,
   ) {}
 
   ngOnInit() {
@@ -137,13 +139,17 @@ export class RoutesAdminPageComponent implements OnInit {
     );
   }
 
-  saveRoute() {
-    const path = this.selectedStations.map((station) => station.id).filter((id) => id !== undefined);
-    const carriages = this.selectedCarriages.map((carriage) => carriage.code).filter((code) => code !== undefined);
-    this.routesFacade.createRoute(path, carriages);
+  resetForm() {
     this.isCreatingRoute = false;
     this.selectedStations = [];
     this.connectedStations = [];
     this.selectedCarriages = [];
+  }
+
+  saveRoute() {
+    const path = this.selectedStations.map((station) => station.id).filter((id) => id !== undefined);
+    const carriages = this.selectedCarriages.map((carriage) => carriage.code).filter((code) => code !== undefined);
+    this.routesFacade.createRoute(path, carriages);
+    this.resetForm();
   }
 }

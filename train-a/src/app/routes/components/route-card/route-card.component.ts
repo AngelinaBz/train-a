@@ -32,8 +32,8 @@ export class RouteCardComponent implements OnInit {
     private routesFacade: RoutesFacade,
     private stationFacade: StationFacade,
     private carriageFacade: CarriageFacade,
-    private snackBar: MatSnackBar,
     private dialog: MatDialog,
+    private snackBar: MatSnackBar,
   ) {}
 
   ngOnInit() {
