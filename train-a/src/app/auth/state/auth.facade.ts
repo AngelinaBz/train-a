@@ -10,6 +10,7 @@ import * as AuthSelectors from './auth.selectors';
 export class AuthFacade {
   isRegistered$ = this.store.select(AuthSelectors.selectIsRegistered);
   isLoggedIn$ = this.store.select(AuthSelectors.selectIsLoggedIn);
+  isLoading$ = this.store.select(AuthSelectors.selectIsLoading);
   authToken$ = this.store.select(AuthSelectors.selectAuthToken);
   authError$ = this.store.select(AuthSelectors.selectError);
 
