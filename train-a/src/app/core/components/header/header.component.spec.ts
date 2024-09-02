@@ -1,16 +1,16 @@
+import { CommonModule } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
-import { StoreModule } from '@ngrx/store';
+import { RouterTestingModule } from '@angular/router/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 
 import { UserFacade } from '../../../user/state/user.facade';
-import { userReducer } from '../../../user/state/user.reducers';
 import { HeaderComponent } from './header.component';
 
 describe('HeaderComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [StoreModule.forRoot({ user: userReducer })],
-      declarations: [HeaderComponent],
-      providers: [UserFacade],
+      imports: [CommonModule, RouterTestingModule, HeaderComponent],
+      providers: [provideMockStore({}), UserFacade],
     }).compileComponents();
   });
 
