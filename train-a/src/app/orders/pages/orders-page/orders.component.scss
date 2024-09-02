@@ -1,0 +1,23 @@
+.orders-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 20px;
+  gap: 20px;
+
+  app-order-card {
+    width: 100%;
+    min-width: 370px;
+    max-width: 600px;
+  }
+}
+
+.spinner {
+  position: fixed;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inset: 0;
+}

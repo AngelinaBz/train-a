@@ -1,0 +1,80 @@
+import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatDialog } from '@angular/material/dialog';
+import { MatIcon } from '@angular/material/icon';
+import { Router } from '@angular/router';
+
+import { CarriageFacade } from '../../../carriages/state/carriage.facade';
+import { Carriage } from '../../../carriages/state/carriage.model';
+import { Station } from '../../../stations/models/station.model';
+import { StationFacade } from '../../../stations/state/station.facade';
+import { Route } from '../../models/route.model';
+import { RoutesFacade } from '../../state/routes.facade';
+import { DeleteRouteDialogComponent } from '../delete-route-dialog/delete-route-dialog.component';
+
+@Component({
+  selector: 'app-route-card',
+  standalone: true,
+  imports: [MatCardModule, CommonModule, MatButtonModule, MatIcon],
+  templateUrl: './route-card.component.html',
+  styleUrl: './route-card.component.scss',
+})
+export class RouteCardComponent implements OnInit {
+  @Input() route!: Route;
+  @Output() editRoute = new EventEmitter<Route>();
+
+  stations: Station[] = [];
+  carriages: Carriage[] = [];
+  routeId?: number;
+
+  constructor(
+    private routesFacade: RoutesFacade,
+    private stationFacade: StationFacade,
+    private carriageFacade: CarriageFacade,
+    private dialog: MatDialog,
+    private router: Router,
+  ) {}
+
+  ngOnInit() {
+    if (this.route) {
+      this.routeId = this.route.id;
+      this.loadStations();
+      this.loadCarriages();
+    }
+  }
+
+  loadStations() {
+    this.stationFacade.stations$.subscribe((stations) => {
+      this.stations = this.route.path
+        .map((stationId) => stations.find((station) => station.id === stationId))
+        .filter((station) => station !== undefined) as Station[];
+    });
+  }
+
+  loadCarriages() {
+    this.carriageFacade.carriages$.subscribe((carriages) => {
+      this.carriages = this.route.carriages
+        .map((carriageCode) => carriages.find((carriage) => carriage.code === carriageCode))
+        .filter((carriage) => carriage !== undefined) as Carriage[];
+    });
+  }
+
+  deleteRoute() {
+    const dialogRef = this.dialog.open(DeleteRouteDialogComponent);
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.routesFacade.deleteRoute(this.route.id);
+      }
+    });
+  }
+
+  editRouteEvent() {
+    this.editRoute.emit(this.route);
+  }
+
+  assignRide() {
+    this.router.navigate([`/admin/routes/${this.route.id}`]);
+  }
+}

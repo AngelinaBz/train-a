@@ -1,0 +1,47 @@
+<div class="routes-container">
+  <button mat-raised-button class="create" *ngIf="!isCreatingRoute" (click)="showCreateRouteForm()">Create</button>
+  <div *ngIf="isCreatingRoute">
+    <form>
+      <div class="route-data">
+        <div class="stations">
+          <h3>Stations</h3>
+          <div class="stations-cards">
+            <ng-container *ngFor="let station of selectedStations; let i = index">
+              <mat-form-field appearance="fill">
+                <mat-label>Select Station</mat-label>
+                <mat-select [value]="station" (selectionChange)="onStationChange($event, i)">
+                  <mat-option value="">-</mat-option>
+                  <mat-option *ngFor="let connectesStation of getConnectesStations(i)" [value]="connectesStation">{{
+                    connectesStation.city
+                  }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </ng-container>
+          </div>
+        </div>
+        <div class="carriages">
+          <h3>Carriages</h3>
+          <div class="carriages-cards">
+            <ng-container *ngFor="let carriage of selectedCarriages; let i = index; trackBy: trackByIndex">
+              <mat-form-field appearance="fill">
+                <mat-label>Select Carriage</mat-label>
+                <mat-select [value]="carriage" (selectionChange)="onCarriageChange($event, i)">
+                  <mat-option value="">-</mat-option>
+                  <mat-option *ngFor="let carriage of carriages" [value]="carriage">{{ carriage.name }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <div class="buttons-container">
+        <button mat-raised-button color="primary" type="button" [disabled]="!isValidForm()" (click)="saveRoute()">Save</button>
+        <button mat-raised-button color="warn" type="button" (click)="resetForm()">Cancel</button>
+      </div>
+    </form>
+  </div>
+  <app-route-card *ngFor="let route of routes$ | async" [route]="route" (editRoute)="editRoute($event)"></app-route-card>
+</div>
+<div class="spinner" *ngIf="isLoading$ | async">
+  <mat-spinner strokeWidth="3"></mat-spinner>
+</div>
