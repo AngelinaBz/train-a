@@ -26,6 +26,12 @@
   app-route-card {
     width: 100%;
   }
+
+  .buttons-container {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+  }
 }
 
 .spinner {

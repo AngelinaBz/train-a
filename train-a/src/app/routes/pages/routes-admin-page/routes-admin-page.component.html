@@ -34,7 +34,10 @@
           </div>
         </div>
       </div>
-      <button mat-raised-button color="primary" type="button" [disabled]="!isValidForm()" (click)="saveRoute()">Save</button>
+      <div class="buttons-container">
+        <button mat-raised-button color="primary" type="button" [disabled]="!isValidForm()" (click)="saveRoute()">Save</button>
+        <button mat-raised-button color="warn" type="button" (click)="resetForm()">Cancel</button>
+      </div>
     </form>
   </div>
   <app-route-card *ngFor="let route of routes$ | async" [route]="route" (editRoute)="editRoute($event)"></app-route-card>
