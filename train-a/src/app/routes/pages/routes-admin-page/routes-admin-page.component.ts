@@ -100,7 +100,7 @@ export class RoutesAdminPageComponent implements OnInit {
   }
 
   updateConnectedStations() {
-    this.connectedStations = this.selectedStations.map((station, index) => {
+    this.connectedStations = this.selectedStations.map((_, index) => {
       if (index === 0) {
         return this.stations;
       }
