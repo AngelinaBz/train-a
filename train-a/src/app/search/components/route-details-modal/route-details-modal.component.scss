@@ -4,6 +4,10 @@
     min-width: 370px;
     grid-template-columns: auto auto auto;
 
+    @media (width <= 500px) {
+      min-width: auto;
+    }
+
     &__time {
       display: flex;
       flex-direction: column;

@@ -44,4 +44,20 @@ export class OrderEffects {
       }),
     );
   });
+
+  makeOrder$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(orderActions.makeOrder),
+      mergeMap((action) => {
+        return this.http.post(`/api/order`, action.order).pipe(
+          map(() => {
+            return orderActions.makeOrderSuccess({
+              id: 1,
+            });
+          }),
+          catchError((error: HttpErrorResponse) => of(orderActions.makeOrderFailure({ error: error.error }))),
+        );
+      }),
+    );
+  });
 }

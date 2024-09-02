@@ -13,7 +13,14 @@ export const selectRideDetails = ({ rideId, to, from }: { rideId: number; from?:
       const toIndex = to ? item.path.indexOf(to) : item.path.length - 1;
 
       if (fromIndex === -1 || toIndex === -1 || fromIndex >= toIndex) {
-        return null;
+        return {
+          ...item,
+          path: [],
+          schedule: {
+            ...item.schedule,
+            segments: [],
+          },
+        };
       }
 
       return {

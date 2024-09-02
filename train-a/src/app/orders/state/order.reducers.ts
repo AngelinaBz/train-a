@@ -9,6 +9,10 @@ export interface OrderState {
   isCancelSuccess: boolean;
   orders: Order[];
   error: ApiError | null;
+  makeOrder: {
+    isLoading: boolean;
+    error: null | ApiError;
+  };
 }
 
 export const initialState: OrderState = {
@@ -16,6 +20,10 @@ export const initialState: OrderState = {
   isCancelSuccess: false,
   orders: [],
   error: null,
+  makeOrder: {
+    isLoading: false,
+    error: null,
+  },
 };
 
 export const orderReducer = createReducer(
@@ -29,4 +37,25 @@ export const orderReducer = createReducer(
     (state): OrderState => ({ ...state, isLoading: false, error: null, isCancelSuccess: true }),
   ),
   on(OrderActions.cancelOrderFailure, (state, { error }): OrderState => ({ ...state, isLoading: false, error })),
+  on(
+    OrderActions.makeOrder,
+    (state): OrderState => ({
+      ...state,
+      makeOrder: {
+        ...state.makeOrder,
+        isLoading: true,
+      },
+    }),
+  ),
+  on(
+    OrderActions.makeOrderSuccess,
+    (state): OrderState => ({
+      ...state,
+      makeOrder: {
+        isLoading: false,
+        error: null,
+      },
+    }),
+  ),
+  on(OrderActions.makeOrderFailure, (state, { error }): OrderState => ({ ...state, makeOrder: { isLoading: false, error } })),
 );
