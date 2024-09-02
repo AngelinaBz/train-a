@@ -117,23 +117,23 @@ export class OrderCardComponent implements OnInit {
   calculateSeatNumber(carriages: Carriage[], seatId: number) {
     let accumulatedSeats = 0;
 
-    this.order.carriages.some((carriageName) => {
+    for (let i = 0; i < this.order.carriages.length; i += 1) {
+      const carriageName = this.order.carriages[i];
       const carriage = carriages.find((c) => c.name === carriageName);
 
       if (carriage) {
         const seatsInCarriage = carriage.rows * (carriage.leftSeats + carriage.rightSeats);
 
         if (seatId <= accumulatedSeats + seatsInCarriage) {
-          this.carriageNumber = this.order.carriages.indexOf(carriageName) + 1;
+          this.carriageNumber = i + 1;
           this.carriageName = carriage.name;
           this.seatNumber = seatId - accumulatedSeats;
-          return true;
+          break;
         }
 
         accumulatedSeats += seatsInCarriage;
       }
-      return false;
-    });
+    }
   }
 
   calculateTotalPrice() {
