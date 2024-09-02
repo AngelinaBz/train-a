@@ -4,7 +4,15 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { map, switchMap } from 'rxjs';
 
-import { Carriage, CarriageItem, Route, SearchCriteria, SearchResult, StationInfo } from '../../../shared/models/search.models';
+import {
+  Carriage,
+  CarriageCode,
+  CarriageItem,
+  Route,
+  SearchCriteria,
+  SearchResult,
+  StationInfo,
+} from '../../../shared/models/search.models';
 import { SearchService } from '../../../shared/services/search.service';
 import { RouteDetailsModalComponent } from '../route-details-modal/route-details-modal.component';
 
@@ -69,18 +77,15 @@ export class SearchResultsComponent {
 
       const carriagesInfo: CarriageItem[] = route.carriages
         .map((carriageCode) => {
-          const carriage = this.carriages.find((c) => c.code === carriageCode);
-          if (carriage) {
-            return {
-              code: carriage.code,
-              name: carriage.info || 'Unknown',
-              leftSeats: carriage.seatsAvailable || 0,
-              rightSeats: 0,
-              rows: Number.isFinite(carriage.seatsAvailable) ? Math.ceil(carriage.seatsAvailable / 4) : 0,
-              mode: 'standard',
-            } as CarriageItem;
-          }
-          return null;
+          const carriageTypeInfo = this.getCarriageType(carriageCode as CarriageCode);
+          return {
+            code: carriageCode,
+            name: this.getCarriageInfo(carriageCode),
+            leftSeats: carriageTypeInfo.leftSeats,
+            rightSeats: carriageTypeInfo.rightSeats,
+            rows: carriageTypeInfo.rows,
+            mode: 'standard',
+          } as CarriageItem;
         })
         .filter((carriage): carriage is CarriageItem => carriage !== null);
 
@@ -95,6 +100,16 @@ export class SearchResultsComponent {
       ...result,
       routes: updatedRoutes,
     };
+  }
+
+  private getCarriageType(carriageCode: CarriageCode): CarriageItem {
+    const carriageTypeMap: Record<CarriageCode, CarriageItem> = {
+      carriage1: { leftSeats: 20, rightSeats: 20, rows: 10, code: 'carriage1', name: 'Carriage1' },
+      carriage2: { leftSeats: 15, rightSeats: 15, rows: 10, code: 'carriage2', name: 'Carriage2' },
+      carriage3: { leftSeats: 10, rightSeats: 10, rows: 10, code: 'carriage3', name: 'Carriage3' },
+    };
+
+    return carriageTypeMap[carriageCode] || { leftSeats: 0, rightSeats: 0, rows: 0 };
   }
 
   calculateDuration(startTime: string, endTime: string): string {
@@ -164,14 +179,16 @@ export class SearchResultsComponent {
   countTotalSeatsByClass(route: Route): { carriage1: number; carriage2: number; carriage3: number } {
     console.log('Counting total seats by class:', route);
     const seatCounts = { carriage1: 0, carriage2: 0, carriage3: 0 };
+
     route.carriages.forEach((carriageCode: string) => {
-      const carriage = this.carriages.find((c) => c.code === carriageCode);
-      if (carriage) {
-        if (carriage.code === 'carriage1') seatCounts.carriage1 += carriage.seatsAvailable;
-        if (carriage.code === 'carriage2') seatCounts.carriage2 += carriage.seatsAvailable;
-        if (carriage.code === 'carriage3') seatCounts.carriage3 += carriage.seatsAvailable;
-      }
+      const carriageTypeInfo = this.getCarriageType(carriageCode as CarriageCode);
+      const totalSeats = (carriageTypeInfo.leftSeats + carriageTypeInfo.rightSeats) * carriageTypeInfo.rows;
+
+      if (carriageCode === 'carriage1') seatCounts.carriage1 += totalSeats;
+      if (carriageCode === 'carriage2') seatCounts.carriage2 += totalSeats;
+      if (carriageCode === 'carriage3') seatCounts.carriage3 += totalSeats;
     });
+
     return seatCounts;
   }
 

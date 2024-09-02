@@ -61,6 +61,8 @@ export interface Segment {
   time: [string, string];
 }
 
+export type CarriageCode = 'carriage1' | 'carriage2' | 'carriage3';
+
 export interface Carriage {
   code: string;
   info: string;
