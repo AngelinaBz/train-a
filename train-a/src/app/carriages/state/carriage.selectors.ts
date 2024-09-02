@@ -4,8 +4,10 @@ import { CarriageState } from './carriage.reducers';
 
 export const selectCarriageState = createFeatureSelector<CarriageState>('carriage');
 
-export const selectIsLoading = createSelector(selectCarriageState, (state: CarriageState) => state.isLoading);
+export const selectCarriages = createSelector(selectCarriageState, (state: CarriageState) => state.getCarriages.carriages);
 
-export const selectError = createSelector(selectCarriageState, (state: CarriageState) => state.error);
+export const selectIsLoading = createSelector(selectCarriageState, (state: CarriageState) => state.getCarriages.isLoading);
 
-export const selectCarriages = createSelector(selectCarriageState, (state: CarriageState) => state.carriages);
+export const selectError = createSelector(selectCarriageState, (state: CarriageState) => state.getCarriages.error);
+
+export const selectDeleteError = createSelector(selectCarriageState, (state: CarriageState) => state.deleteCarriage.error);
