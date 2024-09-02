@@ -1,8 +1,8 @@
 import { createReducer, on } from '@ngrx/store';
 
 import { ApiError } from '../../shared/models/ApiError.model';
+import { Order } from '../models/order.model';
 import * as OrderActions from './order.actions';
-import { Order } from './order.model';
 
 export interface OrderState {
   isLoading: boolean;

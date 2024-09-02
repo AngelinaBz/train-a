@@ -2,6 +2,7 @@ import { createReducer, on } from '@ngrx/store';
 
 import { ApiError } from '../../shared/models/ApiError.model';
 import User from '../models/User.model';
+import UserWithId from '../models/UserWithId';
 import * as userActions from './user.actions';
 
 export interface UserState {
@@ -9,13 +10,16 @@ export interface UserState {
     getUserProfile: boolean;
     updateUserProfile: boolean;
     updateUserPassword: boolean;
+    getAllUsers: boolean;
   };
   errors: {
     getUserProfile: ApiError | null;
     updateUserProfile: ApiError | null;
     updateUserPassword: ApiError | null;
+    getAllUsers: ApiError | null;
   };
   user: User | null;
+  users: UserWithId[] | [];
 }
 
 export const initialState: UserState = {
@@ -23,13 +27,16 @@ export const initialState: UserState = {
     getUserProfile: false,
     updateUserProfile: false,
     updateUserPassword: false,
+    getAllUsers: false,
   },
   errors: {
     getUserProfile: null,
     updateUserProfile: null,
     updateUserPassword: null,
+    getAllUsers: null,
   },
   user: null,
+  users: [],
 };
 
 export const userReducer = createReducer(
@@ -147,6 +154,45 @@ export const userReducer = createReducer(
       errors: {
         ...state.errors,
         updateUserPassword: error,
+      },
+    }),
+  ),
+  on(
+    userActions.getAllUsers,
+    (state): UserState => ({
+      ...state,
+      isLoading: {
+        ...state.isLoading,
+        getAllUsers: true,
+      },
+      errors: {
+        ...state.errors,
+        getAllUsers: null,
+      },
+    }),
+  ),
+  on(
+    userActions.getAllUsersSuccess,
+    (state, { users }): UserState => ({
+      ...state,
+      isLoading: {
+        ...state.isLoading,
+        getAllUsers: false,
+      },
+      users,
+    }),
+  ),
+  on(
+    userActions.getAllUsersFailure,
+    (state, { error }): UserState => ({
+      ...state,
+      isLoading: {
+        ...state.isLoading,
+        getAllUsers: false,
+      },
+      errors: {
+        ...state.errors,
+        getAllUsers: error,
       },
     }),
   ),

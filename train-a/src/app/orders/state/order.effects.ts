@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, of } from 'rxjs';
 
+import { Order } from '../models/order.model';
 import * as orderActions from './order.actions';
-import { Order } from './order.model';
 
 @Injectable()
 export class OrderEffects {

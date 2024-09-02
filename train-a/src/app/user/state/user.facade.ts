@@ -19,6 +19,7 @@ export class UserFacade {
   isLoading$ = this.store.select(userSelectors.selectIsLoading);
   errors$ = this.store.select(userSelectors.selectErrors);
   user$ = this.store.select(userSelectors.selectUser);
+  allUsers$ = this.store.select(userSelectors.selectAllUsers);
 
   constructor(private store: Store) {}
 
@@ -63,6 +64,22 @@ export class UserFacade {
       )
       .subscribe((state) => {
         if (!state.errors.updateUserPassword) {
+          onSuccess?.(state);
+        } else {
+          onFailure?.(state);
+        }
+      });
+  }
+
+  getAllUsers({ onSuccess, onFailure }: FacadeActionArgs = {}) {
+    this.store.dispatch(userActions.getAllUsers());
+    return this.state$
+      .pipe(
+        filter((state) => !state.isLoading.getAllUsers),
+        take(1),
+      )
+      .subscribe((state) => {
+        if (!state.errors.getAllUsers) {
           onSuccess?.(state);
         } else {
           onFailure?.(state);
