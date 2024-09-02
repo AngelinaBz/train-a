@@ -1,5 +1,5 @@
 import { NgIf } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 
 import { CarriageCardComponent } from '../../../carriages/components/carriage-card/carriage-card.component';
 import { Carriage } from '../../../carriages/state/carriage.model';
@@ -21,13 +21,17 @@ export interface SelectSeatOutput {
   templateUrl: './details-carriages-list.component.html',
   styleUrl: './details-carriages-list.component.scss',
 })
-export class DetailsCarriagesListComponent implements OnInit {
+export class DetailsCarriagesListComponent implements OnInit, OnChanges {
   @Input() details!: RideDetails;
   @Input() carriages!: Carriage[];
   @Input() carriageTypeIndex: number = 0;
   @Output() selectSeat = new EventEmitter<SelectSeatOutput>();
   selectedSeat?: number;
   carriagesMeta!: ReturnType<typeof getCarriageSeats>;
+
+  ngOnChanges() {
+    this.carriagesMeta = getCarriageSeats(this.details, this.carriages);
+  }
 
   ngOnInit() {
     this.carriagesMeta = getCarriageSeats(this.details, this.carriages);
