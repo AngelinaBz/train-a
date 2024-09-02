@@ -16,21 +16,7 @@ export interface StationInfo {
   longitude: number;
 }
 export interface SearchResult {
-  routes: Array<{
-    id: number;
-    path: number[];
-    schedule: Array<{
-      rideId: number;
-      segments: Array<{
-        occupiedSeats: number[];
-        price: { [key: string]: number };
-        time: [string, string];
-      }>;
-    }>;
-    carriages: string[];
-    price: { [key: string]: number };
-    time: [string, string];
-  }>;
+  routes: Array<Route>;
   from: {
     stationId: number;
     city: string;
@@ -51,13 +37,11 @@ export interface SearchResult {
 export interface Route {
   id: number;
   path: number[];
-  schedule: Array<{
-    rideId: number;
-    segments: Segment[];
-  }>;
+  schedule: Array<Schedule>;
   carriages: string[];
   price: { [key: string]: number };
   time: [string, string];
+  carriagesInfo?: CarriageItem[];
 }
 
 export interface Schedule {
@@ -75,4 +59,20 @@ export interface Segment {
   occupiedSeats: number[];
   price: { [key: string]: number };
   time: [string, string];
+}
+
+export interface Carriage {
+  code: string;
+  info: string;
+  seatsAvailable: number;
+  price: number;
+}
+
+export interface CarriageItem {
+  code: string;
+  leftSeats: number;
+  name: string;
+  rightSeats: number;
+  rows: number;
+  mode?: string;
 }
