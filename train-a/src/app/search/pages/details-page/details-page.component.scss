@@ -1,0 +1,59 @@
+@import '../../../../styles';
+
+.details-page {
+  display: flex;
+  flex-direction: column;
+
+  &__content {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 1rem;
+    gap: 1rem;
+
+    @media screen and (width <= 700px) {
+      flex-direction: column;
+    }
+  }
+
+  &__order {
+    position: sticky;
+    top: 0;
+    height: 250px;
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  &__info {
+    padding: 0.5rem;
+  }
+}
+
+.legend {
+  &__item {
+    display: flex;
+  }
+
+  &__seat {
+    display: flex;
+    width: 30px;
+    height: 30px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #aaa;
+    border-radius: 3px;
+    margin: 2px;
+    background-color: #d2dde8;
+
+    &--booked {
+      background-color: $border-color;
+      color: $primary-color;
+    }
+
+    &--selected {
+      background-color: $success-color;
+      color: $primary-color;
+    }
+  }
+}

@@ -8,4 +8,5 @@ export const paths = {
   stations: 'stations',
   carriages: 'carriages',
   routes: 'routes',
+  trip: 'trip',
 } as const;

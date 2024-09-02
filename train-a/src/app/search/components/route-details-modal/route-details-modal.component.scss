@@ -4,6 +4,10 @@
     min-width: 370px;
     grid-template-columns: auto auto auto;
 
+    @media (width <= 500px) {
+      min-width: auto;
+    }
+
     &__time {
       display: flex;
       flex-direction: column;
@@ -55,11 +59,13 @@
         content: '';
       }
 
-      &--first {
+      &--selected {
         &::after {
           box-shadow: 0 0 0 6px rgb(126 128 129 / 70%);
         }
+      }
 
+      &--first {
         &::before {
           bottom: 0;
           height: 50%;
@@ -70,7 +76,6 @@
         &::after {
           border-color: darkblue;
           background-color: darkblue;
-          box-shadow: 0 0 0 6px rgb(126 128 129 / 70%);
         }
 
         &::before {
