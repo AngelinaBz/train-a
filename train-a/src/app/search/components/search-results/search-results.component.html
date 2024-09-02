@@ -74,23 +74,25 @@
             </div>
           </div>
 
-          <div class="class-details" *ngIf="groupPricesByClass(route) as groupedPrices">
-            <div class="class-detail">
-              <span>1st Class</span>
-              <span>Price: ${{ groupedPrices['carriage1'] }}</span>
-              <span *ngIf="countTotalSeatsByClass(route)['carriage1'] as totalSeats">Seats: {{ totalSeats }}</span>
-            </div>
+          <div class="class-details" *ngIf="searchResults">
+            <div *ngFor="let route of searchResults.routes">
+              <div class="class-detail">
+                <span>1st Class</span>
+                <span>Price per Seat: ${{ calculatePricePerSeat(route, 'carriage1') | number: '1.0-0' }}</span>
+                <span>Seats Available: {{ countTotalSeatsByClass(route)['carriage1'] }}</span>
+              </div>
 
-            <div class="class-detail">
-              <span>2nd Class</span>
-              <span>Price: ${{ groupedPrices['carriage2'] }}</span>
-              <span *ngIf="countTotalSeatsByClass(route)['carriage2'] as totalSeats">Seats: {{ totalSeats }}</span>
-            </div>
+              <div class="class-detail">
+                <span>2nd Class</span>
+                <span>Price per Seat: ${{ calculatePricePerSeat(route, 'carriage2') | number: '1.0-0' }}</span>
+                <span>Seats Available: {{ countTotalSeatsByClass(route)['carriage2'] }}</span>
+              </div>
 
-            <div class="class-detail">
-              <span>Women Only</span>
-              <span>Price: ${{ groupedPrices['carriage3'] }}</span>
-              <span *ngIf="countTotalSeatsByClass(route)['carriage3'] as totalSeats">Seats: {{ totalSeats }}</span>
+              <div class="class-detail">
+                <span>Women Only</span>
+                <span>Price per Seat: ${{ calculatePricePerSeat(route, 'carriage3') | number: '1.0-0' }}</span>
+                <span>Seats Available: {{ countTotalSeatsByClass(route)['carriage3'] }}</span>
+              </div>
             </div>
           </div>
           <button mat-raised-button color="primary" (click)="openRouteDialog(route)">Route</button>

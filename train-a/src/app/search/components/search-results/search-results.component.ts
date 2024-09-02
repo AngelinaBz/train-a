@@ -178,18 +178,61 @@ export class SearchResultsComponent {
 
   countTotalSeatsByClass(route: Route): { carriage1: number; carriage2: number; carriage3: number } {
     console.log('Counting total seats by class:', route);
+
     const seatCounts = { carriage1: 0, carriage2: 0, carriage3: 0 };
 
     route.carriages.forEach((carriageCode: string) => {
-      const carriageTypeInfo = this.getCarriageType(carriageCode as CarriageCode);
-      const totalSeats = (carriageTypeInfo.leftSeats + carriageTypeInfo.rightSeats) * carriageTypeInfo.rows;
+      const carriageItem = route.carriagesInfo?.find((c) => c.code === carriageCode);
 
-      if (carriageCode === 'carriage1') seatCounts.carriage1 += totalSeats;
-      if (carriageCode === 'carriage2') seatCounts.carriage2 += totalSeats;
-      if (carriageCode === 'carriage3') seatCounts.carriage3 += totalSeats;
+      if (carriageItem) {
+        const freeSeats = carriageItem.leftSeats + carriageItem.rightSeats;
+
+        if (carriageCode === 'carriage1') seatCounts.carriage1 += freeSeats;
+        if (carriageCode === 'carriage2') seatCounts.carriage2 += freeSeats;
+        if (carriageCode === 'carriage3') seatCounts.carriage3 += freeSeats;
+      }
     });
 
     return seatCounts;
+  }
+
+  getCarriageInfoByCode(route: Route, carriageCode: string): CarriageItem | undefined {
+    return route.carriagesInfo?.find((c) => c.code === carriageCode);
+  }
+
+  // Возвращает информацию по каждому вагону
+  getCarriagesInfo(route: Route): { [key: string]: CarriageItem } {
+    const carriagesInfo: { [key: string]: CarriageItem } = {};
+    route.carriages.forEach((carriageCode) => {
+      const carriageItem = this.getCarriageInfoByCode(route, carriageCode);
+      if (carriageItem) {
+        carriagesInfo[carriageCode] = carriageItem;
+      }
+    });
+    return carriagesInfo;
+  }
+
+  calculatePricePerSeat(route: Route, carriageCode: string): number {
+    const carriageItem = this.getCarriageInfoByCode(route, carriageCode);
+    if (!carriageItem) return 0;
+
+    const carriagePrice = route.schedule
+      .flatMap((schedule) => schedule.segments)
+      .reduce((accum, segment) => accum + (segment.price[carriageCode] || 0), 0);
+
+    const totalSeats = carriageItem.leftSeats + carriageItem.rightSeats;
+    return totalSeats > 0 ? carriagePrice / totalSeats : 0;
+  }
+
+  getGroupedCarriagesByType(route: Route): { [type: string]: CarriageItem[] } {
+    const groupedCarriages: { [type: string]: CarriageItem[] } = {};
+    route.carriagesInfo?.forEach((carriage) => {
+      if (!groupedCarriages[carriage.name]) {
+        groupedCarriages[carriage.name] = [];
+      }
+      groupedCarriages[carriage.name].push(carriage);
+    });
+    return groupedCarriages;
   }
 
   openRouteDialog(route: Route): void {
