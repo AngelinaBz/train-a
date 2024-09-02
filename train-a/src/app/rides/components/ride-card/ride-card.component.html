@@ -1,0 +1,33 @@
+<mat-card class="ride-card" *ngFor="let ride of routeByID.schedule">
+  <mat-card-title> Ride {{ ride.rideId }} </mat-card-title>
+  <mat-card-content>
+    <div *ngFor="let segment of ride.segments; let j = index">
+      <div class="station-info">
+        <strong>{{ stations[j].city }}</strong>
+        <div class="schedule-wrapper">
+          <div *ngIf="j === 0">
+            <p>Departure: {{ segment.time[0] | date: 'medium' }}</p>
+          </div>
+          <div *ngIf="j > 0">
+            <p>Arrival: {{ ride.segments[j - 1].time[1] | date: 'medium' }}</p>
+            <p *ngIf="j < stations.length - 1">Departure: {{ segment.time[0] | date: 'medium' }}</p>
+          </div>
+          <button mat-icon-button color="primary" (click)="onEditTimes(j)">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
+        <div class="prices-wrapper">
+          <div class="prices">
+            <p *ngFor="let price of segment.price | keyvalue">
+              {{ price.key | titlecase }}: {{ price.value | currency: 'USD' : 'symbol' }}
+            </p>
+          </div>
+          <button mat-icon-button color="primary" (click)="onEditPrices(j)">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
+      </div>
+      <mat-divider *ngIf="j < ride.segments.length - 1"></mat-divider>
+    </div>
+  </mat-card-content>
+</mat-card>

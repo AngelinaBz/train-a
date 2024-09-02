@@ -1,0 +1,17 @@
+<div class="ride-management-page">
+  <button mat-button routerLink="/admin/routes"><mat-icon>arrow_back</mat-icon>Back</button>
+  <div class="ride-page-header">
+    <h1>Route {{ routeId }}</h1>
+    <button mat-raised-button color="primary" (click)="onCreateRide()"><mat-icon>add</mat-icon>Create Ride</button>
+  </div>
+
+  <mat-card-content>
+    <ng-container *ngIf="route$ | async as route; else loading">
+      <app-ride-card [routeByID]="route" (updateRide)="onUpdateRide($event)"></app-ride-card>
+    </ng-container>
+  </mat-card-content>
+
+  <ng-template #loading>
+    <p>Loading...</p>
+  </ng-template>
+</div>
