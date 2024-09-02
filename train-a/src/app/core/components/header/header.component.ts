@@ -1,29 +1,42 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
+
+import { UserFacade } from '../../../user/state/user.facade';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.scss',
+  styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   isAuthenticated = false;
   isAdmin = false;
+  userName: string | null = null;
 
-  showSignupForm = false;
-  showLoginForm = false;
+  constructor(
+    private router: Router,
+    public userFacade: UserFacade,
+    private cdr: ChangeDetectorRef,
+  ) {}
 
-  toggleSignup() {
-    this.showSignupForm = !this.showSignupForm;
-    this.showLoginForm = false;
+  ngOnInit() {
+    this.userFacade.user$.subscribe((user) => {
+      if (user) {
+        this.isAuthenticated = true;
+        this.isAdmin = user.role === 'manager';
+        this.userName = user.name;
+      } else {
+        this.isAuthenticated = false;
+        this.isAdmin = false;
+        this.userName = null;
+      }
+
+      this.cdr.detectChanges();
+    });
+
+    this.userFacade.getUserProfile();
   }
-
-  toggleLogin() {
-    this.showLoginForm = !this.showLoginForm;
-    this.showSignupForm = false;
-  }
-
-  logout() {}
 }

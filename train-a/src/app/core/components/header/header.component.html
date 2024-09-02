@@ -3,28 +3,24 @@
     <div class="header-item">
       <div class="container-nav">
         <div class="logo">
-          <a routerLink="/"><img src="" alt="Logo" style="width: 50px; height: 50px" /></a>
+          <a routerLink="/home"><img src="../../../../assets/img/svg/logo.svg" alt="Logo" style="width: 50px; height: 50px" /></a>
         </div>
-      </div>
-    </div>
-    <nav>
-      <ng-container *ngIf="isAuthenticated; else guestLinks">
-        <a routerLink="/profile">Profile</a>
-        <a routerLink="/orders">My Orders</a>
-        <a *ngIf="isAdmin" routerLink="/admin">Admin</a>
-        <button (click)="logout()">Logout</button>
-      </ng-container>
-      <ng-template #guestLinks>
-        <button class="login-button" (click)="toggleSignup()">Sign Up</button>
-        <button class="login-button" (click)="toggleLogin()">Sign In</button>
-      </ng-template>
-    </nav>
-    <div *ngIf="showSignupForm">
-      <!-- <app-signup-form></app-signup-form> -->
-    </div>
 
-    <div *ngIf="showLoginForm">
-      <!-- <app-login-form></app-login-form> -->
+        <ng-container *ngIf="userFacade.user$ | async as user; else guestLinks">
+          <nav class="nav-links">
+            <a routerLink="/profile">Profile</a>
+            <a routerLink="/orders">My Orders</a>
+            <a *ngIf="user.role === 'manager'" routerLink="/admin">Admin</a>
+          </nav>
+        </ng-container>
+
+        <ng-template #guestLinks>
+          <nav class="nav-links">
+            <a routerLink="/signup">Sign Up</a>
+            <a routerLink="/signin">Sign In</a>
+          </nav>
+        </ng-template>
+      </div>
     </div>
   </div>
 </header>
