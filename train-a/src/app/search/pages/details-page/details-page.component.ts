@@ -21,7 +21,6 @@ import {
 } from '../../components/details-carriages-list/details-carriages-list.component';
 import { DetailsHeadComponent } from '../../components/details-head/details-head.component';
 import { DetailsTabGroupComponent } from '../../components/details-tab-group/details-tab-group.component';
-import getAllRidePrices from '../../helpers/getAllRidePrices';
 import RideDetails from '../../models/RideDetails.model';
 import { DetailsFacade } from '../../state/details/details.facade';
 
@@ -63,7 +62,6 @@ export class DetailsPageComponent {
 
   activeTabIndex = 0;
   selectedSeat?: SelectSeatOutput;
-  price?: number | null;
   from = this.route.snapshot.queryParamMap.get('from') ?? undefined;
   to = this.route.snapshot.queryParamMap.get('to') ?? undefined;
   id = this.route.snapshot.paramMap.get('rideId') ?? undefined;
@@ -96,12 +94,6 @@ export class DetailsPageComponent {
     this.detailsError = toSignal(this.detailsError$);
   }
 
-  selectSeat(seat: SelectSeatOutput): void {
-    this.price =
-      this.details() && this.carriages() && getAllRidePrices(this.details()!)[this.carriages()![this.activeTabIndex].code];
-    this.selectedSeat = seat;
-  }
-
   makeOrder(): void {
     this.orderFacade.makeOrder({
       order: {
@@ -124,5 +116,4 @@ export class DetailsPageComponent {
   }
 
   protected readonly paths = paths;
-  protected readonly getAllRidePrices = getAllRidePrices;
 }

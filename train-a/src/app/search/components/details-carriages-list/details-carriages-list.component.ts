@@ -3,6 +3,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { CarriageCardComponent } from '../../../carriages/components/carriage-card/carriage-card.component';
 import { Carriage } from '../../../carriages/state/carriage.model';
+import getAllRidePrices from '../../helpers/getAllRidePrices';
 import getCarriageSeats from '../../helpers/getCarriageSeats';
 import RideDetails from '../../models/RideDetails.model';
 
@@ -10,6 +11,7 @@ export interface SelectSeatOutput {
   car: number;
   carriageSeat: number;
   seat: number;
+  price: number;
 }
 
 @Component({
@@ -31,7 +33,7 @@ export class DetailsCarriagesListComponent implements OnInit {
     this.carriagesMeta = getCarriageSeats(this.details, this.carriages);
   }
 
-  onSeatChange({ seat, car, seatsBefore }: { seat: number; car: number; seatsBefore: number }) {
+  onSeatChange({ seat, car, seatsBefore, carriage }: { seat: number; car: number; seatsBefore: number; carriage: Carriage }) {
     console.log(car, seatsBefore + seat);
 
     this.selectedSeat = seatsBefore + seat;
@@ -40,6 +42,7 @@ export class DetailsCarriagesListComponent implements OnInit {
       car,
       carriageSeat: seat,
       seat: seatsBefore + seat,
+      price: getAllRidePrices(this.details)[carriage.code],
     });
   }
 }

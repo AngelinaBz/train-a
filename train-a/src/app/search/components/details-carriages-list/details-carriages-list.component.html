@@ -8,6 +8,7 @@
       [occupiedSeats]="carriagesMeta[$index].carriageSeats"
       (selectCarriage)="
         onSeatChange({
+          carriage: $event.carriage,
           car: $index + 1,
           seat: $event.seat,
           seatsBefore: carriagesMeta[$index].seatsBefore,

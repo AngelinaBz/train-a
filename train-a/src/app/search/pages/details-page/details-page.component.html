@@ -26,7 +26,7 @@
         [details]="details()!"
         [carriages]="carriages()!"
         [carriageTypeIndex]="activeTabIndex"
-        (selectSeat)="selectSeat($event)"
+        (selectSeat)="selectedSeat = $event"
       />
     </div>
     <div class="details-page__order">
@@ -46,7 +46,9 @@
         </div>
       </div>
       <div>
-        <span *ngIf="selectedSeat"> Car: {{ selectedSeat!.car }} Seat: {{ selectedSeat!.carriageSeat }} ${{ price }}</span>
+        <span *ngIf="selectedSeat">
+          Car: {{ selectedSeat!.car }} Seat: {{ selectedSeat!.carriageSeat }} ${{ selectedSeat.price }}</span
+        >
         <button (click)="makeOrder()" mat-button *ngIf="isAuth()" [disabled]="!selectedSeat">
           <mat-icon>add_shopping_cart</mat-icon>
           Do order
