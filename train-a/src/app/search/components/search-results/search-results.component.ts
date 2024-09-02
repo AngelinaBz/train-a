@@ -4,9 +4,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { map, switchMap } from 'rxjs';
 
-import { RouteDialogComponent } from '../../../components/route-dialog/route-dialog.component';
-import { Carriage, CarriageItem, Route, SearchCriteria, SearchResult, StationInfo } from '../../../models/search.models';
-import { SearchService } from '../../../services/search.service';
+import { Carriage, CarriageItem, Route, SearchCriteria, SearchResult, StationInfo } from '../../../shared/models/search.models';
+import { SearchService } from '../../../shared/services/search.service';
+import { RouteDetailsModalComponent } from '../route-details-modal/route-details-modal.component';
 
 @Component({
   selector: 'app-search-results',
@@ -179,9 +179,12 @@ export class SearchResultsComponent {
     const preparedData = this.prepareRouteData(route);
     console.log('Prepared Data:', preparedData);
 
-    this.dialog.open(RouteDialogComponent, {
+    this.dialog.open(RouteDetailsModalComponent, {
       width: '600px',
-      data: preparedData,
+      data: {
+        detailsId: route.id,
+        ...preparedData,
+      },
     });
   }
 

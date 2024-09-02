@@ -9,8 +9,8 @@ import { MatInputModule } from '@angular/material/input';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
-import { SearchCriteria, StationInfo } from '../../../models/search.models';
-import { SearchService } from '../../../services/search.service';
+import { SearchCriteria, StationInfo } from '../../../shared/models/search.models';
+import { SearchService } from '../../../shared/services/search.service';
 
 @Component({
   selector: 'app-search-form',
