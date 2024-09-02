@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { providers } from '../../../app.config';
+import detailsMock, { from, rideId, to } from '../../../shared/test/mock/detailsMock';
+import stationsMock from '../../../shared/test/mock/stationsMock';
 import { DetailsHeadComponent } from './details-head.component';
 
 describe('DetailsHeadComponent', () => {
@@ -15,6 +17,13 @@ describe('DetailsHeadComponent', () => {
 
     fixture = TestBed.createComponent(DetailsHeadComponent);
     component = fixture.componentInstance;
+
+    component.id = String(rideId);
+    component.from = String(from);
+    component.to = String(to);
+    component.details = detailsMock;
+    component.stations = stationsMock;
+
     fixture.detectChanges();
   });
 

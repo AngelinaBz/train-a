@@ -57,12 +57,8 @@ export class DetailsPageComponent {
   detailsError!: Signal<ApiError | null | undefined>;
 
   stations = toSignal(this.stationFacade.stations$);
-  stationsIsLoading = toSignal(this.stationFacade.isLoading$);
-  stationsError = toSignal(this.stationFacade.stationError$);
 
   carriages = toSignal(this.carriagesFacade.carriages$);
-  carriagesIsLoading = toSignal(this.carriagesFacade.isLoading$);
-  carriagesError = toSignal(this.carriagesFacade.carriageError$);
 
   activeTabIndex = 0;
   selectedSeat?: SelectSeatOutput;
