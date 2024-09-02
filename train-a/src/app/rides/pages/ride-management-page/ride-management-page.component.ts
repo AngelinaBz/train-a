@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 
 import { Station } from '../../../stations/models/station.model';
@@ -14,7 +15,7 @@ import { RideFacade } from '../../state/rides.facade';
 @Component({
   selector: 'app-ride-management',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, RouterLink, RideCardComponent, MatIconModule, MatCardModule],
+  imports: [CommonModule, MatButtonModule, RouterLink, RideCardComponent, MatIconModule, MatCardModule, MatProgressSpinner],
   templateUrl: './ride-management-page.component.html',
   styleUrl: './ride-management-page.component.scss',
 })
@@ -26,6 +27,7 @@ export class RideManagementPageComponent implements OnInit {
   stations: Station[] = [];
 
   route$ = this.rideFacade.ride$;
+  isLoading$ = this.rideFacade.isLoading$;
 
   constructor(
     private rideFacade: RideFacade,
@@ -34,6 +36,7 @@ export class RideManagementPageComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.stationFacade.loadStations();
     this.route.params.subscribe((params) => {
       this.routeId = params['id'];
       this.rideFacade.loadRouteById(this.routeId);
