@@ -1,24 +1,35 @@
 <mat-card class="order-card">
   <mat-card-header>
-    <mat-card-title>{{ startStationName.toUpperCase() }} - {{ endStationName.toUpperCase() }} </mat-card-title>
-    <p class="order-details__price">{{ totalPrice }}cu</p>
-    <p *ngIf="status === 'canceled'">{{ status }}</p>
-    <button mat-mini-fab *ngIf="status === 'active'" (click)="cancelOrder()">
-      <mat-icon>delete</mat-icon>
-    </button>
+    <div class="admin-information">
+      <div class="order-user" *ngIf="orderUser">{{ orderUser.name }} {{ orderUser.email }}</div>
+      <div *ngIf="status === 'canceled' || status === 'rejected'" class="status">canceled</div>
+      <button mat-mini-fab *ngIf="status === 'active'" (click)="cancelOrder()">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+    <div class="order-stations">
+      <mat-card-title>{{ startStationName.toUpperCase() }} - {{ endStationName.toUpperCase() }} </mat-card-title>
+      <p class="order-price">{{ totalPrice }} $</p>
+    </div>
   </mat-card-header>
 
   <mat-card-content class="order-details">
     <div class="order-details__time-carriage">
       <div class="order-time">
-        <div class="start-time">{{ startTime | date: 'MMMM dd, HH:mm' }}</div>
+        <div class="start-time">
+          <div class="time">{{ startTime | date: 'HH:mm' }}</div>
+          <div class="date">{{ startTime | date: 'MMMM dd' }}</div>
+        </div>
         <div class="duration">{{ duration }}</div>
-        <div class="end-time">{{ endTime | date: 'MMMM dd, HH:mm' }}</div>
+        <div class="end-time">
+          <div class="time">{{ endTime | date: 'HH:mm' }}</div>
+          <div class="date">{{ endTime | date: 'MMMM dd' }}</div>
+        </div>
       </div>
       <div class="order-carriage">
-        <div class="carriage-type">Carriage type: {{ carriageName }}</div>
-        <div class="carriage-number">Car: {{ carriageNumber }}</div>
-        <div class="seat">Seat: {{ seatNumber }}</div>
+        <div class="carriage-type"><span>Carriage Class: </span>{{ carriageName }}</div>
+        <div class="carriage-number"><span>Carriage: </span>{{ carriageNumber }}</div>
+        <div class="seat"><span>Seat: </span>{{ seatNumber }}</div>
       </div>
     </div>
   </mat-card-content>

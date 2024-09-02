@@ -1,7 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 
 import { ApiError } from '../../shared/models/ApiError.model';
-import { Order } from './order.model';
+import { Order } from '../models/order.model';
 
 export const loadOrders = createAction('[Orders] Load Orders', props<{ all?: boolean }>());
 
