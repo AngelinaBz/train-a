@@ -6,6 +6,7 @@ import { SigninComponent } from './auth/pages/signin/signin.component';
 import { SignupComponent } from './auth/pages/signup/signup.component';
 import { CarriageAdminPageComponent } from './carriages/pages/carriage-admin-page/carriage-admin-page.component';
 import { OrdersComponent } from './orders/pages/orders-page/orders.component';
+import { RoutesAdminPageComponent } from './routes/pages/routes-admin-page/routes-admin-page.component';
 import { DetailsPageComponent } from './search/pages/details-page/details-page.component';
 import { paths } from './shared/configs/paths';
 import { StationAdminPageComponent } from './stations/pages/station-admin-page/station-admin-page.component';
@@ -62,7 +63,7 @@ export const routes: Routes = [
       { path: '', redirectTo: 'stations', pathMatch: 'full' },
       { path: 'stations', component: StationAdminPageComponent },
       { path: 'carriages', component: CarriageAdminPageComponent },
-      // { path: 'routes', component: RoutesComponent }
+      { path: 'routes', component: RoutesAdminPageComponent },
     ],
   },
 

@@ -1,0 +1,44 @@
+.routes-container {
+  display: flex;
+  width: 100%;
+  min-width: 370px;
+  max-width: 900px;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  margin: 20px;
+  gap: 20px;
+
+  .route-data {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .stations-cards,
+    .carriages-cards {
+      display: flex;
+      width: 100%;
+      flex-flow: row wrap;
+      gap: 5px;
+    }
+  }
+
+  app-route-card {
+    width: 100%;
+  }
+
+  .buttons-container {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+  }
+}
+
+.spinner {
+  position: fixed;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inset: 0;
+}
