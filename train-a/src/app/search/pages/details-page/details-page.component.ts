@@ -13,7 +13,6 @@ import { CarriageCardComponent } from '../../../carriages/components/carriage-ca
 import { CarriageFacade } from '../../../carriages/state/carriage.facade';
 import { OrderFacade } from '../../../orders/state/order.facade';
 import { paths } from '../../../shared/configs/paths';
-import { ApiError } from '../../../shared/models/ApiError.model';
 import { StationFacade } from '../../../stations/state/station.facade';
 import {
   DetailsCarriagesListComponent,
@@ -48,13 +47,10 @@ import { DetailsFacade } from '../../state/details/details.facade';
 })
 export class DetailsPageComponent {
   details$!: ReturnType<typeof this.detailsFacade.getRideDetails>;
-  detailsError$!: ReturnType<typeof this.detailsFacade.getRideDetailsError>;
 
   isAuth = toSignal(this.authFacade.isLoggedIn$);
 
   details!: Signal<RideDetails | null | undefined>;
-  detailsIsLoading!: Signal<boolean | undefined>;
-  detailsError!: Signal<ApiError | null | undefined>;
 
   stations = toSignal(this.stationFacade.stations$);
 
@@ -79,6 +75,7 @@ export class DetailsPageComponent {
     if (!this.id || !this.from || !this.to) {
       this.router.navigate([paths.main]);
     }
+
     this.carriagesFacade.loadCarriages();
     this.detailsFacade.loadDetails(Number(this.id));
     this.stationFacade.loadStations();
@@ -88,10 +85,8 @@ export class DetailsPageComponent {
       from: Number(this.from),
       to: Number(this.to),
     });
-    this.detailsError$ = this.detailsFacade.getRideDetailsError(Number(this.id));
+
     this.details = toSignal(this.details$);
-    this.detailsIsLoading = toSignal(this.detailsFacade.getRideDetailsLoading(Number(this.id)));
-    this.detailsError = toSignal(this.detailsError$);
   }
 
   makeOrder(): void {
@@ -103,6 +98,7 @@ export class DetailsPageComponent {
         stationEnd: Number(this.to),
       },
       onSuccess: () => {
+        this.detailsFacade.loadDetails(Number(this.id));
         this.snackBar.open('Order created', 'Close', {
           duration: 3000,
         });
