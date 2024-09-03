@@ -66,7 +66,9 @@ describe('HeaderComponent', () => {
   });
 
   it('should call getUserProfile on init', () => {
-    TestBed.createComponent(HeaderComponent);
+    const fixture = TestBed.createComponent(HeaderComponent);
+    fixture.detectChanges();
+
     expect(mockUserFacade.getUserProfile).toHaveBeenCalled();
   });
 });
