@@ -69,32 +69,26 @@
         height: 30px;
         align-items: center;
         justify-content: center;
-        border: 1px solid #aaa;
+        border: none;
         border-radius: 3px;
         margin: 2px;
-        background-color: $border-color;
+        background-color: $info-color;
+        color: $primary-color;
         cursor: pointer;
 
-        &.left {
-          background-color: #d2dde8;
-        }
-
-        &.right {
-          background-color: #bdc9db;
-        }
-
         &.selected {
-          background-color: $success-color;
+          background-color: $warning-color !important;
           color: $primary-color;
-        }
-
-        &:hover {
-          background-color: $hover-color;
         }
 
         &--occupied {
           background-color: $border-color !important;
           color: $primary-color;
+          cursor: not-allowed;
+        }
+
+        &:hover {
+          background-color: $active-color;
         }
 
         @media screen and (width <= 630px) {
