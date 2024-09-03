@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
@@ -12,6 +12,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { Station } from '../../../stations/models/station.model';
 import { StationFacade } from '../../../stations/state/station.facade';
 import { RouteByID, Schedule, Segment } from '../../models/ride.model';
+import { RideFacade } from '../../state/rides.facade';
 
 @Component({
   selector: 'app-ride-card',
@@ -25,6 +26,7 @@ import { RouteByID, Schedule, Segment } from '../../models/ride.model';
     MatProgressBarModule,
     MatFormFieldModule,
     MatInputModule,
+    ReactiveFormsModule,
     FormsModule,
   ],
   templateUrl: './ride-card.component.html',
@@ -51,7 +53,10 @@ export class RideCardComponent implements OnInit {
   arrivalTimeValid = true;
   isLoading$ = this.stationFacade.isLoading$;
 
-  constructor(private stationFacade: StationFacade) {}
+  constructor(
+    private stationFacade: StationFacade,
+    private rideFacade: RideFacade,
+  ) {}
 
   ngOnInit() {
     this.loadRideStations();
@@ -64,6 +69,17 @@ export class RideCardComponent implements OnInit {
         .map((stationId) => stations.find((station) => station.id === stationId))
         .filter((station): station is Station => station !== undefined);
     });
+  }
+
+  getDate(dateStr: string): string {
+    return `${this.formatDate(dateStr)} ${this.formatTime(dateStr)}`;
+  }
+
+  getPrice(segment: Segment): { type: string; amount: number }[] {
+    return Object.entries(segment.price).map(([type, amount]) => ({
+      type: type.charAt(0).toUpperCase() + type.slice(1),
+      amount,
+    }));
   }
 
   onEditTimes(index: number, rideId: number): void {
@@ -80,12 +96,27 @@ export class RideCardComponent implements OnInit {
   }
 
   saveChanges(index: number, rideId: number): void {
+    const editableRide = this.rides.find((ride) => ride.rideId === rideId);
+    if (!editableRide) {
+      return;
+    }
     if (this.validateDateTime()) {
-      const segment = this.rides[rideId - 1].segments[index];
-      segment.time[0] = this.parseDateTime(this.editDepartureDate, this.editDepartureTime);
-      segment.time[1] = this.parseDateTime(this.editArrivalDate, this.editArrivalTime);
-      this.editedSegment = null;
-      console.log('segment', segment);
+      const updatedTime: [string, string] = [
+        this.parseDateTime(this.editDepartureDate, this.editDepartureTime),
+        this.parseDateTime(this.editArrivalDate, this.editArrivalTime),
+      ];
+      const updatedSegments = editableRide.segments.map((segment, segIndex) => {
+        if (segIndex === index) {
+          return {
+            ...segment,
+            time: updatedTime,
+          };
+        }
+        return segment;
+      });
+      console.log('Updated ride', updatedSegments);
+      this.rideFacade.updateRide(this.routeByID.id, rideId, updatedSegments);
+      this.cancelEdit();
     }
   }
 
@@ -94,27 +125,29 @@ export class RideCardComponent implements OnInit {
   }
 
   validateDateTime(): boolean {
-    this.departureDateValid = this.isValidDate(this.editDepartureDate);
-    this.departureTimeValid = this.isValidTime(this.editDepartureTime);
-    this.arrivalDateValid = this.isValidDate(this.editArrivalDate);
-    this.arrivalTimeValid = this.isValidTime(this.editArrivalTime);
-    return this.departureDateValid && this.departureTimeValid && this.arrivalDateValid && this.arrivalTimeValid;
-  }
+    const fields = [
+      { type: 'departure', date: this.editDepartureDate, time: this.editDepartureTime },
+      { type: 'arrival', date: this.editArrivalDate, time: this.editArrivalTime },
+    ];
 
-  onDateChange(type: 'departure' | 'arrival', value: string): void {
-    if (type === 'departure') {
-      this.departureDateValid = this.isValidDate(value);
-    } else {
-      this.arrivalDateValid = this.isValidDate(value);
-    }
-  }
+    let isValid = true;
 
-  onTimeChange(type: 'departure' | 'arrival', value: string): void {
-    if (type === 'departure') {
-      this.departureTimeValid = this.isValidTime(value);
-    } else {
-      this.arrivalTimeValid = this.isValidTime(value);
-    }
+    fields.forEach(({ type, date, time }) => {
+      const dateValid = this.isValidDate(date);
+      const timeValid = this.isValidTime(time);
+
+      if (type === 'departure') {
+        this.departureDateValid = dateValid;
+        this.departureTimeValid = timeValid;
+      } else {
+        this.arrivalDateValid = dateValid;
+        this.arrivalTimeValid = timeValid;
+      }
+
+      isValid = isValid && dateValid && timeValid;
+    });
+
+    return isValid;
   }
 
   isValidDate(date: string): boolean {
@@ -147,18 +180,6 @@ export class RideCardComponent implements OnInit {
     const [hours, minutes] = time.split(':');
     const parsedDate = new Date(Date.UTC(+year, +month - 1, +day, +hours, +minutes));
     return parsedDate.toISOString();
-  }
-
-  getTime(segment: Segment): string {
-    const date = new Date(segment.time[0]);
-    return `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getFullYear()} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
-  }
-
-  getPrice(segment: Segment): { type: string; amount: number }[] {
-    return Object.entries(segment.price).map(([type, amount]) => ({
-      type: type.charAt(0).toUpperCase() + type.slice(1),
-      amount,
-    }));
   }
 
   onEditPrices(index: number): void {

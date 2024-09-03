@@ -7,6 +7,7 @@ import * as rideActions from './rides.actions';
 export interface RideState {
   isLoading: boolean;
   schedule: Schedule[];
+  rides: Schedule | null;
   routeById: RouteByID | null;
   error: ApiError | null;
   successMessage: string | null;
@@ -15,6 +16,7 @@ export interface RideState {
 export const initialState: RideState = {
   isLoading: false,
   schedule: [],
+  rides: null,
   routeById: null,
   error: null,
   successMessage: null,
@@ -71,6 +73,23 @@ export const rideReducer = createReducer(
     (state, { error }): RideState => ({
       ...state,
       isLoading: false,
+      error,
+    }),
+  ),
+  on(
+    rideActions.updateRideSuccess,
+    (state, { rideId, segments }): RideState => ({
+      ...state,
+      isLoading: false,
+      schedule: state.schedule.map((schedule) => (schedule.rideId === rideId ? { ...schedule, segments } : schedule)),
+      successMessage: 'Ride updated successfully',
+      error: null,
+    }),
+  ),
+  on(
+    rideActions.updateRideFailure,
+    (state, { error }): RideState => ({
+      ...state,
       error,
     }),
   ),

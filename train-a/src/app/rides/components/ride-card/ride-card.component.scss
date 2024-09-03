@@ -23,6 +23,21 @@
       display: flex;
       align-items: center;
       gap: 10px;
+
+      .edit-date-inputs-container {
+        display: flex;
+        flex-direction: column;
+
+        .edit-date-inputs {
+          display: flex;
+          gap: 5px;
+        }
+      }
+
+      .date-container {
+        display: flex;
+        flex-direction: column-reverse;
+      }
     }
 
     .prices-wrapper {

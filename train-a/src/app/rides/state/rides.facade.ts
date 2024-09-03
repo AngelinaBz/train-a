@@ -23,4 +23,8 @@ export class RideFacade {
   createRide(routeId: number, segments: Segment[]) {
     this.store.dispatch(rideActions.createRide({ routeId, segments }));
   }
+
+  updateRide(routeId: number, rideId: number, segments: Segment[]) {
+    this.store.dispatch(rideActions.updateRide({ routeId, rideId, segments }));
+  }
 }

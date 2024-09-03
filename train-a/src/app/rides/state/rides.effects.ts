@@ -38,4 +38,16 @@ export class RideEffects {
       ),
     );
   });
+
+  updateRide$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(rideActions.updateRide),
+      mergeMap(({ routeId, rideId, segments }) =>
+        this.http.put(`${this.apiUrl}/${routeId}/ride/${rideId}`, { segments }).pipe(
+          map(() => rideActions.updateRideSuccess({ rideId, segments })),
+          catchError((error) => of(rideActions.updateRideFailure({ error }))),
+        ),
+      ),
+    );
+  });
 }
