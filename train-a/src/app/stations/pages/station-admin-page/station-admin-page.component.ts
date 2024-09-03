@@ -6,6 +6,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { Subject, takeUntil } from 'rxjs';
 
@@ -31,6 +32,7 @@ import { StationFacade } from '../../state/station.facade';
     StationCardComponent,
     MatListModule,
     MatDividerModule,
+    MatProgressSpinner,
   ],
   templateUrl: './station-admin-page.component.html',
   styleUrl: './station-admin-page.component.scss',
@@ -39,7 +41,7 @@ export class StationAdminPageComponent implements OnInit, OnDestroy {
   stationForm!: FormGroup;
   errorMessage!: string | null;
   successMessage!: string | null;
-  loading$ = this.stationFacade.isLoading$;
+  isLoading$ = this.stationFacade.isLoading$;
   allStations$ = this.stationFacade.stations$;
   private destroy$ = new Subject<void>();
 

@@ -26,4 +26,16 @@ export class RideEffects {
       }),
     );
   });
+
+  createRide$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(rideActions.createRide),
+      mergeMap((action) =>
+        this.http.post<{ id: number }>(`${this.apiUrl}/${action.routeId}/ride`, { segments: action.segments }).pipe(
+          map(({ id }) => rideActions.createRideSuccess({ rideId: id })),
+          catchError((error: HttpErrorResponse) => of(rideActions.createRideFailure({ error: error.error }))),
+        ),
+      ),
+    );
+  });
 }

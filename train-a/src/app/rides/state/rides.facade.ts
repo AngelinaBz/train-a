@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 
+import { Segment } from '../models/ride.model';
 import * as rideActions from './rides.actions';
 import * as rideSelectors from './rides.selectors';
 
@@ -17,5 +18,9 @@ export class RideFacade {
 
   loadRouteById(routeId: number) {
     this.store.dispatch(rideActions.loadRouteById({ routeId }));
+  }
+
+  createRide(routeId: number, segments: Segment[]) {
+    this.store.dispatch(rideActions.createRide({ routeId, segments }));
   }
 }

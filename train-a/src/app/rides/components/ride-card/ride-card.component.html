@@ -11,18 +11,77 @@
             <p>{{ station.city }}</p>
           </ng-container>
         </ng-template>
+
         <div class="schedule-wrapper">
-          <div *ngIf="j === 0">
-            <p>Departure: {{ getDepartureTime(segment) }}</p>
-          </div>
-          <div *ngIf="j > 0">
-            <p>Arrival: {{ getArrivalTime(ride.segments[j - 1]) }}</p>
-            <p *ngIf="j < stations.length - 1">Departure: {{ getDepartureTime(segment) }}</p>
-          </div>
-          <button mat-icon-button color="primary" (click)="onEditTimes(j)">
-            <mat-icon>edit</mat-icon>
-          </button>
+          <ng-container *ngIf="segment === editedSegment">
+            <!-- edit-->
+            <mat-form-field appearance="fill">
+              <mat-label>Departure Date</mat-label>
+              <input
+                matInput
+                [(ngModel)]="editDepartureDate"
+                placeholder="dd.mm.yyyy"
+                (ngModelChange)="onDateChange('departure', $event)"
+                required
+              />
+              <mat-error *ngIf="!departureDateValid">Invalid date format</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Departure Time</mat-label>
+              <input
+                matInput
+                [(ngModel)]="editDepartureTime"
+                placeholder="hh:mm"
+                (ngModelChange)="onTimeChange('departure', $event)"
+                required
+              />
+              <mat-error *ngIf="!departureTimeValid">Invalid time format</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Arrival Date</mat-label>
+              <input
+                matInput
+                [(ngModel)]="editArrivalDate"
+                placeholder="dd.mm.yyyy"
+                (ngModelChange)="onDateChange('arrival', $event)"
+                required
+              />
+              <mat-error *ngIf="!arrivalDateValid">Invalid date format</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Arrival Time</mat-label>
+              <input
+                matInput
+                [(ngModel)]="editArrivalTime"
+                placeholder="hh:mm"
+                (ngModelChange)="onTimeChange('arrival', $event)"
+                required
+              />
+              <mat-error *ngIf="!arrivalTimeValid">Invalid time format</mat-error>
+            </mat-form-field>
+
+            <button mat-raised-button color="primary" (click)="saveChanges(j, ride.rideId)">Save</button>
+            <button mat-raised-button color="warn" (click)="cancelEdit()">Cancel</button>
+          </ng-container>
+
+          <ng-container *ngIf="segment !== editedSegment">
+            <!-- display -->
+            <div *ngIf="j === 0">
+              <p>Departure: {{ getTime(segment) }}</p>
+            </div>
+            <div *ngIf="j > 0">
+              <p>Arrival: {{ getTime(ride.segments[j - 1]) }}</p>
+              <p *ngIf="j < stations.length - 1">Departure: {{ getTime(segment) }}</p>
+            </div>
+            <button mat-icon-button color="primary" (click)="onEditTimes(j, ride.rideId)">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </ng-container>
         </div>
+
         <div class="prices-wrapper">
           <div class="prices-list">
             <p class="price-title">Price:</p>

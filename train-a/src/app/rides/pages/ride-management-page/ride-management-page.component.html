@@ -9,7 +9,7 @@
 
   <mat-card-content>
     <ng-container *ngIf="route$ | async as route">
-      <app-ride-card [routeByID]="route" (updateRide)="onUpdateRide($event)"></app-ride-card>
+      <app-ride-card [routeByID]="route"> </app-ride-card>
     </ng-container>
   </mat-card-content>
 
