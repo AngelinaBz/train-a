@@ -7,7 +7,7 @@ import { HomeComponent } from './home.component';
 describe('HomeComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [HomeComponent, HttpClientTestingModule],
+      imports: [HttpClientTestingModule, HomeComponent],
       providers: [provideMockStore({})],
     }).compileComponents();
   });

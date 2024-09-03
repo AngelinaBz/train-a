@@ -7,7 +7,7 @@ import { SearchResultsComponent } from './search-results.component';
 describe('SearchResultsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SearchResultsComponent, HttpClientTestingModule],
+      imports: [HttpClientTestingModule, SearchResultsComponent],
       providers: [provideMockStore({})],
     }).compileComponents();
   });
