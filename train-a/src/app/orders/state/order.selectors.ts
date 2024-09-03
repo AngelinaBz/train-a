@@ -11,3 +11,5 @@ export const selectError = createSelector(selectOrderState, (state: OrderState) 
 export const selectOrders = createSelector(selectOrderState, (state: OrderState) => state.orders);
 
 export const selectIsCancelSuccess = createSelector(selectOrderState, (state: OrderState) => state.isCancelSuccess);
+
+export const selectMakeOrderState = createSelector(selectOrderState, (state: OrderState) => state.makeOrder);

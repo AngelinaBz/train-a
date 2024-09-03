@@ -16,12 +16,18 @@ import { Carriage } from '../../state/carriage.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CarriageCardComponent implements OnChanges {
+  @Input() name?: string;
   @Input() carriage!: Carriage;
   @Input() editable: boolean = false;
   @Input() selectable: boolean = false;
+  @Input() occupiedSeats: number[] = [];
+  @Input() selectedSeat?: number;
+  @Output() selectCarriage = new EventEmitter<{
+    carriage: Carriage;
+    seat: number;
+  }>();
   @Output() editCarriage = new EventEmitter<Carriage>();
   @Output() deleteCarriage = new EventEmitter<Carriage>();
-  selectedSeat!: number;
 
   carriagesData: {
     name: string;
@@ -101,9 +107,11 @@ export class CarriageCardComponent implements OnChanges {
   onSeatSelect(seat: number): void {
     this.selectedSeat = seat;
     const selectedSeatData = {
-      code: this.carriage.code,
-      seats: this.selectedSeat,
+      carriage: this.carriage,
+      seat: this.selectedSeat,
     };
+
+    this.selectCarriage.emit(selectedSeatData);
     console.log('Selected seats:', selectedSeatData);
   }
 

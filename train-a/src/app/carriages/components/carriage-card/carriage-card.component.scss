@@ -92,6 +92,11 @@
           background-color: $hover-color;
         }
 
+        &--occupied {
+          background-color: $border-color !important;
+          color: $primary-color;
+        }
+
         @media screen and (width <= 630px) {
           width: 25px;
           height: 25px;
