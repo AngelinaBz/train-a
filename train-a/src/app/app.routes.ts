@@ -14,8 +14,11 @@ import { roleGuard } from './user/guards/role/role.guard';
 import { Roles } from './user/models/Roles.model';
 import { ProfilePageComponent } from './user/pages/profile-page/profile-page.component';
 
+const title = 'Train-A';
+
 export const routes: Routes = [
   {
+    title: `${title} - Signup`,
     path: paths.signup,
     component: SignupComponent,
     canActivate: [
@@ -26,16 +29,19 @@ export const routes: Routes = [
     ],
   },
   {
+    title: `${title} - Profile`,
     path: paths.profile,
     component: ProfilePageComponent,
     canActivate: [authGuard({ needAuth: true, redirectTo: paths.signin })],
   },
   {
+    title: `${title} - Orders`,
     path: paths.orders,
     component: OrdersComponent,
     canActivate: [authGuard({ needAuth: true, redirectTo: paths.signin })],
   },
   {
+    title: `${title} - Signin`,
     path: paths.signin,
     component: SigninComponent,
     canActivate: [
@@ -46,10 +52,12 @@ export const routes: Routes = [
     ],
   },
   {
+    title: `${title} - Trip`,
     path: `${paths.trip}/:rideId`,
     component: DetailsPageComponent,
   },
   {
+    title: `${title} - Admin`,
     path: 'admin',
     component: AdminComponent,
     canActivate: [
@@ -61,9 +69,9 @@ export const routes: Routes = [
     ],
     children: [
       { path: '', redirectTo: 'stations', pathMatch: 'full' },
-      { path: 'stations', component: StationAdminPageComponent },
-      { path: 'carriages', component: CarriageAdminPageComponent },
-      { path: 'routes', component: RoutesAdminPageComponent },
+      { title: `${title} - Admin Stations`, path: 'stations', component: StationAdminPageComponent },
+      { title: `${title} - Admin Carriages`, path: 'carriages', component: CarriageAdminPageComponent },
+      { title: `${title} - Admin Routes`, path: 'routes', component: RoutesAdminPageComponent },
     ],
   },
 
