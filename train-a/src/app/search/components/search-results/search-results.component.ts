@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 import { map, switchMap } from 'rxjs';
 
 import {
@@ -21,7 +22,7 @@ import { RouteDetailsModalComponent } from '../route-details-modal/route-details
   templateUrl: './search-results.component.html',
   styleUrls: ['./search-results.component.scss'],
   standalone: true,
-  imports: [CommonModule, MatDialogModule, ReactiveFormsModule],
+  imports: [CommonModule, MatDialogModule, MatIconModule, ReactiveFormsModule],
 })
 export class SearchResultsComponent {
   searchResults: SearchResult | null = null;

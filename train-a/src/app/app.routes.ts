@@ -7,6 +7,7 @@ import { SignupComponent } from './auth/pages/signup/signup.component';
 import { CarriageAdminPageComponent } from './carriages/pages/carriage-admin-page/carriage-admin-page.component';
 import { OrdersComponent } from './orders/pages/orders-page/orders.component';
 import { RoutesAdminPageComponent } from './routes/pages/routes-admin-page/routes-admin-page.component';
+import { DetailsPageComponent } from './search/pages/details-page/details-page.component';
 import { paths } from './shared/configs/paths';
 import { HomeComponent } from './shared/pages/home/home.component';
 import { StationAdminPageComponent } from './stations/pages/station-admin-page/station-admin-page.component';
@@ -46,6 +47,10 @@ export const routes: Routes = [
     ],
   },
   {
+    path: `${paths.trip}/:rideId`,
+    component: DetailsPageComponent,
+  },
+  {
     path: paths.main,
     component: HomeComponent,
     canActivate: [authGuard({ needAuth: true, redirectTo: paths.signin })],
@@ -67,4 +72,6 @@ export const routes: Routes = [
       { path: 'routes', component: RoutesAdminPageComponent },
     ],
   },
+
+  { path: '**', redirectTo: paths.main },
 ];
