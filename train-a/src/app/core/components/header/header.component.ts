@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterModule } from '@angular/router';
 
 import { UserFacade } from '../../../user/state/user.facade';
@@ -7,7 +8,7 @@ import { UserFacade } from '../../../user/state/user.facade';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, MatIconModule],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })

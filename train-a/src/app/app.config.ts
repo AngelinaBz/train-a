@@ -19,6 +19,8 @@ import { Routesffects } from './routes/state/routes.effects';
 import { routesReducer } from './routes/state/routes.reducers';
 import * as detailsEffects from './search/state/details/details.effects';
 import { detailsReducer } from './search/state/details/details.reducers';
+import { SearchEffects } from './search/state/search/search.effects';
+import { searchReducer } from './search/state/search/search.reducer';
 import { StationEffects } from './stations/state/station.effects';
 import { stationReducer } from './stations/state/station.reducers';
 import * as userEffects from './user/state/user.effects';
@@ -40,8 +42,18 @@ export const providers = [
     carriage: carriageReducer,
     details: detailsReducer,
     routes: routesReducer,
+    search: searchReducer,
   }),
-  provideEffects(userEffects, AuthEffects, OrderEffects, StationEffects, CarriageEffects, detailsEffects, Routesffects),
+  provideEffects(
+    userEffects,
+    AuthEffects,
+    OrderEffects,
+    StationEffects,
+    CarriageEffects,
+    SearchEffects,
+    detailsEffects,
+    Routesffects,
+  ),
   provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
 ];
 

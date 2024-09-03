@@ -3,7 +3,7 @@
     <div class="header-item">
       <div class="container-nav">
         <div class="logo">
-          <a routerLink="/home"><img src="../../../../assets/img/svg/logo.svg" alt="Logo" style="width: 50px; height: 50px" /></a>
+          <a class="logo-icon" routerLink="/home"><mat-icon> departure_board</mat-icon></a>
         </div>
 
         <ng-container *ngIf="userFacade.user$ | async as user; else guestLinks">
