@@ -8,7 +8,8 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { CarriageFacade } from '../../../carriages/state/carriage.facade';
-import { Carriage, CarriageItem, Route, SearchCriteria, SearchResult, StationInfo } from '../../../shared/models/search.models';
+import { Carriage } from '../../../carriages/state/carriage.model';
+import { CarriageItem, Route, SearchCriteria, SearchResult, StationInfo } from '../../../shared/models/search.models';
 import * as SearchActions from '../../state/search/search.actions';
 import * as SearchSelectors from '../../state/search/search.selectors';
 import { RouteDetailsModalComponent } from '../route-details-modal/route-details-modal.component';
@@ -35,18 +36,7 @@ export class SearchResultsComponent implements OnInit {
     this.searchResults$ = this.store.select(SearchSelectors.selectSearchResults);
     this.searchError$ = this.store.select(SearchSelectors.selectError);
     this.stations$ = this.store.select(SearchSelectors.selectStations);
-    this.carriages$ = this.carriageFacade.carriages$.pipe(
-      map((carriages) =>
-        carriages.map(
-          (carriage) =>
-            ({
-              ...carriage,
-              seatsAvailable: 0,
-              price: 0,
-            }) as Carriage,
-        ),
-      ),
-    );
+    this.carriages$ = this.carriageFacade.carriages$;
     this.loading$ = this.store.select(SearchSelectors.selectLoading);
   }
 
