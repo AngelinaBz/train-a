@@ -19,7 +19,6 @@
   <mat-form-field class="field" appearance="outline">
     <mat-label for="repeatPassword">Repeat Password</mat-label>
     <input type="password" id="repeatPassword" matInput formControlName="repeatPassword" [errorStateMatcher]="matcher" />
-    <mat-error *ngIf="isSubmitted && repeatPassword?.errors?.['required']">Please repeat the password</mat-error>
     <mat-error *ngIf="repeatPassword?.errors?.['mismatch'] && !repeatPassword?.errors?.['required']"
       >Passwords do not match
     </mat-error>
