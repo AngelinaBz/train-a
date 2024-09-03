@@ -77,8 +77,12 @@
         cursor: pointer;
 
         &.selected {
-          background-color: $warning-color !important;
+          background-color: $warning-color;
           color: $primary-color;
+
+          &:hover {
+            background-color: $warning-color;
+          }
         }
 
         &--occupied {
