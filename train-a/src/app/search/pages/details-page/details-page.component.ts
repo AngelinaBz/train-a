@@ -3,6 +3,7 @@ import { Component, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButton, MatFabButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { MatToolbarRow } from '@angular/material/toolbar';
@@ -13,6 +14,7 @@ import { CarriageCardComponent } from '../../../carriages/components/carriage-ca
 import { CarriageFacade } from '../../../carriages/state/carriage.facade';
 import { OrderFacade } from '../../../orders/state/order.facade';
 import { paths } from '../../../shared/configs/paths';
+import { ApiError } from '../../../shared/models/ApiError.model';
 import { StationFacade } from '../../../stations/state/station.facade';
 import {
   DetailsCarriagesListComponent,
@@ -41,6 +43,7 @@ import { DetailsFacade } from '../../state/details/details.facade';
     DetailsHeadComponent,
     DetailsTabGroupComponent,
     DetailsCarriagesListComponent,
+    MatProgressSpinner,
   ],
   templateUrl: './details-page.component.html',
   styleUrl: './details-page.component.scss',
@@ -51,10 +54,14 @@ export class DetailsPageComponent {
   isAuth = toSignal(this.authFacade.isLoggedIn$);
 
   details!: Signal<RideDetails | null | undefined>;
+  detailsIsLoading!: Signal<boolean | undefined>;
+  detailsError!: Signal<ApiError | null | undefined>;
 
   stations = toSignal(this.stationFacade.stations$);
+  stationsIsLoading = toSignal(this.stationFacade.isLoading$);
 
   carriages = toSignal(this.carriagesFacade.carriages$);
+  carriagesIsLoading = toSignal(this.carriagesFacade.isLoading$);
 
   activeTabIndex = 0;
   selectedSeat?: SelectSeatOutput;
@@ -87,6 +94,25 @@ export class DetailsPageComponent {
     });
 
     this.details = toSignal(this.details$);
+    this.detailsIsLoading = toSignal(this.detailsFacade.getRideDetailsLoading(Number(this.id)));
+    this.detailsError = toSignal(this.detailsFacade.getRideDetailsError(Number(this.id)));
+  }
+
+  get isDataLoaded(): boolean {
+    return !!(this.details() && this.stations() && this.carriages());
+  }
+
+  get isTripNotFound(): boolean {
+    return (
+      typeof this.detailsError()?.message === 'string' ||
+      (this.details()?.path?.indexOf(Number(this.from)) ?? 0) === -1 ||
+      (this.details()?.path?.indexOf(Number(this.to)) ?? 0) === -1 ||
+      (this.details()?.path?.indexOf(Number(this.from)) ?? 0) > (this.details()?.path?.indexOf(Number(this.to)) ?? 1)
+    );
+  }
+
+  get isPageLoading(): boolean {
+    return (this.detailsIsLoading() && this.stationsIsLoading() && this.carriagesIsLoading()) ?? false;
   }
 
   makeOrder(): void {
@@ -112,4 +138,5 @@ export class DetailsPageComponent {
   }
 
   protected readonly paths = paths;
+  protected readonly Number = Number;
 }
