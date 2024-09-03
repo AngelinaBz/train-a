@@ -1,5 +1,5 @@
-import { HttpClientModule, provideHttpClient, withInterceptors } from '@angular/common/http';
-import { ApplicationConfig, importProvidersFrom, isDevMode, provideZoneChangeDetection } from '@angular/core';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { ApplicationConfig, isDevMode, provideZoneChangeDetection } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
 import { provideEffects } from '@ngrx/effects';
@@ -24,7 +24,6 @@ import * as userEffects from './user/state/user.effects';
 import { userReducer } from './user/state/user.reducers';
 
 export const providers = [
-  importProvidersFrom(HttpClientModule),
   provideHttpClient(withInterceptors([authInterceptor])),
   provideZoneChangeDetection({ eventCoalescing: true }),
   provideRouter(routes),
