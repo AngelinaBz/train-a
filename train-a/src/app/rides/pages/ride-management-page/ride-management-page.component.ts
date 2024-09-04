@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -10,6 +11,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { dateValidator, formatDate, formatTime, timeValidator } from '../../../shared/validators/date-validator';
 import { Station } from '../../../stations/models/station.model';
 import { StationFacade } from '../../../stations/state/station.facade';
+import { DeleteRideDialogComponent } from '../../components/delete-ride-dialog/delete-ride-dialog.component';
 import { RideCardComponent } from '../../components/ride-card/ride-card.component';
 import { Price, RouteByID, Schedule, Segment } from '../../models/ride.model';
 import { RideFacade } from '../../state/rides.facade';
@@ -43,6 +45,7 @@ export class RideManagementPageComponent implements OnInit {
     private stationFacade: StationFacade,
     private route: ActivatedRoute,
     private fb: FormBuilder,
+    private dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
@@ -179,5 +182,21 @@ export class RideManagementPageComponent implements OnInit {
 
   onCreateRide(): void {
     console.log('create ride');
+  }
+
+  isFutureRide(departureTime: string): boolean {
+    return new Date(departureTime) > new Date();
+  }
+
+  openDeleteConfirmation(rideId: number) {
+    const dialogRef = this.dialog.open(DeleteRideDialogComponent, {
+      data: { rideId: this.editedSegmentIndex },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.rideFacade.deleteRide(this.routeId, rideId);
+      }
+    });
   }
 }

@@ -6,11 +6,14 @@
         <ng-container *ngIf="isLoading$ | async; else stationLoaded">
           <mat-progress-bar class="progress-bar" mode="indeterminate"></mat-progress-bar>
         </ng-container>
-        <ng-template #stationLoaded>
-          <ng-container *ngIf="stations[j] as station">
-            <p>{{ station.city }}</p>
-          </ng-container>
-        </ng-template>
+
+        <div class="stations-wrapper-">
+          <ng-template #stationLoaded>
+            <ng-container *ngIf="stations[j] as station" class="station-name">
+              <p>{{ station.city }}</p>
+            </ng-container>
+          </ng-template>
+        </div>
 
         <div class="schedule-wrapper">
           <ng-container *ngIf="segment === editedSegment && editType === 'date'">
@@ -66,7 +69,7 @@
                   </ng-container>
                 </div>
               </div>
-              <div class="edit-button-container">
+              <div class="edit-date-buttons-container">
                 <button mat-raised-button color="primary" (click)="saveTimes.emit(ride.rideId)" [disabled]="rideForm.invalid">
                   Save
                 </button>
@@ -83,7 +86,15 @@
               <p>Arrival: {{ getDate(segment.time[1]) }}</p>
               <p *ngIf="j < ride.segments.length - 1">Departure: {{ getDate(segment.time[0]) }}</p>
             </div>
-            <button mat-icon-button color="primary" (click)="onEditTimes(j, ride.rideId)">
+            <button
+              mat-raised-button
+              color="warn"
+              *ngIf="j === 0 && isFutureRide(ride.segments[j].time[j])"
+              (click)="deleteConfirmation(ride.rideId)"
+            >
+              Delete
+            </button>
+            <button mat-icon-button color="primary" class="small-icon-button" (click)="onEditTimes(j, ride.rideId)">
               <mat-icon>edit</mat-icon>
             </button>
           </ng-container>
@@ -100,7 +111,7 @@
                 </mat-form-field>
               </ng-container>
             </div>
-            <div class="edit-button-container">
+            <div class="edit-price-buttons-container">
               <button mat-raised-button color="primary" (click)="savePrices.emit(ride.rideId)">Save</button>
               <button mat-raised-button color="warn" (click)="cancelEditingPrice()">Cancel</button>
             </div>
@@ -111,10 +122,10 @@
               <p class="price-title">Price:</p>
               <p *ngFor="let price of getPrice(segment)">
                 <span class="price-type">{{ price.type }}: </span>
-                <span class="price-amount">{{ price.amount }} $</span>
+                <span class="price-amount">{{ price.amount }}&nbsp;$</span>
               </p>
             </div>
-            <button mat-icon-button color="primary" (click)="onEditPrices(j, ride.rideId)">
+            <button mat-icon-button color="primary" class="small-icon-button" (click)="onEditPrices(j, ride.rideId)">
               <mat-icon>edit</mat-icon>
             </button>
           </ng-container>

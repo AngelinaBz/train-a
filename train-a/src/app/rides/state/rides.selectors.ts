@@ -10,7 +10,7 @@ export const selectIsLoading = createSelector(selectRideState, (state: RideState
 
 export const selectError = createSelector(selectRideState, (state: RideState) => state.error);
 
-export const selectSuccessMessage = createSelector(selectRideState, (state: RideState) => state.successMessage);
+export const selectRideSuccessMessage = createSelector(selectRideState, (state: RideState) => state.successMessage);
 
 export const selectRides = createSelector(selectRideState, (state: RideState) => state.rides);
 

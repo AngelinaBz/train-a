@@ -21,3 +21,7 @@ export const updateRideSuccess = createAction(
   props<{ rideId: number; updatedSchedule: Schedule }>(),
 );
 export const updateRideFailure = createAction('[Ride] Update Ride Failure', props<{ error: ApiError }>());
+
+export const deleteRide = createAction('[Ride] Delete Ride', props<{ routeId: number; rideId: number }>());
+export const deleteRideSuccess = createAction('[Ride] Delete Ride Success', props<{ rideId: number }>());
+export const deleteRideFailure = createAction('[Ride] Delete Ride Failure', props<{ error: ApiError }>());

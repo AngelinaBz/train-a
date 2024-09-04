@@ -50,6 +50,7 @@ export class RideCardComponent {
   @Output() savePrices = new EventEmitter<number>();
   @Output() cancelEditDate = new EventEmitter<void>();
   @Output() cancelEditPrice = new EventEmitter<void>();
+  @Output() openDeleteConfirmation = new EventEmitter<number>();
 
   isLoading$ = this.stationFacade.isLoading$;
   route$ = this.rideFacade.ride$;
@@ -73,6 +74,14 @@ export class RideCardComponent {
 
   cancelEditingPrice(): void {
     this.cancelEditPrice.emit();
+  }
+
+  deleteConfirmation(rideId: number): void {
+    this.openDeleteConfirmation.emit(rideId);
+  }
+
+  isFutureRide(time: string): boolean {
+    return new Date(time) > new Date();
   }
 
   getDate(dateStr: string): string {

@@ -93,4 +93,14 @@ export const rideReducer = createReducer(
       error,
     }),
   ),
+  on(
+    rideActions.deleteRideSuccess,
+    (state, { rideId }): RideState => ({
+      ...state,
+      routeById: {
+        ...state.routeById!,
+        schedule: state.routeById!.schedule.filter((schedule) => schedule.rideId !== rideId),
+      },
+    }),
+  ),
 );

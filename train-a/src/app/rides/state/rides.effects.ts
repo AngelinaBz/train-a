@@ -45,7 +45,19 @@ export class RideEffects {
       mergeMap(({ routeId, rideId, segments }) =>
         this.http.put(`${this.apiUrl}/${routeId}/ride/${rideId}`, { segments }).pipe(
           map(() => rideActions.updateRideSuccess({ rideId, updatedSchedule: { rideId, segments } })),
-          catchError((error) => of(rideActions.updateRideFailure({ error }))),
+          catchError((error) => of(rideActions.updateRideFailure({ error: error.error }))),
+        ),
+      ),
+    );
+  });
+
+  delereRide$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(rideActions.deleteRide),
+      mergeMap(({ routeId, rideId }) =>
+        this.http.delete(`${this.apiUrl}/${routeId}/ride/${rideId}`).pipe(
+          map(() => rideActions.deleteRideSuccess({ rideId })),
+          catchError((error) => of(rideActions.deleteRideFailure({ error: error.error }))),
         ),
       ),
     );

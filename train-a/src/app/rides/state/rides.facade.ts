@@ -12,7 +12,7 @@ export class RideFacade {
   ride$ = this.store.select(rideSelectors.selectRouteById);
   rideError$ = this.store.select(rideSelectors.selectError);
   isLoading$ = this.store.select(rideSelectors.selectIsLoading);
-  successMessage$ = this.store.select(rideSelectors.selectSuccessMessage);
+  successMessage$ = this.store.select(rideSelectors.selectRideSuccessMessage);
 
   constructor(private store: Store) {}
 
@@ -26,5 +26,9 @@ export class RideFacade {
 
   updateRide(routeId: number, rideId: number, segments: Segment[]) {
     this.store.dispatch(rideActions.updateRide({ routeId, rideId, segments }));
+  }
+
+  deleteRide(routeId: number, rideId: number) {
+    this.store.dispatch(rideActions.deleteRide({ routeId, rideId }));
   }
 }
