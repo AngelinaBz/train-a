@@ -8,8 +8,8 @@ import { CarriageAdminPageComponent } from './carriages/pages/carriage-admin-pag
 import { OrdersComponent } from './orders/pages/orders-page/orders.component';
 import { RoutesAdminPageComponent } from './routes/pages/routes-admin-page/routes-admin-page.component';
 import { DetailsPageComponent } from './search/pages/details-page/details-page.component';
+import { HomeComponent } from './search/pages/home/home.component';
 import { paths } from './shared/configs/paths';
-import { HomeComponent } from './shared/pages/home/home.component';
 import { StationAdminPageComponent } from './stations/pages/station-admin-page/station-admin-page.component';
 import { roleGuard } from './user/guards/role/role.guard';
 import { Roles } from './user/models/Roles.model';

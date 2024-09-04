@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatButton } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -9,8 +10,9 @@ import { MatInputModule } from '@angular/material/input';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
-import { SearchCriteria, StationInfo } from '../../../shared/models/search.models';
-import { SearchService } from '../../../shared/services/search.service';
+import { Station } from '../../../stations/models/station.model';
+import { StationFacade } from '../../../stations/state/station.facade';
+import { SearchCriteria } from '../../models/Search.model';
 
 @Component({
   selector: 'app-search-form',
@@ -23,21 +25,22 @@ import { SearchService } from '../../../shared/services/search.service';
     MatInputModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatButton,
   ],
   templateUrl: './search-form.component.html',
   styleUrls: ['./search-form.component.scss'],
 })
-export class SearchFormComponent implements OnInit {
+export class SearchFormComponent {
   searchForm: FormGroup;
-  fromCityOptions: StationInfo[] = [];
-  toCityOptions: StationInfo[] = [];
-  filteredFromCities: Observable<StationInfo[]> = new Observable<StationInfo[]>();
-  filteredToCities: Observable<StationInfo[]> = new Observable<StationInfo[]>();
+  fromCityOptions: Station[] = [];
+  toCityOptions: Station[] = [];
+  filteredFromCities: Observable<Station[]> = new Observable<Station[]>();
+  filteredToCities: Observable<Station[]> = new Observable<Station[]>();
   today: Date = new Date();
 
   @Output() search = new EventEmitter<SearchCriteria>();
 
-  constructor(private stationService: SearchService) {
+  constructor(private stationFacade: StationFacade) {
     this.searchForm = new FormGroup({
       fromCity: new FormControl('', Validators.required),
       toCity: new FormControl('', Validators.required),
@@ -53,14 +56,9 @@ export class SearchFormComponent implements OnInit {
         this.searchForm.get('time')?.reset();
       }
     });
-  }
 
-  ngOnInit() {
-    this.loadStations();
-  }
-
-  loadStations(): void {
-    this.stationService.getStations().subscribe((stations) => {
+    this.stationFacade.loadStations();
+    this.stationFacade.stations$.subscribe((stations) => {
       this.fromCityOptions = stations;
       this.toCityOptions = stations;
       this.filteredFromCities = this.searchForm.get('fromCity')!.valueChanges.pipe(
@@ -74,7 +72,7 @@ export class SearchFormComponent implements OnInit {
     });
   }
 
-  filterCities(value: string, options: StationInfo[]): StationInfo[] {
+  filterCities(value: string, options: Station[]): Station[] {
     const filterValue = value.toLowerCase();
     return options.filter((option) => option.city.toLowerCase().includes(filterValue));
   }

@@ -1,51 +1,28 @@
 import { createReducer, on } from '@ngrx/store';
 
+import { ApiError } from '../../../shared/models/ApiError.model';
+import { SearchResult } from '../../models/Search.model';
 import * as SearchActions from './search.actions';
-import { SearchState } from './search.state';
+
+export interface SearchState {
+  searchResults: SearchResult | null;
+  isLoading: boolean;
+  error: ApiError | null;
+}
 
 export const initialState: SearchState = {
   searchResults: null,
   error: null,
-  stations: [],
-  loading: false,
-  carriages: [],
-  routeInfo: null,
+  isLoading: false,
 };
 
 export const searchReducer = createReducer(
   initialState,
   on(
-    SearchActions.loadStations,
-    (state): SearchState => ({
-      ...state,
-      loading: true,
-      error: null,
-    }),
-  ),
-  on(
-    SearchActions.loadStationsSuccess,
-    (state, { stations }): SearchState => ({
-      ...state,
-      stations,
-      loading: false,
-      error: null,
-    }),
-  ),
-  on(
-    SearchActions.loadStationsFailure,
-    (state, { error }): SearchState => ({
-      ...state,
-      loading: false,
-      error,
-    }),
-  ),
-  on(
     SearchActions.performSearch,
     (state): SearchState => ({
       ...state,
-      loading: true,
-      searchResults: null,
-      error: null,
+      isLoading: true,
     }),
   ),
   on(
@@ -53,14 +30,14 @@ export const searchReducer = createReducer(
     (state, { searchResults }): SearchState => ({
       ...state,
       searchResults,
-      loading: false,
+      isLoading: false,
     }),
   ),
   on(
     SearchActions.performSearchFailure,
     (state, { error }): SearchState => ({
       ...state,
-      loading: false,
+      isLoading: false,
       error,
     }),
   ),
