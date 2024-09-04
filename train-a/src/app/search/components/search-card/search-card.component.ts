@@ -23,6 +23,8 @@ export class SearchCardComponent implements OnChanges, OnInit {
   @Input() rideId!: number;
   @Input() from!: SearchResultsStations;
   @Input() to!: SearchResultsStations;
+  @Input() prices!: Record<string, number>;
+  @Input() seats!: Record<string, number>;
   details!: ReturnType<typeof getRideFromTo>;
 
   constructor(

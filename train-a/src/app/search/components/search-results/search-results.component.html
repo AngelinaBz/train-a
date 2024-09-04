@@ -8,7 +8,7 @@
   <div class="container-message">
     <div class="title">
       <span class="icon"><mat-icon>cancel</mat-icon></span
-      >No direct tains found
+      >No direct trains found
     </div>
     <div class="message">
       Unfortunately, we did not find any routes that match your search. Try changing your search parameters.
@@ -26,6 +26,13 @@
           [rideId]="detail.rideId"
           [rideDetails]="detail"
         ></app-search-card>
+        <div class="class-details" *ngIf="carriages$ | async as carriages">
+          <div *ngFor="let classType of ['carriage1', 'carriage2', 'carriage3']" class="class-detail">
+            <span>{{ classType === 'carriage1' ? '1st Class' : classType === 'carriage2' ? '2nd Class' : 'Women Only' }}</span>
+            <span>Price per Seat: ${{ calculatePricePerSeat(detail, classType) | number: '1.0-0' }}</span>
+            <span>Seats Available: {{ countTotalSeatsByClass(detail, carriages)[classType] }}</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>

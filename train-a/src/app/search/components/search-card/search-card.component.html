@@ -59,26 +59,20 @@
     </div>
   </div>
 
-  <div class="class-details">
-    <div *ngFor="let classType of ['carriage1', 'carriage2', 'carriage3']" class="class-detail">
-      <span>{{ classType === 'carriage1' ? '1st Class' : classType === 'carriage2' ? '2nd Class' : 'Women Only' }}</span>
-      <!--        <span>Price per Seat: ${{ calculatePricePerSeat(route, classType) | number: '1.0-0' }}</span>-->
-      <!--        <span>Seats Available: {{ countTotalSeatsByClass(route)[classType] }}</span>-->
-    </div>
-  </div>
-  <button
-    class="modal-button"
-    mat-raised-button
-    color="primary"
-    (click)="
-      openRouteDialog({
-        event: $event,
-        detailsId: rideId,
-        from: from.stationId,
-        to: to.stationId,
-      })
-    "
-  >
-    View Details
-  </button>
+  <div class="class-details"></div>
 </div>
+<button
+  class="modal-button"
+  mat-raised-button
+  color="primary"
+  (click)="
+    openRouteDialog({
+      event: $event,
+      detailsId: rideId,
+      from: from.stationId,
+      to: to.stationId,
+    })
+  "
+>
+  View Details
+</button>

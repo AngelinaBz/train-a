@@ -6,7 +6,8 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { CarriageFacade } from '../../../carriages/state/carriage.facade';
 import { Carriage } from '../../../carriages/state/carriage.model';
@@ -14,6 +15,9 @@ import { paths } from '../../../shared/configs/paths';
 import { ApiError } from '../../../shared/models/ApiError.model';
 import { Station } from '../../../stations/models/station.model';
 import { StationFacade } from '../../../stations/state/station.facade';
+import getAllRidePrices from '../../helpers/getAllRidePrices';
+import getAllRideSeats from '../../helpers/getAllRideSeats';
+import RideDetails from '../../models/RideDetails.model';
 import { SearchCriteria, SearchResult } from '../../models/Search.model';
 import * as SearchActions from '../../state/search/search.actions';
 import * as SearchSelectors from '../../state/search/search.selectors';
@@ -31,6 +35,7 @@ export class SearchResultsComponent {
   searchError$: Observable<ApiError | null>;
   stations$: Observable<Station[]>;
   carriages$: Observable<Carriage[]>;
+  carriagesData$: Observable<{ carriages: Carriage[]; searchResults: SearchResult | null }>;
   loading$: Observable<boolean>;
 
   constructor(
@@ -52,6 +57,9 @@ export class SearchResultsComponent {
     this.searchResults$.subscribe((results) => {
       console.log(results?.from, results?.to);
     });
+    this.carriagesData$ = combineLatest([this.carriages$, this.searchResults$]).pipe(
+      map(([carriages, searchResults]) => ({ carriages, searchResults })),
+    );
   }
 
   performSearch(criteria: SearchCriteria) {
@@ -60,6 +68,28 @@ export class SearchResultsComponent {
 
   isRouteNotFound(searchResults: SearchResult | null): boolean {
     return !searchResults || searchResults.routes.length === 0;
+  }
+
+  calculateDuration(startTime: string, endTime: string): string {
+    if (!startTime || !endTime) return '';
+    const start = new Date(startTime);
+    const end = new Date(endTime);
+
+    if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) return '';
+
+    const durationMs = end.getTime() - start.getTime();
+    const hours = Math.floor(durationMs / (1000 * 60 * 60));
+    const minutes = Math.floor((durationMs % (1000 * 60 * 60)) / (1000 * 60));
+    return `${hours}h ${minutes}m`;
+  }
+
+  calculatePricePerSeat(rideDetails: RideDetails, classType: string): number {
+    const prices = getAllRidePrices(rideDetails);
+    return prices[classType] ?? 0;
+  }
+
+  countTotalSeatsByClass(rideDetails: RideDetails, carriages: Carriage[]): Record<string, number> {
+    return getAllRideSeats(rideDetails, carriages);
   }
 
   protected readonly paths = paths;
