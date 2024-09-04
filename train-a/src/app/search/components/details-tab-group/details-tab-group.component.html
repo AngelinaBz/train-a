@@ -1,4 +1,4 @@
-<mat-tab-group [selectedIndex]="activeTabIndex" (selectedTabChange)="onTabChange($event)">
+<mat-tab-group (selectedTabChange)="onTabChange($event)">
   @for (carriage of carriages; track $index) {
     <mat-tab
       *ngIf="details.carriages.includes(carriage.code)"
