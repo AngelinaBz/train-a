@@ -116,6 +116,33 @@ body {
   margin: 5px 0;
 }
 
+.icon {
+  width: 100px;
+  height: 100px;
+  background-size: contain;
+  color: $primary-color;
+}
+
+.container-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+}
+
+.title {
+  margin-bottom: 10px;
+  color: $secondary-color;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.message {
+  color: #666;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
 @media (width <= 900px) {
   .ticket-header,
   .ticket-details {

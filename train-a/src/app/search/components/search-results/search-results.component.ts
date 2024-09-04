@@ -58,5 +58,9 @@ export class SearchResultsComponent {
     this.store.dispatch(SearchActions.performSearch({ criteria }));
   }
 
+  isRouteNotFound(searchResults: SearchResult | null): boolean {
+    return !searchResults || searchResults.routes.length === 0;
+  }
+
   protected readonly paths = paths;
 }
