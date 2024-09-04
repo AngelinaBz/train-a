@@ -1,0 +1,66 @@
+<div class="details-page-spinner" *ngIf="isPageLoading">
+  <mat-spinner strokeWidth="3"></mat-spinner>
+</div>
+<div class="details-page-error" *ngIf="isTripNotFound && !isPageLoading">
+  <h1>Trip not found</h1>
+  <button mat-button [routerLink]="[paths.main]">Go to main page</button>
+</div>
+
+<main class="details-page" *ngIf="!isPageLoading && isDataLoaded && !isTripNotFound">
+  <div class="details-page__info">
+    <app-details-head
+      *ngIf="id && from && to && details() && stations()"
+      [id]="id!"
+      [from]="from!"
+      [to]="to!"
+      [details]="details()!"
+      [stations]="stations()!"
+    />
+  </div>
+  <div class="details-page__tabs">
+    <app-details-tab-group
+      *ngIf="details() && carriages()"
+      [details]="details()!"
+      [carriages]="carriages()!"
+      [activeTabIndex]="activeTabIndex"
+      (tabChange)="activeTabIndex = $event"
+    />
+  </div>
+  <div class="details-page__content">
+    <div class="details-page__carriages">
+      <app-details-carriages-list
+        class="details-carriages-list"
+        *ngIf="details() && carriages()"
+        [details]="details()!"
+        [carriages]="carriages()!"
+        [carriageTypeIndex]="activeTabIndex"
+        (selectSeat)="selectedSeat = $event"
+      />
+    </div>
+    <div class="details-page__order">
+      <div class="legend">
+        legend:
+        <div class="legend__item">
+          <div class="legend__seat">1</div>
+          Available seat
+        </div>
+        <div class="legend__item">
+          <div class="legend__seat legend__seat--booked">1</div>
+          Reserved seat
+        </div>
+        <div class="legend__item">
+          <div class="legend__seat legend__seat--selected">1</div>
+          Selected seat
+        </div>
+      </div>
+      <div *ngIf="selectedSeat">
+        <span> Car: {{ selectedSeat!.car }} Seat: {{ selectedSeat!.carriageSeat }} ${{ selectedSeat.price }}</span>
+        <button (click)="makeOrder()" mat-button *ngIf="isAuth()" [disabled]="!selectedSeat">
+          <mat-icon>add_shopping_cart</mat-icon>
+          Do order
+        </button>
+        <button [routerLink]="[paths.signup]" mat-button *ngIf="!isAuth()">Register</button>
+      </div>
+    </div>
+  </div>
+</main>

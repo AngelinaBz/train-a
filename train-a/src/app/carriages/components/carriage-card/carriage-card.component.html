@@ -1,6 +1,6 @@
 <mat-card class="carriage" *ngIf="carriagesData">
   <div class="carriage-info">
-    <div class="name">{{ carriagesData.name }}</div>
+    <div class="name">{{ name ?? carriagesData.name }}</div>
     <div class="seats-count">{{ carriagesData.totalSeats }} seats</div>
     <button mat-icon-button *ngIf="editable" [matMenuTriggerFor]="menu" aria-label="Settings" class="settings-button">
       <mat-icon>settings</mat-icon>
@@ -19,31 +19,35 @@
   <div class="seats">
     <div class="rows-wrapper">
       <div class="row" *ngFor="let row of carriagesData.rightRows; let rowIndex = index">
-        <div
+        <button
           class="seat right"
           *ngFor="let seat of row"
           tabindex="0"
           (click)="onSeatSelect(seat)"
           (keyup.enter)="onSeatSelect(seat)"
           [class.selected]="isSelected(seat)"
+          [ngClass]="{ 'seat--occupied': occupiedSeats.includes(seat) }"
+          [disabled]="occupiedSeats.includes(seat)"
         >
           {{ seat }}
-        </div>
+        </button>
       </div>
     </div>
 
     <div class="rows-wrapper">
       <div class="row" *ngFor="let row of carriagesData.leftRows; let rowIndex = index">
-        <div
+        <button
           class="seat left"
           *ngFor="let seat of row"
           tabindex="0"
           (click)="onSeatSelect(seat)"
           (keyup.enter)="onSeatSelect(seat)"
           [class.selected]="isSelected(seat)"
+          [ngClass]="{ 'seat--occupied': occupiedSeats.includes(seat) }"
+          [disabled]="occupiedSeats.includes(seat)"
         >
           {{ seat }}
-        </div>
+        </button>
       </div>
     </div>
   </div>
