@@ -1,0 +1,98 @@
+<div class="ride-management-page">
+  <button mat-button routerLink="/admin/routes"><mat-icon>arrow_back</mat-icon>Back</button>
+  <div class="ride-page-header">
+    <h1>Route {{ routeId }}</h1>
+    <button mat-raised-button color="primary" class="create-ride-button" (click)="onCreateRide()">
+      <mat-icon>add</mat-icon>Create Ride
+    </button>
+  </div>
+
+  <mat-card class="ride-card" *ngIf="isCreatingNewRide">
+    <mat-card-title>New Ride</mat-card-title>
+    <mat-card-content>
+      <div *ngFor="let segment of newRide?.segments; let j = index">
+        <div class="station-info">
+          <mat-card-subtitle *ngIf="stations[j]">
+            {{ stations[j].city }}
+          </mat-card-subtitle>
+        </div>
+        <div class="edit-date-inputs-container">
+          <div class="edit-date-inputs">
+            <form [formGroup]="rideForm">
+              <mat-form-field appearance="fill">
+                <mat-label>Departure Date</mat-label>
+                <input matInput formControlName="departureDate" placeholder="dd.mm.yyyy" required />
+                <mat-error *ngIf="rideForm.get('departureDate')?.invalid && rideForm.get('departureDate')?.touched">
+                  Invalid date format
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="fill">
+                <mat-label>Departure Time</mat-label>
+                <input matInput formControlName="departureTime" placeholder="hh:mm" required />
+                <mat-error *ngIf="rideForm.get('departureTime')?.invalid && rideForm.get('departureTime')?.touched">
+                  Invalid time format
+                </mat-error>
+              </mat-form-field>
+            </form>
+          </div>
+
+          <div class="edit-date-inputs">
+            <mat-form-field appearance="fill">
+              <mat-label>Arrival Date</mat-label>
+              <input matInput [(ngModel)]="segment.time[1]" placeholder="dd.mm.yyyy" required />
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Arrival Time</mat-label>
+              <input matInput [(ngModel)]="segment.time[1]" placeholder="hh:mm" required />
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="prices-wrapper">
+          <div class="prices-list">
+            <mat-card-subtitle class="price-title">Price:</mat-card-subtitle>
+            <ng-container *ngFor="let type of priceTypes">
+              <mat-form-field appearance="fill">
+                <mat-label>{{ type }}</mat-label>
+                <span matTextPrefix>$&nbsp;</span>
+                <input matInput [(ngModel)]="segment.price[type]" placeholder="Amount" type="number" required />
+              </mat-form-field>
+            </ng-container>
+          </div>
+        </div>
+        <mat-divider *ngIf="j < newRide.segments.length - 1"></mat-divider>
+      </div>
+      <button mat-raised-button color="primary" (click)="saveNewRide()" [disabled]="rideForm.invalid">Save</button>
+      <button mat-raised-button color="warn" (click)="cancelNewRide()">Cancel</button>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card-content>
+    <ng-container *ngIf="ride$ | async as routeById">
+      <app-ride-card
+        [routeById]="routeById"
+        [rides]="routeById.schedule"
+        [stations]="stations"
+        [editedSegment]="editedSegment"
+        [editedSegmentIndex]="editedSegmentIndex"
+        [editedRideId]="editedRideId"
+        [editPrices]="editPrices"
+        [rideForm]="rideForm"
+        [editType]="editType"
+        (editTimesEvent)="onEditTimes($event)"
+        (editPricesEvent)="onEditPrices($event)"
+        (saveTimes)="saveTimes($event)"
+        (savePrices)="savePrices($event)"
+        (cancelEditDate)="cancelEditDate()"
+        (cancelEditPrice)="cancelEditPrice()"
+        (openDeleteConfirmation)="openDeleteConfirmation($event)"
+      >
+      </app-ride-card>
+    </ng-container>
+  </mat-card-content>
+
+  <ng-template *ngIf="isLoading$ | async">
+    <mat-spinner strokeWidth="3"></mat-spinner>
+  </ng-template>
+</div>

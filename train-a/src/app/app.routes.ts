@@ -6,6 +6,7 @@ import { SigninComponent } from './auth/pages/signin/signin.component';
 import { SignupComponent } from './auth/pages/signup/signup.component';
 import { CarriageAdminPageComponent } from './carriages/pages/carriage-admin-page/carriage-admin-page.component';
 import { OrdersComponent } from './orders/pages/orders-page/orders.component';
+import { RideManagementPageComponent } from './rides/pages/ride-management-page/ride-management-page.component';
 import { RoutesAdminPageComponent } from './routes/pages/routes-admin-page/routes-admin-page.component';
 import { DetailsPageComponent } from './search/pages/details-page/details-page.component';
 import { HomeComponent } from './search/pages/home/home.component';
@@ -74,12 +75,11 @@ export const routes: Routes = [
       }),
     ],
     children: [
-      { path: '', redirectTo: 'stations', pathMatch: 'full' },
-      { title: `${title} - Admin Stations`, path: 'stations', component: StationAdminPageComponent },
-      { title: `${title} - Admin Carriages`, path: 'carriages', component: CarriageAdminPageComponent },
-      { title: `${title} - Admin Routes`, path: 'routes', component: RoutesAdminPageComponent },
+      { path: '', redirectTo: paths.stations, pathMatch: 'full' },
+      { title: `${title} - Admin Stations`, path: paths.stations, component: StationAdminPageComponent },
+      { title: `${title} - Admin Carriages`, path: paths.carriages, component: CarriageAdminPageComponent },
+      { title: `${title} - Admin Routes`, path: paths.routes, component: RoutesAdminPageComponent },
+      { title: `${title} - Admin Rides`, path: `${paths.routes}/:id`, component: RideManagementPageComponent },
     ],
   },
-
-  { path: '**', redirectTo: paths.main },
 ];

@@ -41,8 +41,10 @@
       <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
     </div>
   </div>
-  <div *ngIf="(loading$ | async) === true">Loading...</div>
-  <div *ngIf="(loading$ | async) === false" class="stations-list-container">
+  <div class="spinner" *ngIf="isLoading$ | async">
+    <mat-spinner strokeWidth="3"></mat-spinner>
+  </div>
+  <div class="stations-list-container">
     <app-station-card *ngFor="let station of allStations$ | async" [station]="station"></app-station-card>
   </div>
 </div>

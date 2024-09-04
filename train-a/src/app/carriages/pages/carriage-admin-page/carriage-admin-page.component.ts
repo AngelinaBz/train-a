@@ -22,7 +22,6 @@ import { Carriage } from '../../state/carriage.model';
     MatListModule,
     MatInputModule,
     MatSelectModule,
-    MatButtonModule,
     MatListModule,
   ],
   templateUrl: './carriage-admin-page.component.html',
