@@ -7,6 +7,58 @@
     </button>
   </div>
 
+  <mat-card class="ride-card" *ngIf="isCreatingNewRide">
+    <mat-card-title>New Ride</mat-card-title>
+    <mat-card-content>
+      <div *ngFor="let segment of newRide?.segments; let j = index">
+        <div class="station-info">
+          <p *ngIf="stations[j]">
+            {{ stations[j].city }}
+          </p>
+        </div>
+        <div class="edit-date-inputs-container">
+          <div class="edit-date-inputs">
+            <mat-form-field appearance="fill">
+              <mat-label>Departure Date</mat-label>
+              <input matInput [(ngModel)]="segment.time[0]" placeholder="dd.mm.yyyy" required />
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Departure Time</mat-label>
+              <input matInput [(ngModel)]="segment.time[0]" placeholder="hh:mm" required />
+            </mat-form-field>
+          </div>
+
+          <div class="edit-date-inputs">
+            <mat-form-field appearance="fill">
+              <mat-label>Arrival Date</mat-label>
+              <input matInput [(ngModel)]="segment.time[1]" placeholder="dd.mm.yyyy" required />
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Arrival Time</mat-label>
+              <input matInput [(ngModel)]="segment.time[1]" placeholder="hh:mm" required />
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="prices-wrapper">
+          <div class="prices-list">
+            <p class="price-title">Price:</p>
+            <ng-container *ngFor="let type of priceTypes">
+              <mat-form-field appearance="fill">
+                <mat-label>{{ type }}</mat-label>
+                <input matInput [(ngModel)]="segment.price[type]" placeholder="Amount" type="number" required />
+              </mat-form-field>
+            </ng-container>
+          </div>
+        </div>
+        <mat-divider *ngIf="j < newRide.segments.length - 1"></mat-divider>
+      </div>
+      <button mat-raised-button color="primary" (click)="saveNewRide()">Save</button>
+      <button mat-raised-button color="warn" (click)="cancelNewRide()">Cancel</button>
+    </mat-card-content>
+  </mat-card>
+
   <mat-card-content>
     <ng-container *ngIf="ride$ | async as routeById">
       <app-ride-card

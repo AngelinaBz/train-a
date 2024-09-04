@@ -1,10 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 
@@ -19,7 +23,22 @@ import { RideFacade } from '../../state/rides.facade';
 @Component({
   selector: 'app-ride-management',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, RouterLink, RideCardComponent, MatIconModule, MatCardModule, MatProgressSpinner],
+  imports: [
+    CommonModule,
+    MatButtonModule,
+    RouterLink,
+    RideCardComponent,
+    MatIconModule,
+    MatCardModule,
+    MatProgressSpinner,
+    FormsModule,
+    MatIconModule,
+    MatDividerModule,
+    MatProgressBarModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
+  ],
   templateUrl: './ride-management-page.component.html',
   styleUrl: './ride-management-page.component.scss',
 })
@@ -33,6 +52,9 @@ export class RideManagementPageComponent implements OnInit {
   editedRideId: number | null = null;
   editPrices: { type: string; amount: number }[] = [];
   editType: null | 'date' | 'price' = null;
+  isCreatingNewRide = false;
+  newRide: Schedule = { rideId: 0, segments: [] };
+  priceTypes: string[] = [];
 
   rideForm!: FormGroup;
   pricesForm!: FormGroup;
@@ -58,6 +80,7 @@ export class RideManagementPageComponent implements OnInit {
           this.routeById = routeById;
           this.rides = routeById.schedule;
           this.loadStations();
+          this.priceTypes = Object.keys(this.routeById.schedule[0].segments[0]?.price || {});
         }
       });
     });
@@ -70,6 +93,7 @@ export class RideManagementPageComponent implements OnInit {
       this.stations = this.routeById.path
         .map((stationId) => stations.find((station) => station.id === stationId))
         .filter((station): station is Station => station !== undefined);
+      console.log('stations', this.stations);
     });
   }
 
@@ -83,6 +107,27 @@ export class RideManagementPageComponent implements OnInit {
     this.pricesForm = this.fb.group({
       amount: ['', Validators.required],
     });
+  }
+
+  onCreateRide(): void {
+    this.isCreatingNewRide = true;
+    this.newRide = {
+      rideId: 0,
+      segments: this.stations.map(() => ({
+        time: ['', ''],
+        price: this.priceTypes.reduce((acc, type) => ({ ...acc, [type]: null }), {}),
+      })),
+    };
+  }
+  saveNewRide(): void {
+    console.log('this.newRide.segments', this.newRide.segments);
+    // this.rideFacade.createRide(this.routeId, this.newRide.segments);
+    this.isCreatingNewRide = false;
+    this.newRide = { rideId: 0, segments: [] };
+  }
+
+  cancelNewRide(): void {
+    this.isCreatingNewRide = false;
   }
 
   onEditTimes(event: { rideId: number; index: number }) {
@@ -178,10 +223,6 @@ export class RideManagementPageComponent implements OnInit {
     const [hours, minutes] = time.split(':');
     const parsedDate = new Date(Date.UTC(+year, +month - 1, +day, +hours, +minutes));
     return parsedDate.toISOString();
-  }
-
-  onCreateRide(): void {
-    console.log('create ride');
   }
 
   isFutureRide(departureTime: string): boolean {
