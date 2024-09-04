@@ -1,4 +1,12 @@
-<main class="details-page">
+<div class="details-page-spinner" *ngIf="isPageLoading">
+  <mat-spinner strokeWidth="3"></mat-spinner>
+</div>
+<div class="details-page-error" *ngIf="isTripNotFound && !isPageLoading">
+  <h1>Trip not found</h1>
+  <button mat-button [routerLink]="[paths.main]">Go to main page</button>
+</div>
+
+<main class="details-page" *ngIf="!isPageLoading && isDataLoaded && !isTripNotFound">
   <div class="details-page__info">
     <app-details-head
       *ngIf="id && from && to && details() && stations()"
@@ -45,10 +53,8 @@
           Selected seat
         </div>
       </div>
-      <div>
-        <span *ngIf="selectedSeat">
-          Car: {{ selectedSeat!.car }} Seat: {{ selectedSeat!.carriageSeat }} ${{ selectedSeat.price }}</span
-        >
+      <div *ngIf="selectedSeat">
+        <span> Car: {{ selectedSeat!.car }} Seat: {{ selectedSeat!.carriageSeat }} ${{ selectedSeat.price }}</span>
         <button (click)="makeOrder()" mat-button *ngIf="isAuth()" [disabled]="!selectedSeat">
           <mat-icon>add_shopping_cart</mat-icon>
           Do order

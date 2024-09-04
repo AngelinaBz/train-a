@@ -27,7 +27,6 @@ import * as userEffects from './user/state/user.effects';
 import { userReducer } from './user/state/user.reducers';
 
 export const providers = [
-  importProvidersFrom(HttpClientModule),
   provideHttpClient(withInterceptors([authInterceptor])),
   provideZoneChangeDetection({ eventCoalescing: true }),
   provideRouter(routes),
