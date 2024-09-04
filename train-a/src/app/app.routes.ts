@@ -53,8 +53,6 @@ export const routes: Routes = [
     ],
   },
   {
-
-    path: paths.admin,
     title: `${title} - Trip`,
     path: `${paths.trip}/:rideId`,
     component: DetailsPageComponent,
@@ -71,13 +69,11 @@ export const routes: Routes = [
       }),
     ],
     children: [
-      { path: '', redirectTo: 'stations', pathMatch: 'full' },
-      { title: `${title} - Admin Stations`, path: 'stations', component: StationAdminPageComponent },
-      { title: `${title} - Admin Carriages`, path: 'carriages', component: CarriageAdminPageComponent },
-      { title: `${title} - Admin Routes`, path: 'routes', component: RoutesAdminPageComponent },
-      { path: `${title} - Admin Rides`, `${paths.routes}/:id`, component: RideManagementPageComponent },
+      { path: '', redirectTo: paths.stations, pathMatch: 'full' },
+      { title: `${title} - Admin Stations`, path: paths.stations, component: StationAdminPageComponent },
+      { title: `${title} - Admin Carriages`, path: paths.carriages, component: CarriageAdminPageComponent },
+      { title: `${title} - Admin Routes`, path: paths.routes, component: RoutesAdminPageComponent },
+      { title: `${title} - Admin Rides`, path: `${paths.routes}/:id`, component: RideManagementPageComponent },
     ],
   },
-
-  { path: '**', redirectTo: paths.main },
 ];
