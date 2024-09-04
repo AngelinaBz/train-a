@@ -8,8 +8,24 @@
   </div>
 
   <mat-card-content>
-    <ng-container *ngIf="route$ | async as route">
-      <app-ride-card [routeByID]="route"> </app-ride-card>
+    <ng-container *ngIf="route$ | async as routeById">
+      <app-ride-card
+        [routeById]="routeById"
+        [rides]="routeById.schedule"
+        [stations]="stations"
+        [editedSegment]="editedSegment"
+        [editedSegmentIndex]="editedSegmentIndex"
+        [editedRideId]="editedRideId"
+        [editPrices]="editPrices"
+        [rideForm]="rideForm"
+        (editTimesEvent)="onEditTimes($event)"
+        (editPricesEvent)="onEditPrices($event)"
+        (saveTimes)="saveTimes($event)"
+        (savePrices)="savePrices($event)"
+        (cancelEditDate)="cancelEditDate()"
+        (cancelEditPrice)="cancelEditPrice()"
+      >
+      </app-ride-card>
     </ng-container>
   </mat-card-content>
 
