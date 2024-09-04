@@ -51,6 +51,12 @@ export class SearchCardComponent implements OnChanges, OnInit {
     });
   }
 
+  isRideInFuture(): boolean {
+    const departureTime = new Date(this.rideDetails.schedule.segments[0].time[0]);
+    const currentTime = new Date();
+    return departureTime > currentTime;
+  }
+
   calculatePricePerSeat(classType: string): number {
     const prices = getAllRidePrices(this.rideDetails);
     return prices[classType] ?? 0;
