@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Route {{ dialogData.detailsId }}</h2>
+<h2 mat-dialog-title>Route {{ data()?.routeId }}</h2>
 <mat-dialog-content class="route-wrapper">
   <div class="route" *ngIf="data() && !isLoading() && !stationsIsLoading()">
     <span>Time</span>

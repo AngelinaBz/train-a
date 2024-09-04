@@ -1,5 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
+import getRideFromTo from '../../helpers/getRideFromTo';
 import { DetailsState } from './details.reducers';
 
 export const selectDetailsState = createFeatureSelector<DetailsState>('details');
@@ -9,28 +10,11 @@ export const selectRideDetails = ({ rideId, to, from }: { rideId: number; from?:
     const item = state.details[rideId]?.data;
 
     if (item) {
-      const fromIndex = from ? item.path.indexOf(from) : 0;
-      const toIndex = to ? item.path.indexOf(to) : item.path.length - 1;
-
-      if (fromIndex === -1 || toIndex === -1 || fromIndex >= toIndex) {
-        return {
-          ...item,
-          path: [],
-          schedule: {
-            ...item.schedule,
-            segments: [],
-          },
-        };
-      }
-
-      return {
-        ...item,
-        path: item.path.slice(fromIndex, toIndex + 1),
-        schedule: {
-          ...item.schedule,
-          segments: item.schedule.segments.slice(fromIndex, toIndex),
-        },
-      };
+      return getRideFromTo({
+        from,
+        to,
+        details: item,
+      });
     }
 
     return item;

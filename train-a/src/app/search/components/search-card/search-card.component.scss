@@ -1,0 +1,155 @@
+$primary-color: #213786;
+$secondary-color: #4f4f4f;
+$light-gray: #f7f6f8;
+$middle-gray: #d4d5d6;
+$font-family: 'Roboto', sans-serif;
+$box-shadow-color: rgb(0 0 0 / 10%);
+
+body {
+  padding: 0;
+  margin: 0;
+  background-color: $secondary-color;
+  color: #333;
+  font-family: Arial, sans-serif;
+}
+
+.ticket-container {
+  cursor: pointer;
+}
+
+.modal-button {
+  z-index: 2;
+}
+
+.container {
+  display: flex;
+  max-width: 1200px;
+  flex-direction: column;
+  padding: 20px;
+  margin: 0 auto;
+}
+
+.route-container {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  margin: 10px auto;
+}
+
+.route-details {
+  margin-bottom: 10px;
+}
+
+.ticket {
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgb(0 0 0 / 10%);
+}
+
+.ticket-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+}
+
+.departure,
+.arrival {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.arrival {
+  align-items: flex-end;
+}
+
+.time,
+.date,
+.route {
+  display: flex;
+  align-items: center;
+}
+
+.duration {
+  margin: 0 20px;
+  color: $primary-color;
+  font-size: 1.2em;
+  font-weight: bold;
+  text-align: center;
+}
+
+.route-line {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+}
+
+.route-line svg {
+  height: 10px;
+}
+
+.route-line circle {
+  fill: none;
+  stroke: $primary-color;
+  stroke-width: 2;
+}
+
+.route-line line {
+  stroke: $primary-color;
+  stroke-dasharray: 5, 5;
+}
+
+.class-details {
+  padding-top: 10px;
+  border-top: 1px solid #ddd;
+}
+
+.class-detail {
+  padding-bottom: 5px;
+  border-bottom: 1px solid #eee;
+  margin: 5px 0;
+}
+
+@media (width <= 900px) {
+  .ticket-header,
+  .ticket-details {
+    align-items: flex-start;
+  }
+
+  .ticket-details div {
+    margin-bottom: 10px;
+    text-align: left;
+  }
+
+  .route-container {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .class-details {
+    padding-left: 10px;
+    border-top: none;
+    border-left: 1px solid #ddd;
+    margin-left: 20px;
+  }
+}
+
+@media (width <= 600px) {
+  .container {
+    padding: 10px;
+  }
+
+  .ticket {
+    padding: 10px;
+  }
+
+  .ticket-price {
+    font-size: 1em;
+  }
+}
