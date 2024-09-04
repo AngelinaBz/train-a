@@ -1,0 +1,19 @@
+<div class="details-carriages-list">
+  @for (carriage of details.carriages; track $index) {
+    <app-carriage-card
+      *ngIf="carriage === carriages[carriageTypeIndex].code"
+      [carriage]="carriages[carriageTypeIndex]!"
+      [name]="'Car ' + ($index + 1)"
+      [selectedSeat]="selectedSeat ? selectedSeat - carriagesMeta[$index].seatsBefore : undefined"
+      [occupiedSeats]="carriagesMeta[$index].carriageSeats"
+      (selectCarriage)="
+        onSeatChange({
+          carriage: $event.carriage,
+          car: $index + 1,
+          seat: $event.seat,
+          seatsBefore: carriagesMeta[$index].seatsBefore,
+        })
+      "
+    ></app-carriage-card>
+  }
+</div>

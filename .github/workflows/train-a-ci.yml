@@ -1,0 +1,46 @@
+name: 🧪 train-a CI
+
+on:
+  pull_request:
+    paths:
+      - 'train-a/**'
+
+jobs:
+  ci:
+    name: 🧪 CI
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: 'train-a'
+
+    steps:
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 💩 Enable Corepack before setting up Node
+        run: corepack enable
+
+      - name: 🔨 install node
+        uses: actions/setup-node@v4
+        with:
+          cache: 'npm'
+          node-version-file: 'train-a/package.json'
+          cache-dependency-path: '**/train-a/package-lock.json'
+
+      - name: 🔨 install package
+        run: npm install
+
+      - name: 👍 Typescript checks
+        run: npx tsc
+
+      - name: 🔍 ES lint
+        run: npm run lint
+
+      - name: 🔍 Stylelint
+        run: npm run stylelint
+
+      - name: 🧪 Tests
+        run: npm run test:staged

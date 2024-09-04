@@ -1,0 +1,30 @@
+<form [formGroup]="signupForm" class="signup-form">
+  <mat-form-field class="field" appearance="outline">
+    <mat-label for="email">Email</mat-label>
+    <input type="text" id="email" matInput formControlName="email" placeholder="example@mail.com" />
+    <mat-error *ngIf="isSubmitted && email?.errors?.['required']">Please enter an email</mat-error>
+    <mat-error *ngIf="isSubmitted && email?.errors?.['pattern'] && !email?.errors?.['required']">Incorrect email</mat-error>
+    <mat-error *ngIf="isSubmitted && email?.errors?.['serverError']">{{ email?.errors?.['serverError'] }}</mat-error>
+  </mat-form-field>
+  <mat-form-field class="field" appearance="outline">
+    <mat-label for="password">Password</mat-label>
+    <input type="password" id="password" matInput formControlName="password" />
+    <mat-hint>Min 8 characters</mat-hint>
+    <mat-error *ngIf="isSubmitted && password?.errors?.['required']">Please enter a password</mat-error>
+    <mat-error *ngIf="isSubmitted && password?.errors?.['weakPassword'] && !password?.errors?.['required']">
+      {{ password?.errors?.['weakPassword'] }}
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="field" appearance="outline">
+    <mat-label for="repeatPassword">Repeat Password</mat-label>
+    <input type="password" id="repeatPassword" matInput formControlName="repeatPassword" [errorStateMatcher]="matcher" />
+    <mat-error *ngIf="repeatPassword?.errors?.['mismatch'] && !repeatPassword?.errors?.['required']"
+      >Passwords do not match
+    </mat-error>
+  </mat-form-field>
+  <div class="buttons-container">
+    <button mat-flat-button [disabled]="!isValid || (isLoading$ | async)" class="signup" (click)="onSubmit()">Register</button>
+    <button mat-button routerLink="/signin">Sign In</button>
+  </div>
+</form>

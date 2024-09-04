@@ -1,0 +1,10 @@
+<mat-tab-group (selectedTabChange)="onTabChange($event)">
+  @for (carriage of carriages; track $index) {
+    <mat-tab
+      *ngIf="details.carriages.includes(carriage.code)"
+      label="type {{ carriage.name }} seats: {{ getAllRideSeats(details, carriages)[carriage.code] }} price: {{
+        getAllRidePrices(details)[carriage.code]
+      }}$"
+    ></mat-tab>
+  }
+</mat-tab-group>
