@@ -1,0 +1,128 @@
+$primary-color: #213786;
+$secondary-color: #4f4f4f;
+$light-gray: #f7f6f8;
+$middle-gray: #d4d5d6;
+$font-family: 'Roboto', sans-serif;
+
+header {
+  position: relative;
+  z-index: 100;
+  display: flex;
+  width: 100%;
+  height: 80px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0;
+  margin-bottom: 30px;
+  background: $light-gray;
+  font-family: $font-family;
+
+  .header-nav {
+    display: flex;
+    width: 100%;
+    max-width: 1440px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    margin: 0 auto;
+  }
+
+  .header-item {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+  }
+
+  .container-nav {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    border: 2px solid $primary-color;
+    border-radius: 50%;
+    margin-right: 20px;
+
+    .logo-icon {
+      margin: 10px 10px 5px 15px;
+      color: $primary-color;
+    }
+  }
+
+  nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    a {
+      color: $primary-color;
+      font-weight: 500;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    a:hover {
+      color: $primary-color 90%;
+    }
+  }
+}
+
+@media (width <= 1200px) {
+  header {
+    .header-nav {
+      padding: 0 15px;
+    }
+
+    .header-item {
+      padding: 0 10px;
+    }
+
+    .logo img {
+      width: 45px;
+      height: 45px;
+    }
+  }
+}
+
+@media (width <= 768px) {
+  header {
+    height: 70px;
+    padding: 10px 0;
+
+    .header-nav {
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header-item {
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .login-button {
+      padding: 8px 12px;
+    }
+  }
+}
+
+@media (width <= 480px) {
+  header {
+    .header-nav {
+      padding: 0 10px;
+    }
+
+    .login-button {
+      padding: 6px 10px;
+      font-size: 14px;
+    }
+  }
+}

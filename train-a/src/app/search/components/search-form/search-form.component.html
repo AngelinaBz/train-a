@@ -1,0 +1,50 @@
+<div class="search-form-container">
+  <div class="search-train-container">
+    <div class="search-trains">Search Trains</div>
+    <form class="form-container" [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+      <div class="train-selection">
+        <div class="input-container">
+          <mat-form-field class="from-to-group" appearance="fill">
+            <input class="input" matInput formControlName="fromCity" [matAutocomplete]="autoFromCity" placeholder="From City" />
+            <mat-autocomplete #autoFromCity="matAutocomplete">
+              <mat-option *ngFor="let option of filteredFromCities | async" [value]="option.city">
+                {{ option.city }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+          <button type="button" class="swap-button" (click)="swapLocations()">↔</button>
+          <mat-form-field class="from-to-group" appearance="fill">
+            <input class="input" matInput formControlName="toCity" [matAutocomplete]="autoToCity" placeholder="To City" />
+            <mat-autocomplete #autoToCity="matAutocomplete">
+              <mat-option *ngFor="let option of filteredToCities | async" [value]="option.city">
+                {{ option.city }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+        <div class="date-group">
+          <mat-form-field class="from-to-group" appearance="fill">
+            <input
+              class="input"
+              matInput
+              id="date"
+              formControlName="date"
+              [matDatepicker]="picker"
+              placeholder="mm/dd/yyyy"
+              [min]="today"
+            />
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <div class="date-group">
+          <mat-form-field appearance="fill" *ngIf="searchForm.get('date')?.value">
+            <input class="input" matInput formControlName="time" type="time" />
+          </mat-form-field>
+        </div>
+        <button mat-raised-button type="submit" class="search-button" [disabled]="!isFormValid()">Search</button>
+      </div>
+    </form>
+  </div>
+</div>

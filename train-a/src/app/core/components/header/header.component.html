@@ -1,0 +1,26 @@
+<header>
+  <div class="header-nav">
+    <div class="header-item">
+      <div class="container-nav">
+        <div class="logo">
+          <a class="logo-icon" routerLink="/home"><mat-icon> departure_board</mat-icon></a>
+        </div>
+
+        <ng-container *ngIf="userFacade.user$ | async as user; else guestLinks">
+          <nav class="nav-links">
+            <a routerLink="/profile">Profile</a>
+            <a routerLink="/orders">My Orders</a>
+            <a *ngIf="user.role === 'manager'" routerLink="/admin">Admin</a>
+          </nav>
+        </ng-container>
+
+        <ng-template #guestLinks>
+          <nav class="nav-links">
+            <a routerLink="/signup">Sign Up</a>
+            <a routerLink="/signin">Sign In</a>
+          </nav>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</header>

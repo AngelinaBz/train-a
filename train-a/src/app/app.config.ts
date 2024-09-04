@@ -1,5 +1,6 @@
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { ApplicationConfig, isDevMode, provideZoneChangeDetection } from '@angular/core';
+import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
 import { provideEffects } from '@ngrx/effects';
@@ -20,6 +21,8 @@ import { Routesffects } from './routes/state/routes.effects';
 import { routesReducer } from './routes/state/routes.reducers';
 import * as detailsEffects from './search/state/details/details.effects';
 import { detailsReducer } from './search/state/details/details.reducers';
+import { SearchEffects } from './search/state/search/search.effects';
+import { searchReducer } from './search/state/search/search.reducer';
 import { StationEffects } from './stations/state/station.effects';
 import { stationReducer } from './stations/state/station.reducers';
 import * as userEffects from './user/state/user.effects';
@@ -29,6 +32,7 @@ export const providers = [
   provideHttpClient(withInterceptors([authInterceptor])),
   provideZoneChangeDetection({ eventCoalescing: true }),
   provideRouter(routes),
+  provideAnimations(),
   provideAnimationsAsync(),
   provideHttpClient(withInterceptors([authInterceptor])),
   provideStore({
@@ -40,6 +44,7 @@ export const providers = [
     details: detailsReducer,
     routes: routesReducer,
     rides: rideReducer,
+    search: searchReducer,
   }),
   provideEffects(
     userEffects,
@@ -50,10 +55,13 @@ export const providers = [
     detailsEffects,
     Routesffects,
     RideEffects,
+    SearchEffects,
+    detailsEffects,
+    Routesffects,
   ),
   provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
 ];
 
 export const appConfig: ApplicationConfig = {
-  providers,
+  providers: [...providers],
 };

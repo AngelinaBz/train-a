@@ -6,6 +6,7 @@ export interface Segment {
 
 export default interface RideDetails {
   rideId: number;
+  routeId: number;
   path: number[];
   carriages: string[];
   schedule: {

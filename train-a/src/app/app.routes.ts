@@ -9,6 +9,7 @@ import { OrdersComponent } from './orders/pages/orders-page/orders.component';
 import { RideManagementPageComponent } from './rides/pages/ride-management-page/ride-management-page.component';
 import { RoutesAdminPageComponent } from './routes/pages/routes-admin-page/routes-admin-page.component';
 import { DetailsPageComponent } from './search/pages/details-page/details-page.component';
+import { HomeComponent } from './search/pages/home/home.component';
 import { paths } from './shared/configs/paths';
 import { StationAdminPageComponent } from './stations/pages/station-admin-page/station-admin-page.component';
 import { roleGuard } from './user/guards/role/role.guard';
@@ -56,6 +57,11 @@ export const routes: Routes = [
     title: `${title} - Trip`,
     path: `${paths.trip}/:rideId`,
     component: DetailsPageComponent,
+  },
+  {
+    path: paths.main,
+    component: HomeComponent,
+    canActivate: [authGuard({ needAuth: true, redirectTo: paths.signin })],
   },
   {
     title: `${title} - Admin`,
