@@ -41,6 +41,7 @@ export class RideCardComponent {
   @Input() editedSegmentIndex!: number | null;
   @Input() editedRideId!: number | null;
   @Input() rideForm!: FormGroup;
+  @Input() editType: null | 'date' | 'price' = null;
   @Input() editPrices!: { type: string; amount: number }[];
 
   @Output() editTimesEvent = new EventEmitter<{ index: number; rideId: number }>();

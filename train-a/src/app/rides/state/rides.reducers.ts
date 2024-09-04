@@ -78,12 +78,12 @@ export const rideReducer = createReducer(
   ),
   on(
     rideActions.updateRideSuccess,
-    (state, { rideId, segments }): RideState => ({
+    (state, { rideId, updatedSchedule }): RideState => ({
       ...state,
-      isLoading: false,
-      schedule: state.schedule.map((schedule) => (schedule.rideId === rideId ? { ...schedule, segments } : schedule)),
-      successMessage: 'Ride updated successfully',
-      error: null,
+      routeById: {
+        ...state.routeById!,
+        schedule: state.routeById!.schedule.map((schedule) => (schedule.rideId === rideId ? updatedSchedule : schedule)),
+      },
     }),
   ),
   on(

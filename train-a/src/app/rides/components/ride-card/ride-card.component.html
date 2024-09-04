@@ -13,7 +13,7 @@
         </ng-template>
 
         <div class="schedule-wrapper">
-          <ng-container *ngIf="segment === editedSegment">
+          <ng-container *ngIf="segment === editedSegment && editType === 'date'">
             <form [formGroup]="rideForm">
               <div class="edit-date-inputs-container">
                 <div class="edit-date-inputs">
@@ -75,7 +75,7 @@
             </form>
           </ng-container>
 
-          <ng-container *ngIf="segment !== editedSegment">
+          <ng-container *ngIf="segment !== editedSegment || editType !== 'date'">
             <div *ngIf="j === 0">
               <p>Departure: {{ getDate(segment.time[0]) }}</p>
             </div>
@@ -90,7 +90,7 @@
         </div>
 
         <div class="prices-wrapper">
-          <ng-container *ngIf="segment && editedSegmentIndex === j && editedRideId === ride.rideId">
+          <ng-container *ngIf="segment && editedSegmentIndex === j && editedRideId === ride.rideId && editType === 'price'">
             <div class="prices-list">
               <p class="price-title">Price:</p>
               <ng-container *ngFor="let price of editPrices; let p = index">

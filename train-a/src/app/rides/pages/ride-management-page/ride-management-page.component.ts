@@ -30,11 +30,12 @@ export class RideManagementPageComponent implements OnInit {
   editedSegmentIndex: number | null = null;
   editedRideId: number | null = null;
   editPrices: { type: string; amount: number }[] = [];
+  editType: null | 'date' | 'price' = null;
 
   rideForm!: FormGroup;
   pricesForm!: FormGroup;
 
-  route$ = this.rideFacade.ride$;
+  ride$ = this.rideFacade.ride$;
   isLoading$ = this.rideFacade.isLoading$;
 
   constructor(
@@ -82,6 +83,7 @@ export class RideManagementPageComponent implements OnInit {
   }
 
   onEditTimes(event: { rideId: number; index: number }) {
+    this.editType = 'date';
     const { rideId, index } = event;
     const segment = this.getSegment(index, rideId);
     if (!segment) return;
@@ -98,6 +100,7 @@ export class RideManagementPageComponent implements OnInit {
   }
 
   onEditPrices(event: { rideId: number; index: number }) {
+    this.editType = 'price';
     const { rideId, index } = event;
     const segment = this.getSegment(index, rideId);
     if (!segment) return;
@@ -108,23 +111,23 @@ export class RideManagementPageComponent implements OnInit {
     this.editPrices = Object.entries(segment.price).map(([type, amount]) => ({ type, amount }));
   }
 
-  saveChanges(rideId: number, updatedSegment: Segment): void {
-    // const updatedSegment = this.collectPrices();
-    const segments: Segment[] = [...(this.rides.find((r) => r.rideId === rideId)?.segments || [])];
-
-    if (this.editedSegmentIndex !== null) {
-      segments[this.editedSegmentIndex] = updatedSegment;
+  saveTimes(rideId: number): void {
+    if (!this.editedSegment || !(this.rideForm && this.rideForm.valid)) {
+      return;
     }
+    const updatedTime: [string, string] = [
+      this.parseDateTime(this.rideForm.value.departureDate, this.rideForm.value.departureTime),
+      this.parseDateTime(this.rideForm.value.arrivalDate, this.rideForm.value.arrivalTime),
+    ];
 
-    this.rideFacade.updateRide(this.routeId, rideId, segments);
-    this.cancelEditDate();
-    this.cancelEditPrice();
+    this.saveChanges(rideId, {
+      ...this.editedSegment,
+      time: updatedTime,
+    });
   }
 
-  // saveTimes(rideId: number): void {}
-
   savePrices(rideId: number): void {
-    if (!this.editedSegment || !this.editedSegment.price) {
+    if (!this.editedSegment) {
       return;
     }
     const updatedPrices = this.editPrices.reduce((acc, price) => {
@@ -138,21 +141,27 @@ export class RideManagementPageComponent implements OnInit {
     });
   }
 
-  // collectPrices(): Segment {
-  // return {
-  //   time: [
-  //     this.parseDateTime(this.rideForm.get('departureDate')?.value, this.rideForm.get('departureTime')?.value),
-  //     this.parseDateTime(this.rideForm.get('arrivalDate')?.value, this.rideForm.get('arrivalTime')?.value)
-  //   ],
-  //   price: updatedPrices
-  // };
-  // }
+  saveChanges(rideId: number, updatedSegment: Segment): void {
+    if (!this.editedSegment) {
+      return;
+    }
+    const segments: Segment[] = [...(this.rides.find((r) => r.rideId === rideId)?.segments || [])];
+
+    const editedSegmentId = segments.indexOf(this.editedSegment);
+    segments[editedSegmentId] = updatedSegment;
+
+    this.rideFacade.updateRide(this.routeId, rideId, segments);
+    this.cancelEditDate();
+    this.cancelEditPrice();
+  }
 
   cancelEditDate() {
     this.editedSegment = null;
+    this.editType = null;
   }
   cancelEditPrice() {
     this.editedSegmentIndex = null;
+    this.editType = null;
     this.editPrices = [];
   }
 
