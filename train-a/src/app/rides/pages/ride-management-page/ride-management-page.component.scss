@@ -26,6 +26,12 @@
   }
 }
 
+.ride-card {
+  mat-card-content {
+    padding: 20px;
+  }
+}
+
 .spinner {
   position: fixed;
   z-index: 1000;

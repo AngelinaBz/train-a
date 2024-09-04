@@ -12,7 +12,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 
-import { dateValidator, formatDate, formatTime, timeValidator } from '../../../shared/validators/date-validator';
+import { dateValidator, formatDate, formatTime, parseDateTime, timeValidator } from '../../../shared/validators/date-validator';
 import { Station } from '../../../stations/models/station.model';
 import { StationFacade } from '../../../stations/state/station.facade';
 import { DeleteRideDialogComponent } from '../../components/delete-ride-dialog/delete-ride-dialog.component';
@@ -93,7 +93,6 @@ export class RideManagementPageComponent implements OnInit {
       this.stations = this.routeById.path
         .map((stationId) => stations.find((station) => station.id === stationId))
         .filter((station): station is Station => station !== undefined);
-      console.log('stations', this.stations);
     });
   }
 
@@ -110,6 +109,7 @@ export class RideManagementPageComponent implements OnInit {
   }
 
   onCreateRide(): void {
+    this.rideForm.reset();
     this.isCreatingNewRide = true;
     this.newRide = {
       rideId: 0,
@@ -119,9 +119,9 @@ export class RideManagementPageComponent implements OnInit {
       })),
     };
   }
+
   saveNewRide(): void {
-    console.log('this.newRide.segments', this.newRide.segments);
-    // this.rideFacade.createRide(this.routeId, this.newRide.segments);
+    this.rideFacade.createRide(this.routeId, this.newRide.segments);
     this.isCreatingNewRide = false;
     this.newRide = { rideId: 0, segments: [] };
   }
@@ -164,8 +164,8 @@ export class RideManagementPageComponent implements OnInit {
       return;
     }
     const updatedTime: [string, string] = [
-      this.parseDateTime(this.rideForm.value.departureDate, this.rideForm.value.departureTime),
-      this.parseDateTime(this.rideForm.value.arrivalDate, this.rideForm.value.arrivalTime),
+      parseDateTime(this.rideForm.value.departureDate, this.rideForm.value.departureTime),
+      parseDateTime(this.rideForm.value.arrivalDate, this.rideForm.value.arrivalTime),
     ];
 
     this.saveChanges(rideId, {
@@ -216,13 +216,6 @@ export class RideManagementPageComponent implements OnInit {
   getSegment(index: number, rideId: number): Segment | null {
     const rideItem = this.rides.find((ride) => ride.rideId === rideId);
     return rideItem ? rideItem.segments[index] || null : null;
-  }
-
-  parseDateTime(date: string, time: string): string {
-    const [day, month, year] = date.split('.');
-    const [hours, minutes] = time.split(':');
-    const parsedDate = new Date(Date.UTC(+year, +month - 1, +day, +hours, +minutes));
-    return parsedDate.toISOString();
   }
 
   isFutureRide(departureTime: string): boolean {

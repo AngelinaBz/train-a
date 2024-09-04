@@ -10,7 +10,7 @@
         <div class="stations-wrapper-">
           <ng-template #stationLoaded>
             <ng-container *ngIf="stations[j] as station" class="station-name">
-              <p>{{ station.city }}</p>
+              <mat-card-subtitle>{{ station.city }}</mat-card-subtitle>
             </ng-container>
           </ng-template>
         </div>
@@ -107,6 +107,7 @@
               <ng-container *ngFor="let price of editPrices; let p = index">
                 <mat-form-field appearance="fill">
                   <mat-label>{{ price.type }}</mat-label>
+                  <span matTextPrefix>$&nbsp;</span>
                   <input matInput [(ngModel)]="editPrices[p].amount" placeholder="Amount" type="number" required />
                 </mat-form-field>
               </ng-container>
