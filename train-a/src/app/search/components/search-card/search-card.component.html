@@ -1,32 +1,21 @@
 <div
   class="ticket-container"
-  (click)="
-    navigateToTrip({
-      rideId: rideId,
-      from: from.stationId,
-      to: to.stationId,
-    })
-  "
-  (keydown.enter)="
-    navigateToTrip({
-      rideId: rideId,
-      from: from.stationId,
-      to: to.stationId,
-    })
-  "
+  (click)="navigateToTrip({ rideId: rideDetails.rideId, from: from.stationId, to: to.stationId })"
+  (keydown.enter)="navigateToTrip({ rideId: rideDetails.rideId, from: from.stationId, to: to.stationId })"
   tabindex="0"
-  #ref
 >
   <div class="ticket-header">
     <div class="departure">
       <div class="time">
         <mat-icon>schedule</mat-icon>
-        <!--          <span *ngIf="route.schedule?.length && route.schedule[0].segments?.length">-->
-        <!--            {{ route.schedule[0].segments[0].time[0] | date: 'shortTime' }}-->
-        <!--          </span>-->
+        <span *ngIf="rideDetails.schedule?.segments?.length">
+          {{ rideDetails.schedule.segments[0].time[0] | date: 'shortTime' }}
+        </span>
       </div>
       <div class="date">
-        <!--          <span>{{ route.schedule[0].segments[0].time[0] | date: 'MMMM d' }}</span>-->
+        <span *ngIf="rideDetails.schedule?.segments?.length">
+          {{ rideDetails.schedule.segments[0].time[0] | date: 'MMMM d' }}
+        </span>
       </div>
       <div class="route">
         <span>{{ from.city }}</span>
@@ -36,13 +25,13 @@
     <div class="route-line">
       <svg height="10" width="100">
         <circle cx="5" cy="5" r="5" fill="none" stroke="black" stroke-width="2" />
-        <line x1="5" y1="5" x2="95" y2="5" stroke="black" stroke-width="5,5" />
+        <line x1="5" y1="5" x2="95" y2="5" stroke="black" stroke-width="5" />
       </svg>
     </div>
 
-    <!--      <div class="duration" *ngIf="route.schedule?.length && route.schedule[0].segments?.length">-->
-    <!--        <span>{{ calculateDuration(route.schedule[0].segments[0].time[0], route.schedule[0].segments[0].time[1]) }}</span>-->
-    <!--      </div>-->
+    <div class="duration" *ngIf="rideDetails.schedule?.segments?.length">
+      <span>{{ calculateDuration(rideDetails.schedule.segments[0].time[0], rideDetails.schedule.segments[0].time[1]) }}</span>
+    </div>
 
     <div class="route-line">
       <svg height="10" width="100">
@@ -54,12 +43,14 @@
     <div class="arrival">
       <div class="time">
         <mat-icon>schedule</mat-icon>
-        <!--          <span *ngIf="route.schedule?.length && route.schedule[0].segments?.length">-->
-        <!--            {{ route.schedule[0].segments[0].time[1] | date: 'shortTime' }}-->
-        <!--          </span>-->
+        <span *ngIf="rideDetails.schedule?.segments?.length">
+          {{ rideDetails.schedule.segments[0].time[1] | date: 'shortTime' }}
+        </span>
       </div>
       <div class="date">
-        <!--          <span>{{ route.schedule[0].segments[0].time[1] | date: 'MMMM d' }}</span>-->
+        <span *ngIf="rideDetails.schedule?.segments?.length">
+          {{ rideDetails.schedule.segments[0].time[1] | date: 'MMMM d' }}
+        </span>
       </div>
       <div class="route">
         <span>{{ to.city }}</span>
@@ -67,20 +58,11 @@
     </div>
   </div>
 
-  <div class="class-details"></div>
+  <div class="class-details" *ngIf="rideDetails && carriages">
+    <div *ngFor="let classType of carriages" class="class-detail">
+      <span>{{ classType.name }}</span>
+      <span> Price per Seat: ${{ calculatePricePerSeat(classType.code) | number: '1.0-0' }} </span>
+      <span> Seats Available: {{ countTotalSeatsByClass()[classType.code] }} </span>
+    </div>
+  </div>
 </div>
-<button
-  class="modal-button"
-  mat-raised-button
-  color="primary"
-  (click)="
-    openRouteDialog({
-      event: $event,
-      detailsId: rideId,
-      from: from.stationId,
-      to: to.stationId,
-    })
-  "
->
-  View Details
-</button>

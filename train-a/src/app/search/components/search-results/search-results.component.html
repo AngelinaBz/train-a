@@ -17,21 +17,17 @@
 </div>
 
 <div *ngIf="searchResults$ | async as searchResults">
-  <div *ngIf="searchResults.routes.length > 0">
-    <div *ngFor="let route of searchResults.routes" class="ticket">
-      <div *ngFor="let detail of route.schedule">
-        <app-search-card
-          [from]="searchResults.from"
-          [to]="searchResults.to"
-          [rideId]="detail.rideId"
-          [rideDetails]="detail"
-        ></app-search-card>
-        <div class="class-details" *ngIf="carriages$ | async as carriages">
-          <div *ngFor="let classType of ['carriage1', 'carriage2', 'carriage3']" class="class-detail">
-            <span>{{ classType === 'carriage1' ? '1st Class' : classType === 'carriage2' ? '2nd Class' : 'Women Only' }}</span>
-            <span>Price per Seat: ${{ calculatePricePerSeat(detail, classType) | number: '1.0-0' }}</span>
-            <span>Seats Available: {{ countTotalSeatsByClass(detail, carriages)[classType] }}</span>
-          </div>
+  <div *ngIf="carriages$ | async as carriages">
+    <div *ngIf="searchResults.routes.length > 0">
+      <div *ngFor="let route of searchResults.routes" class="ticket">
+        <div *ngFor="let detail of route.schedule">
+          <app-search-card
+            [from]="searchResults.from"
+            [to]="searchResults.to"
+            [rideId]="detail.rideId"
+            [rideDetails]="detail"
+            [carriages]="carriages"
+          ></app-search-card>
         </div>
       </div>
     </div>
