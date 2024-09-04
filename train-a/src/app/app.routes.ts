@@ -58,7 +58,6 @@ export const routes: Routes = [
     component: DetailsPageComponent,
   },
   {
-
     path: paths.main,
     component: HomeComponent,
     canActivate: [authGuard({ needAuth: true, redirectTo: paths.signin })],

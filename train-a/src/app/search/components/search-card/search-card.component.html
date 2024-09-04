@@ -7,6 +7,14 @@
       to: to.stationId,
     })
   "
+  (keydown.enter)="
+    navigateToTrip({
+      rideId: rideId,
+      from: from.stationId,
+      to: to.stationId,
+    })
+  "
+  tabindex="0"
   #ref
 >
   <div class="ticket-header">
